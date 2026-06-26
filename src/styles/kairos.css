@@ -1,0 +1,266 @@
+/* ===========================================================================
+   Activos Kairos — Design tokens + site styles
+   Portado desde el Claude Design "Activos Kairos Design System".
+   Los tokens se montan sobre .kairos-site para no colisionar con los tokens
+   del boilerplate (shadcn/Tailwind) que viven en :root.
+   =========================================================================== */
+
+/* Las @import de fuentes (Satoshi vía Fontshare, JetBrains Mono) viven al
+   principio de globals.css: las reglas @import deben preceder a cualquier otra. */
+
+.kairos-site {
+  /* --- Brand orange ----------------------------------------------------- */
+  --kairos-orange-700: #C44E00;
+  --kairos-orange-600: #E15700;
+  --kairos-orange-500: #F96302;
+  --kairos-orange-400: #F8A848;
+  --kairos-orange-300: #F8B058;
+  --kairos-orange-200: #FBD3A3;
+  --kairos-orange-100: #FCE8D2;
+  --kairos-orange-050: #FBF1E6;
+
+  /* --- Warm neutrals (cream side) --------------------------------------- */
+  --cream-000: #FFFFFF;
+  --cream-050: #FDFBF8;
+  --cream-100: #FAF6F1;
+  --cream-200: #F2EBE2;
+  --cream-300: #E7DCCE;
+  --cream-400: #D8C9B6;
+
+  /* --- Warm ink (dark side) --------------------------------------------- */
+  --ink-900: #141312;
+  --ink-800: #1B1B1B;
+  --ink-700: #242220;
+  --ink-600: #322E2A;
+  --ink-500: #423D37;
+
+  /* --- Text ------------------------------------------------------------- */
+  --text-strong: #1A1714;
+  --text-body:   #2C2722;
+  --text-muted:  #6B6058;
+  --text-faint:  #9A8E82;
+
+  --text-on-dark-strong: #F5EDE6;
+  --text-on-dark-body:   #E4D9CE;
+  --text-on-dark-muted:  #A89C90;
+  --text-on-dark-faint:  #7C7065;
+
+  /* --- Semantic status -------------------------------------------------- */
+  --success: #2F8F5B;
+  --success-bg: #E7F4EC;
+  --warning: #C98A1E;
+  --warning-bg: #FBEFD6;
+  --danger: #C5462E;
+  --danger-bg: #FAE7E2;
+
+  /* --- Surfaces --------------------------------------------------------- */
+  --surface-page:        var(--cream-100);
+  --surface-raised:      var(--cream-000);
+  --surface-sunken:      var(--cream-200);
+  --surface-card:        var(--cream-000);
+  --surface-page-dark:   var(--ink-800);
+  --surface-raised-dark: var(--ink-700);
+  --surface-card-dark:   var(--ink-700);
+
+  /* --- Borders ---------------------------------------------------------- */
+  --border-subtle:   var(--cream-200);
+  --border-default:  var(--cream-300);
+  --border-strong:   var(--cream-400);
+  --border-on-dark:  var(--ink-600);
+
+  /* --- Accent / brand --------------------------------------------------- */
+  --accent:          var(--kairos-orange-500);
+  --accent-hover:    var(--kairos-orange-600);
+  --accent-active:   var(--kairos-orange-700);
+  --accent-soft:     var(--kairos-orange-100);
+  --accent-contrast: #FFFFFF;
+  --accent-gradient: linear-gradient(105deg, #F96302 0%, #F9962E 100%);
+  --accent-gradient-warm: linear-gradient(135deg, var(--kairos-orange-400) 0%, var(--kairos-orange-300) 100%);
+
+  /* --- Type families ---------------------------------------------------- */
+  --font-display: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans:    'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* --- Weights ---------------------------------------------------------- */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+  --weight-extra:    800;
+
+  /* --- Type scale ------------------------------------------------------- */
+  --text-display:   clamp(3rem, calc(1.6rem + 5.4vw), 5.5rem);
+  --text-h1:        clamp(2.4rem, calc(1.6rem + 3vw), 3.75rem);
+  --text-h2:        clamp(1.9rem, calc(1.4rem + 1.8vw), 2.75rem);
+  --text-h3:        clamp(1.45rem, calc(1.2rem + 0.9vw), 1.875rem);
+  --text-h4:        1.375rem;
+  --text-lead:      1.25rem;
+  --text-body:      1.0625rem;
+  --text-sm:        0.9375rem;
+  --text-xs:        0.8125rem;
+  --text-eyebrow:   0.78125rem;
+
+  /* --- Line heights ----------------------------------------------------- */
+  --leading-tight:   1.04;
+  --leading-snug:    1.18;
+  --leading-heading: 1.12;
+  --leading-normal:  1.6;
+  --leading-relaxed: 1.72;
+
+  /* --- Tracking --------------------------------------------------------- */
+  --tracking-tighter: -0.03em;
+  --tracking-tight:   -0.018em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-eyebrow: 0.14em;
+
+  /* --- Spacing scale (4px base) ----------------------------------------- */
+  --space-0:  0;
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.5rem;
+  --space-6:  2rem;
+  --space-7:  2.5rem;
+  --space-8:  3rem;
+  --space-9:  4rem;
+  --space-10: 5rem;
+  --space-11: 6.5rem;
+  --space-12: 8rem;
+
+  /* --- Radii (soft) ----------------------------------------------------- */
+  --radius-xs:   6px;
+  --radius-sm:   10px;
+  --radius-md:   14px;
+  --radius-lg:   18px;
+  --radius-xl:   24px;
+  --radius-2xl:  32px;
+  --radius-pill: 999px;
+
+  /* --- Shadows (warm, subtle) ------------------------------------------- */
+  --shadow-xs:  0 1px 2px rgba(26, 23, 20, 0.05);
+  --shadow-sm:  0 2px 6px rgba(26, 23, 20, 0.06);
+  --shadow-md:  0 8px 24px -6px rgba(26, 23, 20, 0.10), 0 2px 6px rgba(26, 23, 20, 0.05);
+  --shadow-lg:  0 22px 48px -12px rgba(26, 23, 20, 0.16), 0 4px 12px rgba(26, 23, 20, 0.06);
+  --shadow-xl:  0 40px 80px -20px rgba(26, 23, 20, 0.22);
+  --shadow-accent: 0 12px 32px -10px rgba(249, 99, 2, 0.45);
+  --shadow-inset:  inset 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  /* --- Motion ----------------------------------------------------------- */
+  --ease-out:   cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft:  cubic-bezier(0.33, 0, 0.1, 1);
+  --dur-fast:   140ms;
+  --dur-base:   240ms;
+  --dur-slow:   480ms;
+  --dur-reveal: 720ms;
+
+  /* --- Layout ----------------------------------------------------------- */
+  --container:      1180px;
+  --container-wide: 1320px;
+  --container-prose: 720px;
+  --gutter:         clamp(1.25rem, 5vw, 4rem);
+  --section-y:      clamp(4.5rem, 9vw, 9rem);
+
+  /* base del propio sitio */
+  background: var(--surface-page);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.kairos-site a { color: inherit; }
+.kairos-site :is(h1, h2, h3, h4, p) { margin: 0; }
+
+/* ===========================================================================
+   Animaciones / hovers / responsive (global, prefijo kairos-)
+   =========================================================================== */
+.kairos-hero-ghost:hover {
+  background: rgba(245,237,230,0.08) !important;
+  border-color: rgba(245,237,230,0.4) !important;
+}
+@keyframes kairosHeroGlow {
+  0%, 100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+}
+@keyframes kairosVoiceFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -7px; }
+}
+@keyframes kairosContactGlow {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+.kairos-contact-glow { animation: kairosContactGlow 6s ease-in-out infinite; }
+.kairos-contact-submit[data-ready="true"]:hover { transform: translateY(-2px); }
+.kairos-contact-submit[data-ready="true"]:active { transform: translateY(0) scale(0.99); }
+.kairos-hero-glow { animation: kairosHeroGlow 6s ease-in-out infinite; }
+@keyframes kairosScrollHint {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.6; }
+  50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
+}
+@keyframes kairosDetailIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.kairos-node .kairos-node-badge { transition: transform 240ms cubic-bezier(.22,.61,.36,1), border-color 280ms ease, box-shadow 280ms ease; }
+.kairos-node:hover .kairos-node-badge,
+.kairos-node:focus-visible .kairos-node-badge {
+  transform: scale(1.09);
+  box-shadow: 0 0 0 7px rgba(249,99,2,0.12), 0 12px 26px -12px rgba(249,99,2,0.55) !important;
+}
+.kairos-node:focus-visible { outline: none; }
+@keyframes kairosGoalPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(249,99,2,0.5); }
+  70%  { box-shadow: 0 0 0 18px rgba(249,99,2,0); }
+  100% { box-shadow: 0 0 0 5px rgba(249,99,2,0.14); }
+}
+.kairos-build-step { transition: opacity 300ms ease, box-shadow 300ms ease, background 300ms ease; }
+@keyframes kairosFlow { to { stroke-dashoffset: -13; } }
+.kairos-flow { animation: kairosFlow 0.85s linear infinite; }
+@keyframes kairosFlash {
+  0% { background: rgba(249,99,2,0.22); }
+  100% { background: transparent; }
+}
+.kairos-tile:hover { transform: translateY(-5px) !important; border-color: rgba(249,99,2,0.5) !important; box-shadow: 0 24px 50px -24px rgba(249,99,2,0.4); }
+.kairos-tile:hover .kairos-tile-glow { opacity: 1; }
+.kairos-tile:hover .kairos-tile-cta { opacity: 1; transform: translate(2px,-2px); }
+.kairos-back:hover { border-color: rgba(249,99,2,0.5) !important; color: #F96302 !important; }
+.kairos-disc-btn:hover { color: #F96302 !important; }
+
+@media (max-width: 980px) {
+  .kairos-hero-grid,
+  .kairos-services-grid,
+  .kairos-cases-grid,
+  .kairos-contact-grid,
+  .kairos-footer-grid { grid-template-columns: 1fr !important; }
+  .kairos-footer-grid { gap: var(--space-6) !important; }
+  .kairos-navlinks { display: none !important; }
+  .kairos-case { grid-template-columns: 1fr !important; height: auto !important; }
+  .kairos-case-acc { overflow: visible !important; }
+  .kairos-case-rule { height: 3px; width: 64px; margin: 4px 0; }
+  .kairos-case-side { text-align: left !important; align-items: flex-start !important; }
+  .kairos-case-side > div:first-child { align-items: flex-start !important; }
+}
+@media (max-width: 760px) {
+  .kairos-case-body,
+  .kairos-case-results { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 720px) {
+  .kairos-hero-dashbody { grid-template-columns: 1fr !important; }
+  .kairos-trustbar { flex-direction: column !important; gap: 8px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kairos-contact-glow,
+  .kairos-hero-glow,
+  .kairos-voice,
+  .kairos-flow,
+  .kairos-ia-row,
+  .kairos-build-step,
+  .kairos-node .kairos-node-badge { animation: none !important; }
+  .kairos-tile:hover { transform: none !important; }
+}

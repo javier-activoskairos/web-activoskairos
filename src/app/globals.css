@@ -1,6 +1,9 @@
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "../styles/kairos.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -54,9 +57,9 @@
      en cada proyecto (oklch o hex); el resto del design system deriva de
      aquí. No edites los tokens de abajo salvo necesidad real.
      ==================================================================== */
-  --brand: oklch(0.205 0 0); /* color primario de marca */
-  --brand-foreground: oklch(0.985 0 0); /* texto sobre el primario */
-  --brand-accent: oklch(0.556 0 0); /* acento/secundario de marca */
+  --brand: #f96302; /* color primario de marca — naranja Kairos */
+  --brand-foreground: #ffffff; /* texto sobre el primario */
+  --brand-accent: #e15700; /* acento/secundario de marca */
   /* ==================================================================== */
 
   --background: oklch(1 0 0);
