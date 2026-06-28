@@ -62,6 +62,14 @@ export default async function LocaleLayout({
       lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      {/* Satoshi (fuente de marca). Vía <link> porque el bundler CSS de Next
+          descarta el @import de Fontshare por el '@' de la URL. React 19 lo eleva al <head>. */}
+      <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
+      <link
+        rel="stylesheet"
+        href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap"
+        precedence="high"
+      />
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
