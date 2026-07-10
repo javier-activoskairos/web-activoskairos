@@ -64,7 +64,11 @@ export default async function LocaleLayout({
     >
       {/* Satoshi (fuente de marca). Vía <link> porque el bundler CSS de Next
           descarta el @import de Fontshare por el '@' de la URL. React 19 lo eleva al <head>. */}
-      <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
+      <link
+        rel="preconnect"
+        href="https://api.fontshare.com"
+        crossOrigin="anonymous"
+      />
       <link
         rel="stylesheet"
         href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap"
