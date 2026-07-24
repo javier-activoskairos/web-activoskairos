@@ -224,7 +224,12 @@ export function Footer() {
         </div>
         <div style={{ paddingTop: "var(--space-5)", borderTop: "1px solid var(--border-on-dark)", display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", fontSize: "var(--text-xs)", color: "var(--text-on-dark-faint)" }}>
           <span>© 2026 Activos Kairos. Todos los derechos reservados.</span>
-          <span style={{ display: "flex", gap: 18 }}><a href="#" style={{ color: "inherit", textDecoration: "none" }}>Privacidad</a><a href="#" style={{ color: "inherit", textDecoration: "none" }}>Aviso legal</a></span>
+          <span style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
+            <a href="/aviso-legal" style={{ color: "inherit", textDecoration: "none" }}>Aviso legal</a>
+            <a href="/politica-privacidad" style={{ color: "inherit", textDecoration: "none" }}>Privacidad</a>
+            <a href="/politica-cookies" style={{ color: "inherit", textDecoration: "none" }}>Cookies</a>
+            <a href="/terminos-condiciones" style={{ color: "inherit", textDecoration: "none" }}>Términos</a>
+          </span>
         </div>
       </Container>
     </footer>

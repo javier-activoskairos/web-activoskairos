@@ -6,8 +6,17 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 // Rutas del sitio (sin prefijo de idioma). Añadir aquí cada página nueva.
 const paths = [""];
 
+// Páginas legales: contenido solo en español (jurisdicción). Se indexan una
+// sola vez, en el locale por defecto (sin prefijo), para evitar duplicados.
+const legalPaths = [
+  "aviso-legal",
+  "politica-privacidad",
+  "politica-cookies",
+  "terminos-condiciones",
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  return paths.flatMap((path) =>
+  const localized = paths.flatMap((path) =>
     routing.locales.map((locale) => {
       const prefix = locale === routing.defaultLocale ? "" : `/${locale}`;
       return {
@@ -16,4 +25,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       };
     }),
   );
+
+  const legal = legalPaths.map((path) => ({
+    url: `${siteUrl}/${path}`,
+    lastModified: new Date(),
+  }));
+
+  return [...localized, ...legal];
 }
