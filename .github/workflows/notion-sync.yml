@@ -1,7 +1,11 @@
-name: Notion Sync
+name: Deploy & Notion Sync
 
-# Sincroniza el estado del repo con el panel de control en Notion (Fábrica de Webs).
-# Se dispara en cada push a main y, manualmente, desde la pestaña Actions.
+# En cada push a main:
+#   1. Dispara el deploy en el VPS (EasyPanel deploy webhook).
+#   2. Comprueba que el sitio responde (health check).
+#   3. Sincroniza el estado a Notion (Fábrica de Webs): [AKS] - Webs (Entorno=VPS)
+#      + alta de despliegue en [AKS] - Despliegues con el resultado.
+# También ejecutable a mano desde la pestaña Actions.
 on:
   push:
     branches: [main]
@@ -9,17 +13,48 @@ on:
 
 # Evita ejecuciones solapadas para el mismo repo.
 concurrency:
-  group: notion-sync-${{ github.ref }}
+  group: deploy-sync-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  sync:
+  deploy-sync:
     runs-on: ubuntu-latest
+    env:
+      EASYPANEL_DEPLOY_URL: ${{ secrets.EASYPANEL_DEPLOY_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: Disparar deploy en el VPS (EasyPanel)
+        if: ${{ env.EASYPANEL_DEPLOY_URL != '' }}
+        run: |
+          echo "Disparando deploy en EasyPanel..."
+          code=$(curl -s -o /tmp/deploy.out -w "%{http_code}" -X POST \
+            -A "Mozilla/5.0 (GitHubActions) Chrome/126.0" \
+            -H "Content-Type: application/json" -d '{}' \
+            "$EASYPANEL_DEPLOY_URL")
+          echo "HTTP $code — $(cat /tmp/deploy.out)"
+          if [ "$code" != "200" ]; then
+            echo "El webhook de deploy no devolvió 200"; exit 1
+          fi
+
+      - name: Health check del sitio
+        id: health
+        env:
+          SITE_URL: "https://activoskairos.com"
+        run: |
+          echo "Esperando a que el sitio responda 200 en $SITE_URL ..."
+          result="FALLO"
+          for i in $(seq 1 24); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -A "Mozilla/5.0" "$SITE_URL" || echo "000")
+            echo "  intento $i → HTTP $code"
+            if [ "$code" = "200" ]; then result="OK"; break; fi
+            sleep 10
+          done
+          echo "result=$result" >> "$GITHUB_OUTPUT"
+          echo "Resultado health check: $result"
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -30,11 +65,13 @@ jobs:
         env:
           # Secrets en Settings → Secrets and variables → Actions.
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }} # integración "GitHub Actions Webs y Despliegues"
-          NOTION_WEBS_DB: ${{ secrets.NOTION_WEBS_DB }} # [AKE] - Webs/Repos
-          NOTION_DEPLOYS_DB: ${{ secrets.NOTION_DEPLOYS_DB }} # [AKE] - Despliegues
+          NOTION_WEBS_DB: ${{ secrets.NOTION_WEBS_DB }} # [AKS] - Webs/Repos
+          NOTION_DEPLOYS_DB: ${{ secrets.NOTION_DEPLOYS_DB }} # [AKS] - Despliegues
           REPO_NAME: ${{ github.event.repository.name }}
           REPO_URL: ${{ github.event.repository.html_url }}
           COMMIT_SHA: ${{ github.sha }}
           COMMIT_MSG: ${{ github.event.head_commit.message }}
           BRANCH: ${{ github.ref_name }}
+          DEPLOY_URL: "https://activoskairos.com"
+          DEPLOY_RESULT: ${{ steps.health.outputs.result }}
         run: node scripts/notion-sync.mjs

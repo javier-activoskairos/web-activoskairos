@@ -25,6 +25,7 @@ const {
   COMMIT_MSG,
   BRANCH,
   DEPLOY_URL,
+  DEPLOY_RESULT,
 } = process.env;
 
 if (!NOTION_TOKEN || !NOTION_WEBS_DB || !NOTION_DEPLOYS_DB) {
@@ -67,7 +68,7 @@ async function upsertWeb() {
     Nombre: { title: [{ text: { content: REPO_NAME ?? "Web" } }] },
     "Repo URL": { url: REPO_URL || null },
     Stack: { multi_select: STACK.map((name) => ({ name })) },
-    Entorno: { select: { name: "Render" } },
+    Entorno: { select: { name: "VPS" } },
     Estado: { status: { name: "En producción" } },
   };
 
@@ -102,7 +103,7 @@ async function createDeploy(webId) {
     "Rama / commit": {
       rich_text: [{ text: { content: `${BRANCH ?? ""} @ ${shortSha}`.trim() } }],
     },
-    Resultado: { select: { name: "OK" } },
+    Resultado: { select: { name: DEPLOY_RESULT === "FALLO" ? "FALLO" : "OK" } },
     Web: { relation: [{ id: webId }] },
   };
   if (DEPLOY_URL) properties["URL preview"] = { url: DEPLOY_URL };
