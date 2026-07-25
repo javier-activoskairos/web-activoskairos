@@ -175,7 +175,10 @@ form.addEventListener('submit',e=>{
   if(BOOKING_URL){
     const u=new URL(BOOKING_URL);
     u.searchParams.set('name',n);u.searchParams.set('email',m);
-    embed.innerHTML='<iframe src="'+u.toString()+'" title="Calendario de reservas" loading="lazy"></iframe>';
+    const link=u.toString();
+    // El calendario de Notion no permite iframe (CSP frame-ancestors solo Notion) → se abre en pestaña nueva.
+    embed.innerHTML='<div class="embed-ph"><p><strong>Ya casi está.</strong> Pulsa el botón para elegir día y hora. El calendario se abre en una pestaña nueva y recibirás la confirmación en tu correo.</p><a class="cta" style="display:inline-flex;justify-content:center;text-decoration:none;max-width:340px" href="'+link+'" target="_blank" rel="noopener">Elegir hora en el calendario</a></div>';
+    window.open(link,'_blank','noopener');
   }
   card.hidden=true;step.hidden=false;
 });
