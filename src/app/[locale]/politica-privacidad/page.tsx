@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const DOC = `
     <p class="eyebrow">Legal</p>
     <h1>Política de privacidad</h1>
-    <p class="doc-date">Última actualización: 24 de julio de 2026</p>
+    <p class="doc-date">Última actualización: 25 de julio de 2026</p>
     <p class="sec-intro" style="color:var(--pearl);font-size:15px;line-height:1.7;max-width:64ch;margin:0 0 4px">En Activos Kairos nos comprometemos a proteger la privacidad y la seguridad de los datos personales de los usuarios de nuestro sitio web activoskairos.com. Esta Política explica qué datos recopilamos, con qué finalidad y qué derechos te asisten, conforme al Reglamento (UE) 2016/679 (RGPD) y a la Ley Orgánica 3/2018 (LOPDGDD).</p>
     <section class="sec">
       <h2><span class="n">1 &ndash;</span> Responsable del tratamiento</h2>
@@ -57,7 +57,7 @@ const DOC = `
       <h2><span class="n">6 &ndash;</span> Destinatarios y encargados del tratamiento</h2>
       <p>No cedemos tus datos a terceros salvo obligación legal. Para prestar nuestros servicios nos apoyamos en proveedores que actúan como encargados del tratamiento:</p>
       <ul>
-        <li><strong>Alojamiento web:</strong> Render, Inc. (Estados Unidos).</li>
+        <li><strong>Alojamiento web:</strong> Hostinger International Ltd. (Chipre, Unión Europea).</li>
         <li><strong>Envío de comunicaciones y automatización:</strong> Google (Gmail) para el envío de correos y Make (Celonis SE) para la automatización de dichos envíos.</li>
         <li><strong>Gestión de contactos (CRM):</strong> Notion Labs, Inc.</li>
       </ul>
@@ -65,7 +65,7 @@ const DOC = `
     </section>
     <section class="sec">
       <h2><span class="n">7 &ndash;</span> Transferencias internacionales</h2>
-      <p>Algunos de nuestros proveedores (como Render, Google o Notion) están ubicados en Estados Unidos, por lo que el tratamiento de tus datos puede implicar una transferencia internacional fuera del Espacio Económico Europeo. En estos casos, dichas transferencias se amparan en las garantías previstas en el RGPD, principalmente las Cláusulas Contractuales Tipo aprobadas por la Comisión Europea y, cuando el proveedor esté adherido, el marco EU-US Data Privacy Framework.</p>
+      <p>El alojamiento web se presta desde la Unión Europea. No obstante, algunos de nuestros proveedores (como Google o Notion) están ubicados en Estados Unidos, por lo que el tratamiento de tus datos puede implicar una transferencia internacional fuera del Espacio Económico Europeo. En estos casos, dichas transferencias se amparan en las garantías previstas en el RGPD, principalmente las Cláusulas Contractuales Tipo aprobadas por la Comisión Europea y, cuando el proveedor esté adherido, el marco EU-US Data Privacy Framework.</p>
     </section>
     <section class="sec">
       <h2><span class="n">8 &ndash;</span> Tus derechos</h2>
