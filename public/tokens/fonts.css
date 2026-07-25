@@ -1,0 +1,10 @@
+/* ===========================================================================
+   Activos Kairos — Fonts (landing lead-magnet)
+   Satoshi (tipografía de marca) vía Fontshare CDN — misma fuente que el sitio
+   principal (ver src/app/[locale]/layout.tsx).
+   JetBrains Mono (labels técnicas) vía Google Fonts.
+   Servido como estático desde /public, así que el @import se resuelve en el
+   navegador (no lo procesa el bundler de Next).
+   =========================================================================== */
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');

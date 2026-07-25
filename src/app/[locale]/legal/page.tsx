@@ -46,7 +46,7 @@ const DOC = `
     </section>
     <section class="sec">
       <h2><span class="n">7 &ndash;</span> Protección de datos</h2>
-      <p>El tratamiento de los datos personales que el usuario facilite a través del Sitio Web se rige por la <a href="/politica-privacidad">Política de Privacidad</a> y la <a href="/politica-cookies">Política de Cookies</a> del Sitio Web, que forman parte integrante de este Aviso Legal.</p>
+      <p>El tratamiento de los datos personales que el usuario facilite a través del Sitio Web se rige por la <a href="/privacidad">Política de Privacidad</a> y la <a href="/cookies">Política de Cookies</a> del Sitio Web, que forman parte integrante de este Aviso Legal.</p>
     </section>
     <section class="sec">
       <h2><span class="n">8 &ndash;</span> Legislación aplicable y jurisdicción</h2>

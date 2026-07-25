@@ -1,17 +1,25 @@
-import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
-import { LegalLayout } from "@/components/legal/LegalLayout";
-
-export const metadata: Metadata = {
-  title: "Política de privacidad · Activos Kairos",
-  description:
-    "Política de privacidad de Activos Kairos: qué datos recopilamos, finalidad, base de legitimación, destinatarios, transferencias internacionales y tus derechos (RGPD y LOPDGDD).",
-};
-
-const DOC = `
+<!-- @dsCard group="00 - Webs" viewport="1520x900" name="Legal - Politica de privacidad" subtitle="Pagina legal · Activos Kairos" -->
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Política de privacidad · Activos Kairos</title>
+<meta name="theme-color" content="#080808" />
+<link rel="icon" type="image/png" href="../../assets/logo-mark.png" />
+<link rel="stylesheet" href="../../tokens/fonts.css" />
+<link rel="stylesheet" href="legal.css" />
+</head>
+<body>
+<main class="shell">
+  <div class="topbar">
+    <a class="brand" href="index.html"><img class="mark" src="../../assets/logo-mark.png" alt="" /> Activos Kairos</a>
+    <a class="back-top" href="index.html">&larr; Volver al inicio</a>
+  </div>
+  <div class="doc">
     <p class="eyebrow">Legal</p>
     <h1>Política de privacidad</h1>
-    <p class="doc-date">Última actualización: 25 de julio de 2026</p>
+    <p class="doc-date">Última actualización: 24 de julio de 2026</p>
     <p class="sec-intro" style="color:var(--pearl);font-size:15px;line-height:1.7;max-width:64ch;margin:0 0 4px">En Activos Kairos nos comprometemos a proteger la privacidad y la seguridad de los datos personales de los usuarios de nuestro sitio web activoskairos.com. Esta Política explica qué datos recopilamos, con qué finalidad y qué derechos te asisten, conforme al Reglamento (UE) 2016/679 (RGPD) y a la Ley Orgánica 3/2018 (LOPDGDD).</p>
     <section class="sec">
       <h2><span class="n">1 &ndash;</span> Responsable del tratamiento</h2>
@@ -29,7 +37,7 @@ const DOC = `
         <li><strong>Formulario de contacto:</strong> nombre, correo electrónico y cualquier dato que incluyas en el mensaje.</li>
         <li><strong>Newsletter / comunicaciones comerciales:</strong> nombre y correo electrónico.</li>
         <li><strong>Registro de usuarios:</strong> nombre, correo electrónico, credenciales de acceso y datos asociados a tu cuenta.</li>
-        <li><strong>Datos de navegación:</strong> dirección IP y datos recogidos mediante cookies (ver la <a href="/politica-cookies">Política de Cookies</a> del Sitio Web).</li>
+        <li><strong>Datos de navegación:</strong> dirección IP y datos recogidos mediante cookies (ver la <a href="politica-cookies.html">Política de Cookies</a> del Sitio Web).</li>
       </ul>
     </section>
     <section class="sec">
@@ -57,7 +65,7 @@ const DOC = `
       <h2><span class="n">6 &ndash;</span> Destinatarios y encargados del tratamiento</h2>
       <p>No cedemos tus datos a terceros salvo obligación legal. Para prestar nuestros servicios nos apoyamos en proveedores que actúan como encargados del tratamiento:</p>
       <ul>
-        <li><strong>Alojamiento web:</strong> Hostinger International Ltd. (Chipre, Unión Europea).</li>
+        <li><strong>Alojamiento web:</strong> Render, Inc. (Estados Unidos).</li>
         <li><strong>Envío de comunicaciones y automatización:</strong> Google (Gmail) para el envío de correos y Make (Celonis SE) para la automatización de dichos envíos.</li>
         <li><strong>Gestión de contactos (CRM):</strong> Notion Labs, Inc.</li>
       </ul>
@@ -65,7 +73,7 @@ const DOC = `
     </section>
     <section class="sec">
       <h2><span class="n">7 &ndash;</span> Transferencias internacionales</h2>
-      <p>El alojamiento web se presta desde la Unión Europea. No obstante, algunos de nuestros proveedores (como Google o Notion) están ubicados en Estados Unidos, por lo que el tratamiento de tus datos puede implicar una transferencia internacional fuera del Espacio Económico Europeo. En estos casos, dichas transferencias se amparan en las garantías previstas en el RGPD, principalmente las Cláusulas Contractuales Tipo aprobadas por la Comisión Europea y, cuando el proveedor esté adherido, el marco EU-US Data Privacy Framework.</p>
+      <p>Algunos de nuestros proveedores (como Render, Google o Notion) están ubicados en Estados Unidos, por lo que el tratamiento de tus datos puede implicar una transferencia internacional fuera del Espacio Económico Europeo. En estos casos, dichas transferencias se amparan en las garantías previstas en el RGPD, principalmente las Cláusulas Contractuales Tipo aprobadas por la Comisión Europea y, cuando el proveedor esté adherido, el marco EU-US Data Privacy Framework.</p>
     </section>
     <section class="sec">
       <h2><span class="n">8 &ndash;</span> Tus derechos</h2>
@@ -83,19 +91,20 @@ const DOC = `
       <h2><span class="n">11 &ndash;</span> Cambios en esta Política</h2>
       <p>Podemos actualizar esta Política de Privacidad para adaptarla a novedades legislativas o cambios en nuestra actividad. Te informaremos de los cambios significativos a través del Sitio Web.</p>
     </section>
-    <a class="back" href="/">← Volver al inicio</a>
-`;
-
-export default async function PoliticaPrivacidadPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-  return (
-    <LegalLayout>
-      <div dangerouslySetInnerHTML={{ __html: DOC }} />
-    </LegalLayout>
-  );
-}
+    <a class="back" href="index.html">&larr; Volver al inicio</a>
+  </div>
+  <div class="site-footer">
+    <div class="sf-top"><img class="sf-logo" src="../../assets/logo-wordmark-light.png" alt="Activos Kairos" height="24" /></div>
+    <div class="sf-bottom">
+      <span class="sf-copy">&copy; 2026 Activos Kairos &middot; Todos los derechos reservados</span>
+      <nav class="sf-legal">
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="politica-privacidad.html">Pol&iacute;tica de privacidad</a>
+        <a href="politica-cookies.html">Pol&iacute;tica de cookies</a>
+        <a href="terminos-condiciones.html">T&eacute;rminos y condiciones</a>
+      </nav>
+    </div>
+  </div>
+</main>
+</body>
+</html>
