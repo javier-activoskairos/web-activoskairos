@@ -4,7 +4,11 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import "../globals.css";
+
+// ID de medición de GA4. Se define en NEXT_PUBLIC_GA_ID (no se deja a fuego).
+const gaId = process.env.NEXT_PUBLIC_GA_ID ?? "";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -71,6 +75,7 @@ export default async function LocaleLayout({
         precedence="high"
       />
       <body className="flex min-h-full flex-col">
+        <GoogleAnalytics gaId={gaId} />
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
