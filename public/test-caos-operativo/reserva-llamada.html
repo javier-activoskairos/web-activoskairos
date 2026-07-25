@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Reserva tu llamada gratuita · Activos Kairos</title>
 <meta name="theme-color" content="#141312" />
-<link rel="icon" type="image/png" href="../../assets/logo-mark.png" />
-<link rel="stylesheet" href="../../tokens/fonts.css" />
+<link rel="icon" type="image/png" href="/assets/logo-mark.png" />
+<link rel="stylesheet" href="/tokens/fonts.css" />
 <style>
 :root{--ink-900:#141312;--ink-800:#1B1B1B;--ink-700:#242220;--ink-600:#322E2A;--orange:#F96302;--orange-lt:#F9962E;--t-strong:#F5EDE6;--t-body:#E4D9CE;--t-muted:#A89C90;--t-faint:#7C7065;--line:rgba(245,237,230,.10);--line-strong:rgba(245,237,230,.18);--ease:cubic-bezier(.22,1,.36,1)}
 *{box-sizing:border-box}
@@ -81,7 +81,7 @@ input[type=text]:focus,input[type=email]:focus{outline:none;border-color:var(--o
 <body>
 <div class="stage">
   <div class="inner">
-    <div class="logo"><img src="../../assets/logo-mark.png" alt="Activos Kairos" /></div>
+    <div class="logo"><img src="/assets/logo-mark.png" alt="Activos Kairos" /></div>
     <p class="eyebrow"><i></i>Para negocios que quieren dejar de perder tiempo en la operativa</p>
     <h1>Recupera el tiempo que tu operación <em>pierde cada día</em></h1>
     <p class="lead">Reserva una llamada gratuita y descubre cómo centralizar y automatizar tu negocio para que funcione sin depender de ti.</p>
@@ -104,8 +104,9 @@ input[type=text]:focus,input[type=email]:focus{outline:none;border-color:var(--o
         </div>
         <label class="check" for="fprivacy">
           <input type="checkbox" id="fprivacy" required="required" />
-          <span>He leído y acepto la <a href="politica-privacidad.html">política de privacidad</a>.</span>
+          <span>He leído y acepto la <a href="/privacidad">política de privacidad</a>.</span>
         </label>
+        <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>No rellenar</label><input id="hp" type="text" tabindex="-1" autocomplete="off" /></div>
         <button class="cta" type="submit">Reservar mi llamada</button>
         <p class="err" id="formErr" role="alert"></p>
       </form>
@@ -145,9 +146,9 @@ input[type=text]:focus,input[type=email]:focus{outline:none;border-color:var(--o
     </div>
   </section>
   <div class="foot">
-    <p class="privacy">Sin compromiso. Tus datos se tratan según nuestra <a href="politica-privacidad.html">política de privacidad</a>.</p>
+    <p class="privacy">Sin compromiso. Tus datos se tratan según nuestra <a href="/privacidad">política de privacidad</a>.</p>
     <div class="sig">
-      <img src="../../assets/logo-wordmark-light.png" alt="Activos Kairos" />
+      <img src="/assets/logo-wordmark-light.png" alt="Activos Kairos" />
       <span>Vive el proceso</span>
     </div>
   </div>
@@ -155,6 +156,13 @@ input[type=text]:focus,input[type=email]:focus{outline:none;border-color:var(--o
 <script>
 /* Pega aquí tu enlace de reserva (Calendly / Cal.com). Vacío = placeholder. */
 const BOOKING_URL = 'https://calendar.notion.so/meet/javierkairos/protos-javier';
+// --- Alta de contacto en CRM (n8n webhook → [AK] - Contactos). No bloquea la reserva. ---
+const CRM_WEBHOOK='https://n8n.activoskairos.com/webhook/web-lead-akairos';
+const CRM_KEY='f728c0bcac58c255e4efa089c950f5c0f832c7fe';
+function sendReservaToCRM(nombre,email){
+  const payload={origen:'Reserva de llamada (Web Agenda)',nombre:nombre,email:email,detalle:'Reserva de llamada desde web',hp:(document.getElementById('hp')||{}).value||''};
+  try{fetch(CRM_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json','x-ak-web-key':CRM_KEY},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});}catch(e){/* silencioso */}
+}
 const form=document.getElementById('bookForm'),card=document.getElementById('formCard'),step=document.getElementById('bookingStep'),embed=document.getElementById('embed'),err=document.getElementById('formErr');
 form.addEventListener('submit',e=>{
   e.preventDefault();
@@ -163,6 +171,7 @@ form.addEventListener('submit',e=>{
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(m)){err.textContent='Revisa tu correo electrónico.';return}
   if(!p){err.textContent='Necesitamos que aceptes la política de privacidad.';return}
   err.textContent='';
+  sendReservaToCRM(n,m);
   if(BOOKING_URL){
     const u=new URL(BOOKING_URL);
     u.searchParams.set('name',n);u.searchParams.set('email',m);

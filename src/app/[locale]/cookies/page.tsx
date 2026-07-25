@@ -45,7 +45,7 @@ const DOC = `
     </section>
     <section class="sec">
       <h2><span class="n">5 &ndash;</span> Más información</h2>
-      <p>Para más información sobre el tratamiento de tus datos, consulta la <a href="/politica-privacidad">Política de Privacidad</a> del Sitio Web. Si tienes dudas sobre esta Política de Cookies, escríbenos a <a href="mailto:privacidad@activoskairos.com">privacidad@activoskairos.com</a>.</p>
+      <p>Para más información sobre el tratamiento de tus datos, consulta la <a href="/privacidad">Política de Privacidad</a> del Sitio Web. Si tienes dudas sobre esta Política de Cookies, escríbenos a <a href="mailto:privacidad@activoskairos.com">privacidad@activoskairos.com</a>.</p>
     </section>
     <section class="sec">
       <h2><span class="n">6 &ndash;</span> Cambios en esta Política</h2>

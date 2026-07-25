@@ -21,10 +21,10 @@ export function LegalLayout({ children }) {
           <div className="sf-bottom">
             <span className="sf-copy">© 2026 Activos Kairos · Todos los derechos reservados</span>
             <nav className="sf-legal">
-              <a href="/aviso-legal">Aviso legal</a>
-              <a href="/politica-privacidad">Política de privacidad</a>
-              <a href="/politica-cookies">Política de cookies</a>
-              <a href="/terminos-condiciones">Términos y condiciones</a>
+              <a href="/legal">Aviso legal</a>
+              <a href="/privacidad">Política de privacidad</a>
+              <a href="/cookies">Política de cookies</a>
+              <a href="/tyc">Términos y condiciones</a>
             </nav>
           </div>
         </div>

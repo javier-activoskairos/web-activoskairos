@@ -29,7 +29,7 @@ const DOC = `
         <li><strong>Formulario de contacto:</strong> nombre, correo electrónico y cualquier dato que incluyas en el mensaje.</li>
         <li><strong>Newsletter / comunicaciones comerciales:</strong> nombre y correo electrónico.</li>
         <li><strong>Registro de usuarios:</strong> nombre, correo electrónico, credenciales de acceso y datos asociados a tu cuenta.</li>
-        <li><strong>Datos de navegación:</strong> dirección IP y datos recogidos mediante cookies (ver la <a href="/politica-cookies">Política de Cookies</a> del Sitio Web).</li>
+        <li><strong>Datos de navegación:</strong> dirección IP y datos recogidos mediante cookies (ver la <a href="/cookies">Política de Cookies</a> del Sitio Web).</li>
       </ul>
     </section>
     <section class="sec">

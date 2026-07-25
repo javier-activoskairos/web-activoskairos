@@ -9,10 +9,10 @@ const paths = [""];
 // Páginas legales: contenido solo en español (jurisdicción). Se indexan una
 // sola vez, en el locale por defecto (sin prefijo), para evitar duplicados.
 const legalPaths = [
-  "aviso-legal",
-  "politica-privacidad",
-  "politica-cookies",
-  "terminos-condiciones",
+  "legal",
+  "privacidad",
+  "cookies",
+  "tyc",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -7,13 +7,13 @@
   <title>Test del Caos Operativo · Activos Kairos</title>
   <meta name="description" content="Descubre en 5 minutos qué está frenando tu operación, cuánto te está costando y qué Activo Kairos deberías construir ahora." />
   <meta name="theme-color" content="#080808" />
-  <link rel="icon" type="image/png" href="../../assets/logo-mark.png" />
+  <link rel="icon" type="image/png" href="/assets/logo-mark.png" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Test del Caos Operativo · Activos Kairos" />
   <meta property="og:description" content="Descubre qué está frenando tu operación, cuánto puede estar costándote y qué activo digital deberías construir ahora." />
   <meta property="og:image" content="https://activoskairos.com/assets/logo-mark.png" />
   <meta name="twitter:card" content="summary" />
-  <link rel="stylesheet" href="../../tokens/fonts.css" />
+  <link rel="stylesheet" href="/tokens/fonts.css" />
   <style>
     :root{
       --void:#000000;--canvas:#080808;--interface:#111112;--surface:#1c1c1e;--data:#2c2c2e;
@@ -247,14 +247,14 @@
   <main class="shell">
     <header class="topbar">
       <a class="brand" href="https://activoskairos.com" target="_blank" rel="noopener">
-        <img class="mark" src="../../assets/logo-mark.png" alt="" width="30" height="30" loading="eager">
+        <img class="mark" src="/assets/logo-mark.png" alt="" width="30" height="30" loading="eager">
         Activos Kairos
       </a>
       <div class="version">Test del Caos Operativo</div>
     </header>
     <section class="landing" id="landing">
       <div class="landing-brand">
-        <img class="mark" src="../../assets/logo-mark.png" alt="" width="34" height="34" loading="eager">
+        <img class="mark" src="/assets/logo-mark.png" alt="" width="34" height="34" loading="eager">
         <span>Activos Kairos</span>
       </div>
       <div class="landing-hero">
@@ -292,6 +292,7 @@
               <div class="field"><label>Teléfono <span class="opt">(opcional)</span></label><input id="phone" type="tel" placeholder="+34 600 000 000" autocomplete="tel"></div>
               <div class="field"><label>Web <span class="opt">(opcional)</span></label><input id="website" type="url" placeholder="https://empresa.com" autocomplete="url"></div>
             </div>
+            <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>No rellenar</label><input id="hp" type="text" tabindex="-1" autocomplete="off"></div>
             <div class="lead-error" id="leadError" role="alert" hidden></div>
             <div class="lead-submit"><button class="btn primary" id="submitBtn">Ver mi diagnóstico</button></div>
           </div>
@@ -311,19 +312,19 @@
         </div>
       </section>
     </section>
-    <div class="loader" id="loader" hidden aria-live="polite"><div class="loader-inner"><img src="../../assets/logo-mark.png" alt="Activos Kairos" /><span>Analizando tus respuestas…</span></div></div>
+    <div class="loader" id="loader" hidden aria-live="polite"><div class="loader-inner"><img src="/assets/logo-mark.png" alt="Activos Kairos" /><span>Analizando tus respuestas…</span></div></div>
     <footer class="nav" id="nav" hidden><button class="btn" id="backBtn">← Atrás</button></footer>
     <div class="site-footer">
       <div class="sf-top">
-        <img class="sf-logo" src="../../assets/logo-wordmark-light.png" alt="Activos Kairos" height="24">
+        <img class="sf-logo" src="/assets/logo-wordmark-light.png" alt="Activos Kairos" height="24">
       </div>
       <div class="sf-bottom">
         <span class="sf-copy">© 2026 Activos Kairos · Todos los derechos reservados</span>
         <nav class="sf-legal">
-          <a href="aviso-legal.html">Aviso legal</a>
-          <a href="politica-privacidad.html">Política de privacidad</a>
-          <a href="politica-cookies.html">Política de cookies</a>
-          <a href="terminos-condiciones.html">Términos y condiciones</a>
+          <a href="/legal">Aviso legal</a>
+          <a href="/privacidad">Política de privacidad</a>
+          <a href="/cookies">Política de cookies</a>
+          <a href="/tyc">Términos y condiciones</a>
         </nav>
       </div>
     </div>
@@ -353,6 +354,28 @@ const flat=[];
 [[0,1,2,3]].forEach((grp,sec)=>grp.forEach(si=>steps[si].items.forEach(it=>flat.push({item:it,sec}))));
 let pos=-1, advTimer=null;
 const $=id=>document.getElementById(id), hero=$('hero'), lead=$('leadScreen'), result=$('resultScreen'), nav=$('nav');
+// --- Alta de contacto en CRM (n8n webhook → [AK] - Contactos). No bloquea la UI. ---
+const CRM_WEBHOOK='https://n8n.activoskairos.com/webhook/web-lead-akairos';
+const CRM_KEY='f728c0bcac58c255e4efa089c950f5c0f832c7fe';
+let crmSent=false;
+function sendLeadToCRM(){
+  if(crmSent)return; crmSent=true;
+  const idx=stageIndex();
+  const payload={
+    origen:'Test de Caos Operativo',
+    nombre:$('name').value.trim(),
+    email:$('email').value.trim(),
+    telefono:$('phone').value.trim(),
+    cargo:$('role').value.trim(),
+    empresa:$('company').value.trim(),
+    web:$('website').value.trim(),
+    detalle:'Estadio '+(idx+1)+': '+ESTADIOS[idx][0],
+    hp:$('hp')?$('hp').value:''
+  };
+  try{
+    fetch(CRM_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json','x-ak-web-key':CRM_KEY},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});
+  }catch(e){/* silencioso: nunca romper la experiencia del usuario */}
+}
 const reduceMotion=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function setPanels(activeSec){
   document.querySelectorAll('.panel').forEach((p,i)=>{
@@ -478,8 +501,14 @@ function validateLead(showErrors){
 }
 ['name','company','role','email'].forEach(id=>$(id).addEventListener('input',()=>validateLead(!$('leadError').hidden)));
 $('submitBtn').onclick=()=>{if(validateLead(true))showResult();};
-$('ctaBtn').addEventListener('click',()=>{window.location.href='reserva-llamada.html';});
-$('dlBtn').addEventListener('click',()=>{showToast('Te enviamos tu diagnóstico completo al correo que nos has dejado.');});
+$('ctaBtn').addEventListener('click',()=>{window.location.href='/reserva';});
+$('dlBtn').addEventListener('click',()=>{
+  const url=PDF_URLS[stageIndex()]||PDF_PLACEHOLDER;
+  const a=document.createElement('a');
+  a.href=url;a.download='';a.rel='noopener';
+  document.body.appendChild(a);a.click();a.remove();
+  showToast('Descargando tu diagnóstico…');
+});
 $('restartBtn').addEventListener('click',()=>{window.location.reload();});
 const ESTADIOS=[
   ['Empresa Dependiente','Todavía no es una empresa: eres tú. El negocio se sostiene sobre tu memoria y tus horas, y nada avanza del todo sin que estés encima. Tu reto ahora es sacarlo de tu cabeza a un sistema con rumbo.'],
@@ -488,9 +517,25 @@ const ESTADIOS=[
   ['Empresa Manual','Los procesos existen y se siguen, pero se ejecutan a mano. Tu reto ahora es meter automatización e IA dentro de esos procesos.'],
   ['Empresa Activo','Tu operación es transferible, medible y mejora con el uso. Estás en la excepción: tu reto es sostenerlo y escalarlo.']
 ];
-function stageIndex(){return 0;} // TODO: mapeo por respuestas (pendiente de definir)
+// Diagnóstico en PDF por estadio (1->5). PLACEHOLDER: apunta a un PDF genérico.
+// TODO: sustituir por las 5 URLs reales de Supabase (una por nivel).
+const PDF_PLACEHOLDER='/test-caos-operativo/diagnostico-placeholder.pdf';
+const PDF_URLS=[PDF_PLACEHOLDER,PDF_PLACEHOLDER,PDF_PLACEHOLDER,PDF_PLACEHOLDER,PDF_PLACEHOLDER];
+// Puntuación por puertas (LM01): 4 puertas de 2 preguntas; media >=3.5 supera.
+// Se recorren en orden y te quedas en la PRIMERA puerta que no superas.
+// Regla de oro: lo avanzado no compensa un fundamento roto (si q1-q2 falla,
+// da igual que q7-q8 sea alto: el dolor urgente es el peldaño más bajo suspendido).
+const PUERTAS=[['q1','q2'],['q3','q4'],['q5','q6'],['q7','q8']];
+function stageIndex(){
+  for(let i=0;i<PUERTAS.length;i++){
+    const a=Number(answers[PUERTAS[i][0]])||0, b=Number(answers[PUERTAS[i][1]])||0;
+    if((a+b)/2 < 3.5) return i; // Estadio i+1: primera puerta no superada
+  }
+  return 4; // supera las 4 puertas -> Estadio 5 (Empresa Activo)
+}
 function showResult(){
   const idx=stageIndex(),est=ESTADIOS[idx];
+  sendLeadToCRM();
   lead.hidden=true;nav.hidden=true;
   const ldr=$('loader');ldr.hidden=false;
   window.scrollTo({top:0,behavior:'auto'});

@@ -18,7 +18,7 @@ const DOC = `
     </section>
     <section class="sec">
       <h2><span class="n">2 &ndash;</span> Aceptación</h2>
-      <p>El acceso y la navegación por el Sitio Web atribuyen la condición de usuario e implican la aceptación plena de estas Condiciones, del <a href="/aviso-legal">Aviso Legal</a> y de la <a href="/politica-privacidad">Política de Privacidad</a> del Sitio Web. Si no estás de acuerdo con ellas, te rogamos que no utilices el Sitio Web.</p>
+      <p>El acceso y la navegación por el Sitio Web atribuyen la condición de usuario e implican la aceptación plena de estas Condiciones, del <a href="/legal">Aviso Legal</a> y de la <a href="/privacidad">Política de Privacidad</a> del Sitio Web. Si no estás de acuerdo con ellas, te rogamos que no utilices el Sitio Web.</p>
     </section>
     <section class="sec">
       <h2><span class="n">3 &ndash;</span> Condiciones de acceso y uso</h2>
@@ -26,7 +26,7 @@ const DOC = `
     </section>
     <section class="sec">
       <h2><span class="n">4 &ndash;</span> Formularios y captación de datos</h2>
-      <p>Los formularios del Sitio Web permiten a las personas interesadas solicitar información o suscribirse a nuestras comunicaciones. El usuario garantiza la veracidad de los datos facilitados y es responsable de su exactitud. El tratamiento de dichos datos se rige por la <a href="/politica-privacidad">Política de Privacidad</a> del Sitio Web.</p>
+      <p>Los formularios del Sitio Web permiten a las personas interesadas solicitar información o suscribirse a nuestras comunicaciones. El usuario garantiza la veracidad de los datos facilitados y es responsable de su exactitud. El tratamiento de dichos datos se rige por la <a href="/privacidad">Política de Privacidad</a> del Sitio Web.</p>
     </section>
     <section class="sec">
       <h2><span class="n">5 &ndash;</span> Propiedad intelectual e industrial</h2>
