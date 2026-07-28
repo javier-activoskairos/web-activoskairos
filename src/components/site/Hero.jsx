@@ -1,6 +1,8 @@
 "use client";
 // Hero — "Vive el proceso". Fondo dark tech + dashboard Notion en perspectiva.
 import React from "react";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Button } from "./ds";
 import { Reveal } from "./primitives";
 import { ArrowRight } from "./icons";
@@ -9,6 +11,7 @@ import { HeroDashboard } from "./HeroDashboard";
 const KAIROS_INK_HERO = "#0D0D0D";
 
 export function Hero() {
+  const t = useTranslations("Hero");
   const reduce = typeof window !== "undefined" && window.matchMedia
     && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -33,22 +36,24 @@ export function Hero() {
       <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 980, marginInline: "auto", padding: "0 var(--space-6)", textAlign: "center" }}>
         <Reveal delay={80} as="h1" style={{
           fontFamily: "Satoshi", fontWeight: 500, textTransform: "lowercase",
-          fontSize: "80px", lineHeight: 0.98, letterSpacing: "0.005em", color: "rgb(255, 255, 255)", margin: 0,
+          // Fluido: a 80px fijos el titular desbordaba en móviles estrechos.
+          fontSize: "clamp(2.75rem, 9vw, 80px)", lineHeight: 0.98, letterSpacing: "0.005em",
+          color: "rgb(255, 255, 255)", margin: 0, textWrap: "balance",
         }}>
-          vive el proceso
+          {t("title")}
         </Reveal>
 
         <Reveal delay={160} as="p" style={{
           fontSize: "clamp(1.05rem, 2vw, 1.4rem)", lineHeight: "var(--leading-snug)",
           color: "var(--text-on-dark-body)", fontWeight: 400, margin: "1.6rem auto 0", maxWidth: "52ch", textWrap: "balance",
         }}>
-          Puedes tener tus datos en cualquier lugar,<br /> o puedes tenerlos en{" "}
+          {t("subtitleA")}<br /> {t("subtitleB")}{" "}
           <span style={{ color: "#F96302", fontWeight: 600 }}>Notion</span>
         </Reveal>
 
         <Reveal delay={240} style={{ display: "flex", gap: "var(--space-3)", marginTop: "var(--space-6)", justifyContent: "center", flexWrap: "wrap" }}>
           <a href="#contacto" style={{ textDecoration: "none" }}>
-            <Button variant="primary" size="lg" iconRight={<ArrowRight size={18} />}>Vive el proceso</Button>
+            <Button variant="primary" size="lg" iconRight={<ArrowRight size={18} />}>{t("ctaPrimary")}</Button>
           </a>
           <a href="#casos" className="kairos-hero-ghost" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "0.55rem",
@@ -58,7 +63,7 @@ export function Hero() {
             letterSpacing: "-0.005em", textDecoration: "none",
             transition: "background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out)",
           }}>
-            Ver casos de éxito
+            {t("ctaSecondary")}
           </a>
         </Reveal>
 
@@ -67,7 +72,8 @@ export function Hero() {
           flexWrap: "wrap", marginTop: "var(--space-6)",
           fontFamily: "var(--font-mono)", fontSize: 12.5, letterSpacing: "0.02em", color: "var(--text-on-dark-faint)",
         }}>
-          <img src="/assets/notion-certified-consultant.png" alt="Notion Certified Consultant"
+          <Image src="/assets/notion-certified-consultant.png" alt={t("notionBadgeAlt")}
+            width={162} height={50}
             style={{ height: 50, width: "auto", display: "block", opacity: 0.92 }} />
         </Reveal>
       </div>

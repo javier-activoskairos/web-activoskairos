@@ -3,6 +3,8 @@ import { setRequestLocale } from "next-intl/server";
 import { LegalLayout } from "@/components/legal/LegalLayout";
 
 export const metadata: Metadata = {
+  // Contenido sólo en español: todos los locales canonizan a la ruta sin prefijo.
+  alternates: { canonical: "/tyc" },
   title: "Términos y condiciones · Activos Kairos",
   description:
     "Términos y Condiciones de Uso del sitio web de Activos Kairos (Activarte LLC): objeto, aceptación, uso, propiedad intelectual, responsabilidad y legislación aplicable.",

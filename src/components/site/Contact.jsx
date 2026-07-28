@@ -1,9 +1,11 @@
 "use client";
 // Contact CTA + form + footer.
 import React from "react";
-import { Eyebrow, Button, Logo } from "./ds";
+import { useTranslations } from "next-intl";
+import { Eyebrow, Logo } from "./ds";
 import { Container, Section, Reveal } from "./primitives";
 import { ArrowRight, Mail, Check, Shield, Clock } from "./icons";
+import { CONTACT_EMAIL, LINKEDIN_URL } from "@/lib/site";
 
 function contactReduced() {
   return typeof window !== "undefined" && window.matchMedia
@@ -33,8 +35,10 @@ function useContactMobile(bp = 820) {
 }
 
 export function Contact() {
-  const [sent, setSent] = React.useState(false);
-  const [fields, setFields] = React.useState({ name: "", email: "", goal: "" });
+  const t = useTranslations("Contact");
+  // "idle" | "sending" | "sent" | "error"
+  const [status, setStatus] = React.useState("idle");
+  const [fields, setFields] = React.useState({ name: "", email: "", goal: "", hp: "" });
   const reduce = contactReduced();
   const isMobile = useContactMobile();
   const cardRef = React.useRef(null);
@@ -42,8 +46,31 @@ export function Contact() {
 
   const validName = fields.name.trim().length >= 2;
   const validEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(fields.email.trim());
-  const ready = validName && validEmail;
+  const ready = validName && validEmail && status !== "sending";
   const set = (k) => (e) => setFields((f) => ({ ...f, [k]: e.target.value }));
+
+  // Antes esto sólo hacía `setSent(true)`: el usuario veía "¡Recibido!" y el
+  // lead no salía a ninguna parte. Ahora va al CRM vía /api/lead.
+  async function onSubmit(e) {
+    e.preventDefault();
+    if (!ready) return;
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: fields.name.trim(),
+          email: fields.email.trim(),
+          detalle: fields.goal.trim(),
+          hp: fields.hp,
+        }),
+      });
+      setStatus(res.ok ? "sent" : "error");
+    } catch {
+      setStatus("error");
+    }
+  }
 
   return (
     <Section tone="light" id="contacto" style={{ paddingBottom: "var(--space-9)" }}>
@@ -59,22 +86,22 @@ export function Contact() {
 
           <div style={{ position: "relative", zIndex: 2, display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: "var(--space-8)", alignItems: "center" }} className="kairos-contact-grid">
             <div>
-              <Reveal><Eyebrow tone="on-dark" tick={false}>Hablemos</Eyebrow></Reveal>
+              <Reveal><Eyebrow tone="on-dark" tick={false}>{t("eyebrow")}</Eyebrow></Reveal>
               <Reveal delay={60} as="h2" style={{
                 fontFamily: "var(--font-display)", fontWeight: "var(--weight-bold)",
                 fontSize: "var(--text-h2)", lineHeight: "var(--leading-heading)",
                 letterSpacing: "var(--tracking-tight)", color: "var(--text-on-dark-strong)", margin: "1rem 0 0", textWrap: "balance",
               }}>
-                Cuéntanos tu caos. Te mostramos el <span style={{ color: "#F96302" }}>activo</span>.
+                {t("titleA")} <span style={{ color: "#F96302" }}>{t("titleHighlight")}</span>.
               </Reveal>
               <Reveal delay={120} as="p" style={{ fontSize: "var(--text-lead)", color: "var(--text-on-dark-muted)", margin: "1.1rem 0 0", lineHeight: "var(--leading-normal)", maxWidth: "46ch" }}>
-                Una llamada de 30 minutos que funciona como tu primer diagnóstico. Salgas o no con nosotros, saldrás con claridad sobre qué sistema necesitas.
+                {t("lead")}
               </Reveal>
               <Reveal delay={170} as="p" style={{ fontSize: "var(--text-sm)", color: "var(--text-on-dark-body)", margin: "1rem 0 0", lineHeight: "var(--leading-normal)", maxWidth: "44ch" }}>
-                Hablas directamente con el equipo que diseña tu activo, no con un comercial.
+                {t("lead2")}
               </Reveal>
               <Reveal delay={220} style={{ display: "flex", gap: "clamp(14px, 2vw, 22px)", marginTop: "var(--space-6)", flexWrap: "wrap" }}>
-                {[[<Shield key="s" size={16} />, "Tus datos son tuyos"], [<Clock key="c" size={16} />, "Respuesta en 24 h"], [<Check key="k" size={16} />, "Partner de Notion"]].map(([ic, label], i) => (
+                {[[<Shield key="s" size={16} />, t("badge1")], [<Clock key="c" size={16} />, t("badge2")], [<Check key="k" size={16} />, t("badge3")]].map(([ic, label], i) => (
                   <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "var(--text-on-dark-body)", fontSize: "var(--text-sm)", fontWeight: 500 }}>
                     <span style={{ color: "#F96302", display: "inline-flex" }}>{ic}</span>{label}
                   </span>
@@ -83,19 +110,35 @@ export function Contact() {
             </div>
 
             <Reveal delay={140}>
-              {sent ? (
-                <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid var(--border-on-dark)", borderRadius: "var(--radius-xl)", padding: "var(--space-7)", textAlign: "center" }}>
+              {status === "sent" ? (
+                <div role="status" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid var(--border-on-dark)", borderRadius: "var(--radius-xl)", padding: "var(--space-7)", textAlign: "center" }}>
                   <span style={{ width: 56, height: 56, borderRadius: "50%", background: "var(--accent-gradient)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}><Check size={28} /></span>
-                  <h3 style={{ fontFamily: "var(--font-display)", color: "var(--text-on-dark-strong)", fontSize: "var(--text-h4)", margin: "0 0 8px" }}>¡Recibido!</h3>
-                  <p style={{ color: "var(--text-on-dark-muted)", margin: 0, fontSize: "var(--text-sm)" }}>Te escribimos en menos de 24 horas.</p>
+                  <h3 style={{ fontFamily: "var(--font-display)", color: "var(--text-on-dark-strong)", fontSize: "var(--text-h4)", margin: "0 0 8px" }}>{t("sentTitle")}</h3>
+                  <p style={{ color: "var(--text-on-dark-muted)", margin: 0, fontSize: "var(--text-sm)" }}>{t("sentBody")}</p>
                 </div>
               ) : (
-                <form onSubmit={(e) => { e.preventDefault(); if (ready) setSent(true); }} style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border-on-dark)", borderRadius: "var(--radius-xl)", padding: "var(--space-6)" }}>
-                  <ContactField label="Nombre" placeholder="Tu nombre" value={fields.name} onChange={set("name")} valid={validName} reduce={reduce} />
-                  <ContactField label="Correo de trabajo" type="email" placeholder="nombre@empresa.com" value={fields.email} onChange={set("email")} valid={validEmail} icon={<Mail size={16} />} reduce={reduce} />
-                  <ContactField label="¿Qué quieres ordenar?" placeholder="Ej. ventas, operaciones, proyectos…" value={fields.goal} onChange={set("goal")} valid={fields.goal.trim().length > 1} optional reduce={reduce} />
-                  <button type="submit" className="kairos-contact-submit" data-ready={ready ? "true" : "false"} style={{
-                    marginTop: 4, height: 56, borderRadius: "var(--radius-md)", border: "none", cursor: "pointer",
+                <form onSubmit={onSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border-on-dark)", borderRadius: "var(--radius-xl)", padding: "var(--space-6)" }}>
+                  <ContactField label={t("labelName")} placeholder={t("phName")} value={fields.name} onChange={set("name")} valid={validName} reduce={reduce} autoComplete="name" />
+                  <ContactField label={t("labelEmail")} type="email" placeholder={t("phEmail")} value={fields.email} onChange={set("email")} valid={validEmail} icon={<Mail size={16} />} reduce={reduce} autoComplete="email" />
+                  <ContactField label={t("labelGoal")} placeholder={t("phGoal")} value={fields.goal} onChange={set("goal")} valid={fields.goal.trim().length > 1} optionalLabel={t("optional")} reduce={reduce} />
+
+                  {/* Honeypot: invisible para personas, tentador para bots. */}
+                  <input
+                    type="text" name="company_website" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                    value={fields.hp} onChange={set("hp")}
+                    style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+                  />
+
+                  {status === "error" && (
+                    <p role="alert" style={{ margin: 0, fontSize: "var(--text-sm)", lineHeight: "var(--leading-normal)", color: "#ffb4a2" }}>
+                      <strong style={{ display: "block", color: "#fff" }}>{t("errorTitle")}</strong>
+                      {t("errorBody", { email: CONTACT_EMAIL })}
+                    </p>
+                  )}
+
+                  <button type="submit" disabled={!ready} className="kairos-contact-submit" data-ready={ready ? "true" : "false"} style={{
+                    marginTop: 4, height: 56, borderRadius: "var(--radius-md)", border: "none",
+                    cursor: ready ? "pointer" : "not-allowed",
                     display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "0.55rem",
                     fontFamily: "var(--font-sans)", fontSize: "1.0625rem", fontWeight: "var(--weight-semibold)", color: "#fff",
                     background: "var(--accent-gradient, linear-gradient(135deg,#F96302,#F9962E))",
@@ -103,7 +146,7 @@ export function Contact() {
                     boxShadow: ready ? "0 0 0 1px rgba(249,99,2,0.5), 0 16px 36px -14px rgba(249,99,2,0.7)" : "none",
                     transition: reduce ? "none" : "opacity 240ms ease, box-shadow 280ms ease, transform 200ms ease",
                   }}>
-                    Agenda una llamada <ArrowRight size={18} />
+                    {status === "sending" ? t("sending") : <React.Fragment>{t("submit")} <ArrowRight size={18} /></React.Fragment>}
                   </button>
                 </form>
               )}
@@ -115,13 +158,13 @@ export function Contact() {
   );
 }
 
-function ContactField({ label, type = "text", placeholder, value, onChange, valid, icon, optional, reduce }) {
+function ContactField({ label, type = "text", placeholder, value, onChange, valid, icon, optionalLabel, reduce, autoComplete }) {
   const [focus, setFocus] = React.useState(false);
   const show = valid && value.trim().length > 0;
   return (
     <label style={{ display: "block" }}>
       <span style={{ display: "block", fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--text-on-dark-body)", marginBottom: 7 }}>
-        {label}{optional && <span style={{ color: "var(--text-on-dark-faint)", fontWeight: 400 }}> · opcional</span>}
+        {label}{optionalLabel && <span style={{ color: "var(--text-on-dark-faint)", fontWeight: 400 }}> · {optionalLabel}</span>}
       </span>
       <span style={{
         position: "relative", display: "flex", alignItems: "center",
@@ -132,7 +175,7 @@ function ContactField({ label, type = "text", placeholder, value, onChange, vali
       }}>
         {icon && <span style={{ display: "inline-flex", color: focus ? "#F96302" : "var(--text-on-dark-faint)", paddingLeft: 14, transition: "color 200ms ease" }}>{icon}</span>}
         <input
-          type={type} placeholder={placeholder} value={value} onChange={onChange}
+          type={type} placeholder={placeholder} value={value} onChange={onChange} autoComplete={autoComplete}
           onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
           style={{
             flex: 1, minWidth: 0, background: "transparent", border: "none", outline: "none",
@@ -193,42 +236,69 @@ function ContactShards({ inView, reduce }) {
 }
 
 export function Footer() {
+  const t = useTranslations("Footer");
+  // String, no number: como número ICU lo formatearía con separador de miles
+  // ("2.026" en es).
+  const year = String(new Date().getFullYear());
+
+  // Todos los enlaces apuntan a algo real. Antes las tres columnas eran
+  // `href="#"` y la de contacto mostraba un correo inexistente.
   const cols = [
-    ["Empresa", ["Metodología", "Activos", "Casos de éxito", "Sobre Kairos"]],
-    ["Recursos", ["Notion", "Automatización", "IA aplicada", "Blog"]],
-    ["Contacto", ["hola@kairos.com", "LinkedIn", "Agenda una llamada"]],
+    [t("colCompany"), [
+      { label: t("linkMethodology"), href: "#metodologia" },
+      { label: t("linkAssets"), href: "#activos" },
+      { label: t("linkCases"), href: "#casos" },
+    ]],
+    [t("colResources"), [
+      { label: t("linkTest"), href: "/test-caos-operativo" },
+      { label: t("linkBookCall"), href: "/reserva" },
+    ]],
+    [t("colContact"), [
+      { label: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
+      { label: t("linkLinkedin"), href: LINKEDIN_URL, external: true },
+      { label: t("linkBookCall"), href: "#contacto" },
+    ]],
   ];
+
+  const legal = [
+    { label: t("legal"), href: "/legal" },
+    { label: t("privacy"), href: "/privacidad" },
+    { label: t("cookies"), href: "/cookies" },
+    { label: t("terms"), href: "/tyc" },
+  ];
+
   return (
     <footer style={{ background: "#0D0D0D", color: "var(--text-on-dark-muted)", paddingBlock: "var(--space-9)" }}>
       <Container>
         <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", gap: "var(--space-7)", paddingBottom: "var(--space-8)" }} className="kairos-footer-grid">
           <div>
-            <Logo variant="wordmark" theme="dark" height={26} basePath="/" />
+            <Logo variant="wordmark" theme="dark" height={26} />
             <p style={{ margin: "1rem 0 0", maxWidth: "34ch", fontSize: "var(--text-sm)", lineHeight: "var(--leading-normal)" }}>
-              Consultoría de IA que centraliza el caos empresarial en activos digitales sobre Notion.
+              {t("tagline")}
             </p>
-            <p style={{ margin: "1.2rem 0 0", fontFamily: "var(--font-display)", fontWeight: 700, color: "#F96302", letterSpacing: "-0.01em" }}>Vive el proceso.</p>
+            <p style={{ margin: "1.2rem 0 0", fontFamily: "var(--font-display)", fontWeight: 700, color: "#F96302", letterSpacing: "-0.01em" }}>{t("claim")}</p>
           </div>
           {cols.map(([title, links]) => (
             <div key={title}>
               <div style={{ fontSize: "var(--text-eyebrow)", textTransform: "uppercase", letterSpacing: "var(--tracking-eyebrow)", fontWeight: 700, color: "var(--text-on-dark-faint)", marginBottom: 14 }}>{title}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {links.map((l) => (
-                  <a key={l} href="#" style={{ color: "var(--text-on-dark-body)", textDecoration: "none", fontSize: "var(--text-sm)", transition: "color var(--dur-fast) var(--ease-out)" }}
+                  <a key={`${title}-${l.label}`} href={l.href}
+                    {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    style={{ color: "var(--text-on-dark-body)", textDecoration: "none", fontSize: "var(--text-sm)", transition: "color var(--dur-fast) var(--ease-out)" }}
                     onMouseEnter={(e) => e.currentTarget.style.color = "#F96302"}
-                    onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-on-dark-body)"}>{l}</a>
+                    onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-on-dark-body)"}>{l.label}</a>
                 ))}
               </div>
             </div>
           ))}
         </div>
         <div style={{ paddingTop: "var(--space-5)", borderTop: "1px solid var(--border-on-dark)", display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", fontSize: "var(--text-xs)", color: "var(--text-on-dark-faint)" }}>
-          <span>© 2026 Activos Kairos. Todos los derechos reservados.</span>
+          <span>{t("rights", { year })}</span>
           <span style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
-            <a href="/legal" style={{ color: "inherit", textDecoration: "none" }}>Aviso legal</a>
-            <a href="/privacidad" style={{ color: "inherit", textDecoration: "none" }}>Privacidad</a>
-            <a href="/cookies" style={{ color: "inherit", textDecoration: "none" }}>Cookies</a>
-            <a href="/tyc" style={{ color: "inherit", textDecoration: "none" }}>Términos</a>
+            {legal.map((l) => (
+              <a key={l.href} href={l.href} style={{ color: "inherit", textDecoration: "none" }}>{l.label}</a>
+            ))}
           </span>
         </div>
       </Container>

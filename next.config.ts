@@ -11,21 +11,94 @@ const LEGAL_REDIRECTS = [
   ["terminos-condiciones", "tyc"],
 ];
 
-const nextConfig: NextConfig = {
-  // Imágenes remotas permitidas por proyecto (añadir dominios del cliente).
-  images: {
-    remotePatterns: [],
+// Content-Security-Policy.
+// `unsafe-inline` es inevitable hoy: el sitio usa atributos `style=` por todas
+// partes y Next inyecta su bootstrap inline sin nonce. Aun así, el resto de
+// directivas sí aporta (clickjacking, inyección de <base>, exfiltración por
+// formulario, plugins).
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  "style-src 'self' 'unsafe-inline' https://api.fontshare.com",
+  "font-src 'self' data: https://api.fontshare.com",
+  "img-src 'self' data: blob:",
+  "connect-src 'self' https://n8n.activoskairos.com",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
+const SECURITY_HEADERS = [
+  { key: "Content-Security-Policy", value: CSP },
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
   },
-  async redirects() {
-    return LEGAL_REDIRECTS.flatMap(([oldSlug, newSlug]) => [
-      { source: `/${oldSlug}`, destination: `/${newSlug}`, permanent: true },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=()",
+  },
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+];
+
+const nextConfig: NextConfig = {
+  // No anunciar el framework ni su versión.
+  poweredByHeader: false,
+
+  images: {
+    // Imágenes remotas permitidas por proyecto (añadir dominios del cliente).
+    remotePatterns: [],
+    formats: ["image/avif", "image/webp"],
+  },
+
+  async headers() {
+    return [
+      { source: "/:path*", headers: SECURITY_HEADERS },
+      // Los originales de /assets se sirven tal cual (sin hash en el nombre),
+      // así que se cachean un día en el navegador y una semana en el CDN.
       {
-        source: `/:locale(en|fr|it|pt)/${oldSlug}`,
-        destination: `/:locale/${newSlug}`,
+        source: "/assets/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value:
+              "public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400",
+          },
+        ],
+      },
+    ];
+  },
+
+  async redirects() {
+    return [
+      // www -> apex. Sin esto ambos hosts responden 200 y Google ve contenido
+      // duplicado.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.activoskairos.com" }],
+        destination: "https://activoskairos.com/:path*",
         permanent: true,
       },
-    ]);
+      ...LEGAL_REDIRECTS.flatMap(([oldSlug, newSlug]) => [
+        { source: `/${oldSlug}`, destination: `/${newSlug}`, permanent: true },
+        {
+          source: `/:locale(en|it|pt)/${oldSlug}`,
+          destination: `/:locale/${newSlug}`,
+          permanent: true,
+        },
+      ]),
+      // El locale `fr` se retiró (nunca tuvo contenido traducido). Lo que
+      // quedase indexado cae al equivalente en español.
+      { source: "/fr", destination: "/", permanent: true },
+      { source: "/fr/:path*", destination: "/:path*", permanent: true },
+    ];
   },
+
   async rewrites() {
     // Landings estáticas del funnel (public/) servidas con URL limpia sin .html.
     return [

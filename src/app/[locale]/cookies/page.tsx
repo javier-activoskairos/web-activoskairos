@@ -3,6 +3,8 @@ import { setRequestLocale } from "next-intl/server";
 import { LegalLayout } from "@/components/legal/LegalLayout";
 
 export const metadata: Metadata = {
+  // Contenido sólo en español: todos los locales canonizan a la ruta sin prefijo.
+  alternates: { canonical: "/cookies" },
   title: "Política de cookies · Activos Kairos",
   description:
     "Política de cookies de Activos Kairos: qué son, tipos utilizados, cookies previstas a futuro y cómo gestionar o revocar tu consentimiento.",

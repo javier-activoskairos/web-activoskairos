@@ -1,19 +1,24 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
-const LABELS: Record<string, string> = {
+const SHORT: Record<string, string> = {
   es: "ES",
   en: "EN",
-  fr: "FR",
   it: "IT",
   pt: "PT",
 };
 
-export function LocaleSwitcher() {
+/**
+ * Selector de idioma. Estilado con `style` en vez de clases de Tailwind para
+ * encajar con el resto del sitio (que va todo con estilos en línea) y para
+ * poder invertir el color sobre el hero oscuro.
+ */
+export function LocaleSwitcher({ onDark = false }: { onDark?: boolean }) {
+  const t = useTranslations("Nav");
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
@@ -28,15 +33,31 @@ export function LocaleSwitcher() {
 
   return (
     <select
-      aria-label="Language"
+      aria-label={t("language")}
       value={locale}
       onChange={onChange}
       disabled={isPending}
-      className="bg-background rounded-md border px-2 py-1 text-sm"
+      style={{
+        appearance: "none",
+        cursor: "pointer",
+        background: "transparent",
+        color: onDark ? "var(--text-on-dark-body)" : "var(--text-body)",
+        border: `1px solid ${onDark ? "var(--border-on-dark)" : "var(--border-strong)"}`,
+        borderRadius: "var(--radius-sm)",
+        padding: "0.35rem 0.55rem",
+        fontFamily: "var(--font-sans)",
+        fontSize: "var(--text-sm)",
+        fontWeight: "var(--weight-semibold)",
+        lineHeight: 1,
+        opacity: isPending ? 0.6 : 1,
+        transition: "color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out)",
+      }}
     >
       {routing.locales.map((loc) => (
-        <option key={loc} value={loc}>
-          {LABELS[loc] ?? loc.toUpperCase()}
+        // El `color` explícito evita texto blanco sobre blanco en el desplegable
+        // nativo cuando el <select> hereda el color claro del hero.
+        <option key={loc} value={loc} style={{ color: "#1A1714" }}>
+          {SHORT[loc] ?? loc.toUpperCase()}
         </option>
       ))}
     </select>
