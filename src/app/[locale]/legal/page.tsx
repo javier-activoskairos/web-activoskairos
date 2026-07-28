@@ -3,6 +3,8 @@ import { setRequestLocale } from "next-intl/server";
 import { LegalLayout } from "@/components/legal/LegalLayout";
 
 export const metadata: Metadata = {
+  // Contenido sólo en español: todos los locales canonizan a la ruta sin prefijo.
+  alternates: { canonical: "/legal" },
   title: "Aviso legal · Activos Kairos",
   description:
     "Aviso legal de Activos Kairos (Activarte LLC): datos identificativos del titular, condiciones de uso, propiedad intelectual y legislación aplicable.",

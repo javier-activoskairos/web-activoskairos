@@ -355,8 +355,8 @@ const flat=[];
 let pos=-1, advTimer=null;
 const $=id=>document.getElementById(id), hero=$('hero'), lead=$('leadScreen'), result=$('resultScreen'), nav=$('nav');
 // --- Alta de contacto en CRM (n8n webhook → [AK] - Contactos). No bloquea la UI. ---
-const CRM_WEBHOOK='https://n8n.activoskairos.com/webhook/web-lead-akairos';
-const CRM_KEY='f728c0bcac58c255e4efa089c950f5c0f832c7fe';
+// La clave del webhook ya no viaja al navegador: la guarda /api/lead en el servidor.
+const CRM_ENDPOINT='/api/lead';
 let crmSent=false;
 function sendLeadToCRM(){
   if(crmSent)return; crmSent=true;
@@ -373,7 +373,7 @@ function sendLeadToCRM(){
     hp:$('hp')?$('hp').value:''
   };
   try{
-    fetch(CRM_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json','x-ak-web-key':CRM_KEY},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});
+    fetch(CRM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});
   }catch(e){/* silencioso: nunca romper la experiencia del usuario */}
 }
 const reduceMotion=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;

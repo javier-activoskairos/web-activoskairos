@@ -5,6 +5,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import { siteUrl } from "@/lib/site";
 import "../globals.css";
 
 // ID de medición de GA4. Override por NEXT_PUBLIC_GA_ID; fallback al ID de
@@ -21,12 +22,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Base URL del sitio (para canonical / Open Graph). Definir por proyecto.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+const pathFor = (locale: string) =>
+  locale === routing.defaultLocale ? "/" : `/${locale}`;
 
 export async function generateMetadata({
   params,
@@ -36,16 +37,40 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
+  // Cada idioma declara su canonical y sus alternativas. Antes no se emitía
+  // ningún canonical, así que www/apex y los 4 locales competían entre sí.
+  const languages = Object.fromEntries(
+    routing.locales.map((loc) => [loc, pathFor(loc)]),
+  );
+
   return {
     metadataBase: new URL(siteUrl),
     title: t("title"),
     description: t("description"),
+    alternates: {
+      canonical: pathFor(locale),
+      languages: { ...languages, "x-default": pathFor(routing.defaultLocale) },
+    },
     openGraph: {
+      type: "website",
+      siteName: "Activos Kairos",
+      url: pathFor(locale),
       title: t("title"),
       description: t("description"),
       locale,
-      type: "website",
+      // La imagen la genera `app/opengraph-image.tsx`, pero hay que referenciarla
+      // a mano: al declarar `openGraph` en generateMetadata, Next no inyecta la
+      // del fichero de convención.
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: t("ogAlt") }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("description"),
+      images: [{ url: "/opengraph-image", alt: t("ogAlt") }],
+    },
+    // Los iconos los inyecta Next desde los ficheros de convención
+    // (`app/icon.png`, `app/apple-icon.png`, `app/favicon.ico`).
   };
 }
 
@@ -75,6 +100,7 @@ export default async function LocaleLayout({
         href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap"
         precedence="high"
       />
+      <meta name="theme-color" content="#0D0D0D" />
       <body className="flex min-h-full flex-col">
         <GoogleAnalytics gaId={gaId} />
         <NextIntlClientProvider>{children}</NextIntlClientProvider>

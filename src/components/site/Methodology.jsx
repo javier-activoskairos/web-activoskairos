@@ -1,6 +1,7 @@
 "use client";
 // Dark problem statement + light 4-step methodology.
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Eyebrow } from "./ds";
 import { Container, Section, Reveal } from "./primitives";
 import {
@@ -9,6 +10,7 @@ import {
 } from "./icons";
 
 export function Problem() {
+  const t = useTranslations("Problem");
   const reduce = methReduced();
   const wrapRef = React.useRef(null);
   const inView = useMethInView(wrapRef, 0.2);
@@ -16,11 +18,11 @@ export function Problem() {
   const [active, setActive] = React.useState(null);
 
   const voices = [
-    { q: "Ese dato… ¿dónde estaba?", dx: "Información dispersa", rot: -4, size: "lg", pos: { left: "2%", top: "4%" }, float: 5.5 },
-    { q: "Eso solo lo sabe Irene.", dx: "El conocimiento vive en la cabeza de una persona", rot: 3, size: "md", pos: { left: "54%", top: "0%" }, float: 6.5 },
-    { q: "Otra vez rehaciendo el mismo informe.", dx: "Trabajo manual repetido", rot: -2, size: "md", pos: { left: "20%", top: "40%" }, float: 5 },
-    { q: "Lo tenemos en cinco sitios distintos.", dx: "Sin una única fuente de verdad", rot: 5, size: "lg", pos: { left: "62%", top: "46%" }, float: 7 },
-    { q: "Compramos esa herramienta y no la usa nadie.", dx: "Herramientas que no encajan", rot: -3, size: "sm", pos: { left: "6%", top: "74%" }, float: 6 },
+    { q: t("v1q"), dx: t("v1dx"), rot: -4, size: "lg", pos: { left: "2%", top: "4%" }, float: 5.5 },
+    { q: t("v2q"), dx: t("v2dx"), rot: 3, size: "md", pos: { left: "54%", top: "0%" }, float: 6.5 },
+    { q: t("v3q"), dx: t("v3dx"), rot: -2, size: "md", pos: { left: "20%", top: "40%" }, float: 5 },
+    { q: t("v4q"), dx: t("v4dx"), rot: 5, size: "lg", pos: { left: "62%", top: "46%" }, float: 7 },
+    { q: t("v5q"), dx: t("v5dx"), rot: -3, size: "sm", pos: { left: "6%", top: "74%" }, float: 6 },
   ];
 
   return (
@@ -34,14 +36,14 @@ export function Problem() {
       }} />
       <Container style={{ position: "relative" }}>
         <div style={{ maxWidth: 880 }}>
-          <Reveal><Eyebrow tone="on-dark" tick={false} style={{ color: "var(--accent)" }}>El problema</Eyebrow></Reveal>
+          <Reveal><Eyebrow tone="on-dark" tick={false} style={{ color: "var(--accent)" }}>{t("eyebrow")}</Eyebrow></Reveal>
           <Reveal delay={60} as="h2" style={{
             fontFamily: "var(--font-display)", fontWeight: "var(--weight-bold)",
             fontSize: "var(--text-h2)", lineHeight: "var(--leading-heading)",
             letterSpacing: "var(--tracking-tight)", color: "var(--text-on-dark-strong)",
             margin: "1rem 0 0", textWrap: "balance",
           }}>
-            Trabajas más que nunca, y aun así, <span style={{ color: "#F96302" }}>todo depende de ti</span>.
+            {t("titleA")} <span style={{ color: "#F96302" }}>{t("titleHighlight")}</span>.
           </Reveal>
         </div>
 
@@ -67,9 +69,9 @@ export function Problem() {
 
         <Reveal delay={120} style={{ marginTop: isMobile ? "var(--space-6)" : "var(--space-4)", textAlign: "center", maxWidth: 720, marginInline: "auto" }}>
           <p style={{ margin: 0, fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "clamp(1.25rem, 2.4vw, 1.75rem)", lineHeight: "var(--leading-snug)", color: "var(--text-on-dark-strong)", textWrap: "balance" }}>
-            Si te suena, no es falta de esfuerzo.<br /><span style={{ color: "#F96302" }}>Es falta de un sistema.</span>
+            {t("closingA")}<br /><span style={{ color: "#F96302" }}>{t("closingB")}</span>
           </p>
-          <a href="#metodologia" aria-label="Ver la solución" className="kairos-mirror-arrow" style={{
+          <a href="#metodologia" aria-label={t("seeSolution")} className="kairos-mirror-arrow" style={{
             display: "inline-flex", marginTop: "var(--space-5)", color: "#F96302",
             animation: reduce ? "none" : "kairosScrollHint 2.2s ease-in-out infinite",
           }}>
@@ -177,26 +179,27 @@ function useMethMobile(bp = 760) {
 }
 
 export function Methodology() {
+  const t = useTranslations("Methodology");
   const steps = [
-    { icon: <Compass size={20} />, n: "01", t: "Diagnóstico", d: "Mapeamos cómo trabajáis hoy y dónde se escapa el tiempo. Sin reuniones de relleno." },
-    { icon: <Layers size={20} />, n: "02", t: "Diseño del activo", d: "Definimos la estructura de tu ERP, CRM o sistema de gestión sobre Notion." },
-    { icon: <Workflow size={20} />, n: "03", t: "Automatización e IA", d: "Conectamos herramientas y añadimos IA donde de verdad ahorra trabajo." },
-    { icon: <Gauge size={20} />, n: "04", t: "Adopción y mejora", d: "Formamos al equipo y afinamos el sistema hasta que se use solo." },
+    { icon: <Compass size={20} />, n: "01", t: t("s1t"), d: t("s1d") },
+    { icon: <Layers size={20} />, n: "02", t: t("s2t"), d: t("s2d") },
+    { icon: <Workflow size={20} />, n: "03", t: t("s3t"), d: t("s3d") },
+    { icon: <Gauge size={20} />, n: "04", t: t("s4t"), d: t("s4d") },
   ];
   return (
     <Section tone="light" id="metodologia">
       <Container>
         <div style={{ maxWidth: 760, marginBottom: "var(--space-8)" }}>
-          <Reveal><Eyebrow tick={false}>Metodología</Eyebrow></Reveal>
+          <Reveal><Eyebrow tick={false}>{t("eyebrow")}</Eyebrow></Reveal>
           <Reveal delay={60} as="h2" style={{
             fontFamily: "var(--font-display)", fontWeight: "var(--weight-bold)",
             fontSize: "var(--text-h2)", lineHeight: "var(--leading-heading)",
             letterSpacing: "var(--tracking-tight)", color: "rgb(0, 0, 0)", margin: "1rem 0 0", textWrap: "balance",
           }}>
-            Cuatro pasos. Un activo que es tuyo.
+            {t("title")}
           </Reveal>
           <Reveal delay={120} as="p" style={{ fontSize: "var(--text-lead)", color: "var(--text-muted)", margin: "1rem 0 0", lineHeight: "var(--leading-normal)", maxWidth: "54ch" }}>
-            Nada de cajas negras: cada decisión queda documentada dentro de tu propio Notion.
+            {t("lead")}
           </Reveal>
         </div>
         <AssetBuilder steps={steps} />
@@ -296,6 +299,7 @@ function useMethCountUp(target, run, reduce, dur = 1100) {
 }
 
 function BuildCanvas({ active, reduce }) {
+  const m = useTranslations("Methodology");
   const t = reduce ? "none" : "opacity 460ms cubic-bezier(.22,.61,.36,1), transform 460ms cubic-bezier(.22,.61,.36,1)";
   const built = active >= 1;
   const auto = active >= 2;
@@ -304,20 +308,21 @@ function BuildCanvas({ active, reduce }) {
   const fade = (show, y = 10) => ({ opacity: show ? 1 : 0, transform: show ? "none" : `translateY(${y}px) scale(0.99)`, transition: t });
   const hours = useMethCountUp(12, live, reduce);
 
+  const ACTIVE = m("statusActive");
   const colW = ["1.4fr", "0.9fr", "1fr", "0.7fr"];
-  const cols = ["Cliente", "Estado", "Responsable", "Valor"];
+  const cols = [m("colClient"), m("colStatus"), m("colOwner"), m("colValue")];
   const rows = [
-    ["Acme S.L.", "Activo", "Marta", "12.4k"],
-    ["Nordia", "En curso", "Luis", "8.1k"],
-    ["Vela Group", "Activo", "Ana", "21.0k"],
+    ["Acme S.L.", ACTIVE, "Marta", "12.4k"],
+    ["Nordia", m("statusInProgress"), "Luis", "8.1k"],
+    ["Vela Group", ACTIVE, "Ana", "21.0k"],
   ];
   const baseH = [40, 64, 52, 80, 58];
   const growH = [60, 82, 70, 98, 88];
   const tools = [
-    { label: "Email", icon: <Mail size={13} />, x: 5, y: 8 },
-    { label: "WhatsApp", icon: <MessageCircle size={13} />, x: 95, y: 10 },
-    { label: "Make", icon: <Workflow size={13} />, x: 5, y: 92 },
-    { label: "Calendario", icon: <Calendar size={13} />, x: 95, y: 90 },
+    { label: m("toolEmail"), icon: <Mail size={13} />, x: 5, y: 8 },
+    { label: m("toolWhatsapp"), icon: <MessageCircle size={13} />, x: 95, y: 10 },
+    { label: m("toolMake"), icon: <Workflow size={13} />, x: 5, y: 92 },
+    { label: m("toolCalendar"), icon: <Calendar size={13} />, x: 95, y: 90 },
   ];
   const team = [
     { i: "J", c: "#F96302" }, { i: "F", c: "#5B8DEF" }, { i: "A", c: "#4f9d63" },
@@ -338,7 +343,7 @@ function BuildCanvas({ active, reduce }) {
         <span style={{ display: "flex", gap: 5 }}>
           {["#E5786A", "#F8B058", "#7FB98B"].map((c) => <span key={c} style={{ width: 9, height: 9, borderRadius: "50%", background: c }} />)}
         </span>
-        <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15, color: "var(--text-strong)", marginLeft: 4 }}>Mi Operación</span>
+        <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15, color: "var(--text-strong)", marginLeft: 4 }}>{m("canvasTitle")}</span>
         <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--text-faint)" }}>· Notion</span>
         <span style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
           {live ? (
@@ -370,8 +375,8 @@ function BuildCanvas({ active, reduce }) {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {[
-                { Ic: Database, cap: "datos sueltos" },
-                { Ic: Users, cap: "sin responsable" },
+                { Ic: Database, cap: m("looseData") },
+                { Ic: Users, cap: m("noOwner") },
               ].map((b, i) => (
                 <div key={i} style={{ flex: 1, border: "1.5px dashed var(--border-strong, rgba(26,23,20,0.18))", borderRadius: 12, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8 }}>
                   <b.Ic size={34} stroke={1.4} style={{ color: "var(--border-strong, rgba(26,23,20,0.22))" }} />
@@ -381,9 +386,9 @@ function BuildCanvas({ active, reduce }) {
             </div>
           </div>
           {[
-            { txt: "reunión", Ic: Calendar, top: "4%", left: "6%", rot: -7 },
-            { txt: "excel suelto", Ic: Table, top: "60%", left: "14%", rot: 5 },
-            { txt: "emails", Ic: Mail, top: "30%", left: "70%", rot: 8 },
+            { txt: m("noteMeeting"), Ic: Calendar, top: "4%", left: "6%", rot: -7 },
+            { txt: m("noteExcel"), Ic: Table, top: "60%", left: "14%", rot: 5 },
+            { txt: m("noteEmails"), Ic: Mail, top: "30%", left: "70%", rot: 8 },
           ].map((nNote) => (
             <span key={nNote.txt} style={{
               position: "absolute", top: nNote.top, left: nNote.left, transform: `rotate(${nNote.rot}deg)`,
@@ -400,7 +405,7 @@ function BuildCanvas({ active, reduce }) {
             <div style={{ border: "1px solid var(--border-subtle, rgba(26,23,20,0.1))", borderRadius: 12, padding: 12, display: "flex", flexDirection: "column", gap: 9, background: "var(--cream-050, #FBF7F2)", minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
                 <span style={{ width: 8, height: 8, borderRadius: 2, background: "#F96302" }} />
-                <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 12, color: "var(--text-strong)" }}>Clientes · Base de datos</span>
+                <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 12, color: "var(--text-strong)" }}>{m("canvasDbTitle")}</span>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: colW.join(" "), gap: 8 }}>
                 {cols.map((c) => <span key={c} style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, letterSpacing: "0.04em", textTransform: "uppercase", color: "var(--text-faint)", fontWeight: 600 }}>{c}</span>)}
@@ -413,7 +418,7 @@ function BuildCanvas({ active, reduce }) {
                   transition: reduce ? "none" : `opacity 420ms ease ${120 + ri * 90}ms, transform 420ms ease ${120 + ri * 90}ms`,
                 }}>
                   <span style={{ fontSize: 11, fontWeight: 600, color: "var(--text-strong)" }}>{r[0]}</span>
-                  <span style={{ justifySelf: "start", fontSize: 9.5, fontWeight: 600, padding: "2px 7px", borderRadius: 999, background: r[1] === "Activo" ? "rgba(127,185,139,0.2)" : "var(--accent-soft, rgba(249,99,2,0.12))", color: r[1] === "Activo" ? "#3f7a4d" : "#c24a00" }}>{r[1]}</span>
+                  <span style={{ justifySelf: "start", fontSize: 9.5, fontWeight: 600, padding: "2px 7px", borderRadius: 999, background: r[1] === ACTIVE ? "rgba(127,185,139,0.2)" : "var(--accent-soft, rgba(249,99,2,0.12))", color: r[1] === ACTIVE ? "#3f7a4d" : "#c24a00" }}>{r[1]}</span>
                   <span style={{ fontSize: 11, color: "var(--text-muted)" }}>{r[2]}</span>
                   <span style={{ fontSize: 11, fontWeight: 600, color: "var(--text-strong)" }}>{r[3]}</span>
                 </div>
@@ -425,8 +430,8 @@ function BuildCanvas({ active, reduce }) {
                   animation: reduce ? "none" : "kairosFlash 1.6s ease-out 220ms 1",
                 }}>
                   <span style={{ fontSize: 11, fontWeight: 600, color: "var(--text-strong)" }}>Zyper</span>
-                  <span style={{ justifySelf: "start", fontSize: 9.5, fontWeight: 600, padding: "2px 7px", borderRadius: 999, background: "rgba(127,185,139,0.2)", color: "#3f7a4d" }}>Activo</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, justifySelf: "start", fontSize: 8.5, fontWeight: 600, padding: "2px 6px", borderRadius: 999, background: "var(--accent-soft, rgba(249,99,2,0.12))", color: "#c24a00", whiteSpace: "nowrap" }}><Sparkles size={9} /> Añadido por IA</span>
+                  <span style={{ justifySelf: "start", fontSize: 9.5, fontWeight: 600, padding: "2px 7px", borderRadius: 999, background: "rgba(127,185,139,0.2)", color: "#3f7a4d" }}>{ACTIVE}</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, justifySelf: "start", fontSize: 8.5, fontWeight: 600, padding: "2px 6px", borderRadius: 999, background: "var(--accent-soft, rgba(249,99,2,0.12))", color: "#c24a00", whiteSpace: "nowrap" }}><Sparkles size={9} /> {m("addedByAi")}</span>
                   <span style={{ fontSize: 11, fontWeight: 600, color: "var(--text-strong)" }}>9.8k</span>
                 </div>
               )}
@@ -438,7 +443,7 @@ function BuildCanvas({ active, reduce }) {
                     fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 12.5,
                   }}>
                     <span style={{ width: 18, height: 18, borderRadius: "50%", background: "#4f9d63", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", animation: statusAnim }}><Check size={12} /></span>
-                    Funciona solo
+                    {m("worksAlone")}
                   </span>
                 </div>
               )}
@@ -446,7 +451,7 @@ function BuildCanvas({ active, reduce }) {
 
             <div style={{ display: "flex", flexDirection: "column", gap: 14, minWidth: 0 }}>
               <div style={{ flex: 1, border: "1px solid var(--border-subtle, rgba(26,23,20,0.1))", borderRadius: 12, padding: 12, background: "var(--cream-050, #FBF7F2)" }}>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-faint)", fontWeight: 600 }}>Pipeline</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-faint)", fontWeight: 600 }}>{m("pipeline")}</span>
                 <div style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 46, marginTop: 10 }}>
                   {baseH.map((h, i) => (
                     <span key={i} style={{
@@ -457,8 +462,8 @@ function BuildCanvas({ active, reduce }) {
                 </div>
               </div>
               <div style={{ flex: 1, border: "1px solid var(--border-subtle, rgba(26,23,20,0.1))", borderRadius: 12, padding: 12, background: "var(--cream-050, #FBF7F2)", display: "flex", flexDirection: "column", gap: 8 }}>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-faint)", fontWeight: 600 }}>Tareas</span>
-                {["Onboarding", "Cierre mensual"].map((tk) => (
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-faint)", fontWeight: 600 }}>{m("tasks")}</span>
+                {[m("task1"), m("task2")].map((tk) => (
                   <div key={tk} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ width: 14, height: 14, borderRadius: 4, border: "1.5px solid", borderColor: auto ? "#F96302" : "var(--border-strong, rgba(26,23,20,0.2))", background: auto ? "#F96302" : "transparent", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", transition: "all 300ms ease" }}>
                       {auto && <Check size={10} />}
@@ -475,10 +480,10 @@ function BuildCanvas({ active, reduce }) {
                   transition: reduce ? "none" : "opacity 420ms ease 120ms, transform 420ms ease 120ms",
                 }}>
                   <div>
-                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-faint)", fontWeight: 600 }}>Horas ahorradas</div>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-faint)", fontWeight: 600 }}>{m("hoursSaved")}</div>
                     <div style={{ display: "flex", alignItems: "baseline", gap: 3, marginTop: 3 }}>
                       <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 21, color: "#F96302", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>+{Math.round(hours)}</span>
-                      <span style={{ fontSize: 10.5, color: "var(--text-muted)", fontWeight: 600 }}>h/sem</span>
+                      <span style={{ fontSize: 10.5, color: "var(--text-muted)", fontWeight: 600 }}>{m("hoursUnit")}</span>
                     </div>
                   </div>
                   <svg width="54" height="24" viewBox="0 0 54 24" aria-hidden="true"><polyline points="0,20 13,16 27,17 40,8 54,3" fill="none" stroke="#F96302" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -492,7 +497,7 @@ function BuildCanvas({ active, reduce }) {
                   alignSelf: "flex-end", display: "inline-flex", alignItems: "center", gap: 5, padding: "4px 9px", borderRadius: 999,
                   background: "#F96302", color: "#fff", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 9.5, whiteSpace: "nowrap", marginBottom: 4,
                   boxShadow: "0 6px 16px -8px rgba(249,99,2,0.6)",
-                }}><Sparkles size={11} /> IA trabajando</span>
+                }}><Sparkles size={11} /> {m("aiWorking")}</span>
                 {tools.map((tl, i) => (
                   <div key={tl.label} style={{
                     display: "flex", alignItems: "center", gap: 3, minWidth: 0,

@@ -2,6 +2,8 @@
 // El ecosistema Kairos — "El hilo Kairos": recorrido interactivo de los 5
 // activos conectados por un hilo naranja continuo (guiño al logo).
 import React from "react";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Eyebrow, Button } from "./ds";
 import { Container, Section, Reveal } from "./primitives";
 import { ArrowRight } from "./icons";
@@ -34,44 +36,26 @@ function useSvcMobile(bp = 760) {
   return m;
 }
 
-// Orden narrativo: montar → construir → automatizar → dar ritmo → mantener vivo.
-const ECOSYSTEM = [
-  {
-    logo: "initia.png", name: "Initia",
-    title: "Lanzamiento de tu espacio en Notion",
-    d: "Montamos tu espacio base —bases de datos, equipos, vistas y permisos— y formamos a tu equipo para que lo use desde el día uno. Sin partir de una hoja en blanco.",
-    result: "Un espacio operativo y un equipo que sabe usarlo.",
-    step: "Montar tu espacio",
-  },
-  {
-    logo: "flux.png", name: "Flux",
-    title: "Lanzamiento de tu espacio en Notion",
-    d: "Implementamos tu espacio de trabajo (bases de datos, espacio de equipo, vistas y permisos) y formamos a tu equi",
-    result: "Una operación que ahorra tiempo y se sostiene sola.",
-    step: "Automatizar",
-  },
-  {
-    logo: "sophos.png", name: "Sophos",
-    title: "Activos a medida, documentados",
-    d: "Diseñamos y construimos los activos que tu operación necesita —a medida, documentados y con formación incluida— para que el conocimiento deje de vivir en cabezas.",
-    result: "Procesos que no dependen de una sola persona.",
-    step: "Construir tus activos",
-  },
-  {
-    logo: "tempo.png", name: "Tempo",
-    title: "Tu departamento de Operaciones e IT",
-    d: "Membresía mensual: cada mes sumamos nuevos activos, mejoramos tus sistemas y formamos a tu equipo en lo nuevo. Reportes semanales e incidencias incluidas.",
-    result: "Una operativa que no deja de mejorar, mes a mes.",
-    step: "Dar ritmo",
-  },
-  {
-    logo: "stasis.png", name: "Stasis",
-    title: "Soporte y mantenimiento continuo",
-    d: "Resolvemos errores e incidencias de forma ilimitada y mantenemos tus sistemas al día, con un equipo siempre formado en la última tecnología. Sin permanencia.",
-    result: "Estabilidad continua y respuesta en 24h laborables.",
-    step: "Mantener vivo",
-  },
+// Orden narrativo: montar → automatizar → construir → dar ritmo → mantener vivo.
+// El copy vive en `messages/*.json`; aquí sólo la clave y el logo.
+const ECOSYSTEM_KEYS = [
+  { key: "initia", logo: "initia.png", name: "Initia" },
+  { key: "flux", logo: "flux.png", name: "Flux" },
+  { key: "sophos", logo: "sophos.png", name: "Sophos" },
+  { key: "tempo", logo: "tempo.png", name: "Tempo" },
+  { key: "stasis", logo: "stasis.png", name: "Stasis" },
 ];
+
+function useEcosystem() {
+  const t = useTranslations("Services");
+  return ECOSYSTEM_KEYS.map((it) => ({
+    ...it,
+    title: t(`${it.key}Title`),
+    d: t(`${it.key}Body`),
+    result: t(`${it.key}Result`),
+    step: t(`${it.key}Step`),
+  }));
+}
 
 const NODES = [
   { x: 90, y: 100 }, { x: 300, y: 58 }, { x: 500, y: 108 }, { x: 700, y: 54 }, { x: 910, y: 96 },
@@ -82,27 +66,29 @@ const THREAD_SEGMENTS = [
 const VB_W = 1000, VB_H = 170;
 
 export function Services() {
+  const t = useTranslations("Services");
+  const ecosystem = useEcosystem();
   return (
     <Section tone="light" id="activos">
       <Container>
         <div style={{ maxWidth: 680, marginBottom: "var(--space-8)" }}>
-          <Reveal><Eyebrow tick={false}>El ecosistema Kairos</Eyebrow></Reveal>
+          <Reveal><Eyebrow tick={false}>{t("eyebrow")}</Eyebrow></Reveal>
           <Reveal delay={60} as="h2" style={{
             fontFamily: "var(--font-display)", fontWeight: "var(--weight-bold)",
             fontSize: "var(--text-h2)", lineHeight: "var(--leading-heading)",
             letterSpacing: "var(--tracking-tight)", color: "var(--text-strong)", margin: "1rem 0 0", textWrap: "balance",
           }}>
-            Cinco activos que acompañan a tu empresa de principio a fin.
+            {t("title")}
           </Reveal>
           <Reveal delay={120} as="p" style={{
             fontSize: "var(--text-lead)", lineHeight: "var(--leading-normal)",
             color: "var(--text-muted)", margin: "1.1rem 0 0",
           }}>
-            Empiezas montando tu espacio, construyes los activos que necesitas y los mantienes vivos. Eliges el punto donde estás.
+            {t("lead")}
           </Reveal>
         </div>
 
-        <KairosThread items={ECOSYSTEM} />
+        <KairosThread items={ecosystem} />
 
         <Reveal delay={120}>
           <DiscoveryBanner />
@@ -181,7 +167,7 @@ function ThreadHorizontal({ items, active, setActive, inView, reduce }) {
               boxShadow: i === active ? "0 0 0 6px rgba(249,99,2,0.10), 0 10px 24px -12px rgba(249,99,2,0.5)" : "var(--shadow-sm, 0 2px 8px rgba(26,23,20,0.06))",
               transition: "border-color 280ms ease, box-shadow 280ms ease",
             }}>
-              <img src={`/assets/products/${it.logo}`} alt="" aria-hidden="true"
+              <Image src={`/assets/products/${it.logo}`} alt="" aria-hidden="true" width={32} height={32}
                 style={{ width: 32, height: 32, objectFit: "contain", display: "block", opacity: i === active ? 1 : 0.78 }} />
             </span>
             <span style={{
@@ -247,7 +233,7 @@ function ThreadVertical({ items, active, setActive, inView, reduce }) {
                 boxShadow: open ? "0 0 0 5px rgba(249,99,2,0.10)" : "var(--shadow-sm, 0 2px 8px rgba(26,23,20,0.06))",
                 transition: "border-color 240ms ease, box-shadow 240ms ease",
               }}>
-                <img src={`/assets/products/${it.logo}`} alt="" aria-hidden="true" style={{ width: 28, height: 28, objectFit: "contain", opacity: open ? 1 : 0.8 }} />
+                <Image src={`/assets/products/${it.logo}`} alt="" aria-hidden="true" width={28} height={28} style={{ width: 28, height: 28, objectFit: "contain", opacity: open ? 1 : 0.8 }} />
               </span>
               <button type="button" onClick={() => setActive(open ? -1 : i)} aria-expanded={open}
                 style={{
@@ -282,6 +268,7 @@ function ThreadVertical({ items, active, setActive, inView, reduce }) {
 }
 
 function DiscoveryBanner() {
+  const t = useTranslations("Services");
   return (
     <div style={{
       marginTop: "var(--space-7)", background: "#161616", borderRadius: "var(--radius-2xl)",
@@ -290,17 +277,17 @@ function DiscoveryBanner() {
     }}>
       <div style={{ maxWidth: 620 }}>
         <div style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-eyebrow)", letterSpacing: "var(--tracking-eyebrow)", textTransform: "uppercase", color: "#F96302", fontWeight: 600, marginBottom: 10 }}>
-          Llamada de descubrimiento · Gratis
+          {t("bannerEyebrow")}
         </div>
         <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-h3)", fontWeight: 700, letterSpacing: "var(--tracking-tight)", color: "var(--text-on-dark-strong)", margin: "0 0 8px", textWrap: "balance" }}>
-          ¿No sabes por dónde empezar?
+          {t("bannerTitle")}
         </h3>
         <p style={{ margin: 0, fontSize: "var(--text-body)", lineHeight: "var(--leading-normal)", color: "var(--text-on-dark-muted)" }}>
-          Entendemos cómo trabaja tu empresa hoy, detectamos dónde pierdes tiempo y te decimos con honestidad si podemos ayudarte y por dónde empezar. Sin compromiso.
+          {t("bannerBody")}
         </p>
       </div>
       <a href="#contacto" style={{ textDecoration: "none", flexShrink: 0 }}>
-        <Button variant="primary" size="lg" iconRight={<ArrowRight size={18} />}>Reserva tu llamada</Button>
+        <Button variant="primary" size="lg" iconRight={<ArrowRight size={18} />}>{t("bannerCta")}</Button>
       </a>
     </div>
   );

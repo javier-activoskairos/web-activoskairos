@@ -3,6 +3,8 @@ import { setRequestLocale } from "next-intl/server";
 import { LegalLayout } from "@/components/legal/LegalLayout";
 
 export const metadata: Metadata = {
+  // Contenido sólo en español: todos los locales canonizan a la ruta sin prefijo.
+  alternates: { canonical: "/privacidad" },
   title: "Política de privacidad · Activos Kairos",
   description:
     "Política de privacidad de Activos Kairos: qué datos recopilamos, finalidad, base de legitimación, destinatarios, transferencias internacionales y tus derechos (RGPD y LOPDGDD).",

@@ -1,10 +1,13 @@
 "use client";
 // Navegación superior fija del sitio Kairos.
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Button, Logo } from "./ds";
 import { Container } from "./primitives";
+import { LocaleSwitcher } from "../locale-switcher";
 
 export function Nav() {
+  const t = useTranslations("Nav");
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -13,9 +16,9 @@ export function Nav() {
   }, []);
 
   const links = [
-    ["Metodología", "#metodologia"],
-    ["Activos", "#activos"],
-    ["Casos de Éxito", "#casos"],
+    [t("methodology"), "#metodologia"],
+    [t("assets"), "#activos"],
+    [t("cases"), "#casos"],
   ];
 
   const onDark = !scrolled;
@@ -30,8 +33,8 @@ export function Nav() {
       transition: "background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out)",
     }}>
       <Container style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 76, gap: "var(--space-6)" }}>
-        <a href="#top" style={{ display: "inline-flex", alignItems: "center" }}>
-          <Logo variant="wordmark" theme={onDark ? "dark" : "light"} height={26} basePath="/" />
+        <a href="#top" aria-label={t("home")} style={{ display: "inline-flex", alignItems: "center" }}>
+          <Logo variant="wordmark" theme={onDark ? "dark" : "light"} height={26} priority />
         </a>
         <nav style={{ display: "flex", alignItems: "center", gap: "var(--space-6)" }} className="kairos-navlinks">
           {links.map(([label, href]) => (
@@ -47,8 +50,9 @@ export function Nav() {
           ))}
         </nav>
         <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
+          <LocaleSwitcher onDark={onDark} />
           <a href="#contacto" style={{ textDecoration: "none" }}>
-            <Button variant="primary" size="sm">Vive el proceso</Button>
+            <Button variant="primary" size="sm">{t("cta")}</Button>
           </a>
         </div>
       </Container>

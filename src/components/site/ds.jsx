@@ -1,6 +1,7 @@
 "use client";
 // Componentes base del design system Kairos: Button, Logo, Eyebrow.
 import React from "react";
+import Image from "next/image";
 
 /** Acción primaria Kairos. El naranja se usa con moderación. */
 export function Button({
@@ -82,18 +83,25 @@ export function Button({
   );
 }
 
-/** Logo Kairos. */
-export function Logo({ variant = "wordmark", theme = "auto", height, style = {}, basePath = "/", ...rest }) {
+/** Logo Kairos. Los originales son enormes (5000x1000 el wordmark), así que
+ *  van por next/image para que se sirvan redimensionados y en AVIF/WebP. */
+export function Logo({ variant = "wordmark", theme = "auto", height, style = {}, priority = false, ...rest }) {
   const onDark = theme === "dark";
-  const src = variant === "mark"
-    ? `${basePath}assets/logo-mark.png`
-    : onDark ? `${basePath}assets/logo-wordmark-light.png` : `${basePath}assets/logo-wordmark-dark.png`;
-  const h = height || (variant === "mark" ? 40 : 32);
+  const isMark = variant === "mark";
+  const src = isMark
+    ? "/assets/logo-mark.png"
+    : onDark ? "/assets/logo-wordmark-light.png" : "/assets/logo-wordmark-dark.png";
+  const h = height || (isMark ? 40 : 32);
+  // Relación de aspecto de los originales: marca 1:1, wordmark 5:1.
+  const w = Math.round(h * (isMark ? 1 : 5));
   return (
-    <img
+    <Image
       src={src}
-      alt="Kairos"
-      style={{ height: typeof h === "number" ? `${h}px` : h, width: "auto", display: "block", userSelect: "none", ...style }}
+      alt="Activos Kairos"
+      width={w}
+      height={h}
+      priority={priority}
+      style={{ height: `${h}px`, width: "auto", display: "block", userSelect: "none", ...style }}
       {...rest}
     />
   );

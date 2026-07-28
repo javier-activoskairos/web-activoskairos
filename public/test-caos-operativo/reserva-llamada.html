@@ -157,11 +157,11 @@ input[type=text]:focus,input[type=email]:focus{outline:none;border-color:var(--o
 /* Pega aquí tu enlace de reserva (Calendly / Cal.com). Vacío = placeholder. */
 const BOOKING_URL = 'https://calendar.notion.so/meet/javierkairos/protos-javier';
 // --- Alta de contacto en CRM (n8n webhook → [AK] - Contactos). No bloquea la reserva. ---
-const CRM_WEBHOOK='https://n8n.activoskairos.com/webhook/web-lead-akairos';
-const CRM_KEY='f728c0bcac58c255e4efa089c950f5c0f832c7fe';
+// La clave del webhook ya no viaja al navegador: la guarda /api/lead en el servidor.
+const CRM_ENDPOINT='/api/lead';
 function sendReservaToCRM(nombre,email){
   const payload={origen:'Reserva de llamada (Web Agenda)',nombre:nombre,email:email,detalle:'Reserva de llamada desde web',hp:(document.getElementById('hp')||{}).value||''};
-  try{fetch(CRM_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json','x-ak-web-key':CRM_KEY},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});}catch(e){/* silencioso */}
+  try{fetch(CRM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});}catch(e){/* silencioso */}
 }
 const form=document.getElementById('bookForm'),card=document.getElementById('formCard'),step=document.getElementById('bookingStep'),embed=document.getElementById('embed'),err=document.getElementById('formErr');
 form.addEventListener('submit',e=>{
