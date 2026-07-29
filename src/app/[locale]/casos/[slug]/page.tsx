@@ -7,6 +7,11 @@ import { CASOS, CASOS_BY_SLUG, ACTIVO_LABEL } from "@/content/casos";
 import { buildContentMeta } from "@/lib/content-meta";
 import { siteUrl } from "@/lib/site";
 
+// Solo existen estos 5 slugs y se conocen en build. Con dynamicParams=false,
+// cualquier slug fuera de la lista devuelve un 404 automático de Next sin
+// ejecutar el componente (evita el error static→dynamic del flujo notFound()).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return CASOS.map((c) => ({ slug: c.slug }));
 }
