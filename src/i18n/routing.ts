@@ -1,13 +1,14 @@
 import { defineRouting } from "next-intl/routing";
 
 // Idiomas que sirve la web. El idioma por defecto se sirve en `/`,
-// el resto con prefijo (`/en`, `/it`, ...).
+// el resto con prefijo (`/en`, `/it`).
 //
-// Sólo se listan idiomas con el contenido REALMENTE traducido: un locale
-// declarado en hreflang cuyo cuerpo sigue en español es contenido duplicado
-// a ojos de Google. `fr` se retiró por eso (ver redirects en next.config.ts).
+// Solo se listan idiomas que se ofrecen de verdad. Los retirados redirigen su
+// tráfico al español (ver redirects en next.config.ts):
+//   · `fr` nunca tuvo contenido traducido: en hreflang habría sido duplicado.
+//   · `pt` estaba traducido, pero se deja de ofrecer ese idioma.
 export const routing = defineRouting({
-  locales: ["es", "en", "it", "pt"],
+  locales: ["es", "en", "it"],
   defaultLocale: "es",
   localePrefix: "as-needed",
 });
@@ -19,5 +20,4 @@ export const LOCALE_LABELS: Record<string, string> = {
   es: "Español",
   en: "English",
   it: "Italiano",
-  pt: "Português",
 };

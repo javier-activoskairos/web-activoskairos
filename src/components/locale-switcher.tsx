@@ -9,7 +9,6 @@ const SHORT: Record<string, string> = {
   es: "ES",
   en: "EN",
   it: "IT",
-  pt: "PT",
 };
 
 /**
