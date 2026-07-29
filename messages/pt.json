@@ -1,4 +1,20 @@
 {
+  "Faq": {
+    "eyebrow": "Perguntas frequentes",
+    "title": "O que costumam nos perguntar antes de começar",
+    "q1": "O Notion é para a minha empresa?",
+    "a1": "Se a tua empresa lida com informação, processos e uma equipa, sim. Trabalhamos com negócios de setores muito diferentes —investimento, consultoria, sustentabilidade, serviços— porque o que montamos se adapta à tua forma de trabalhar. Se não encaixar, dizemos-te logo na primeira chamada.",
+    "q2": "Quanto tempo leva a implementação?",
+    "a2": "Depende do tamanho da tua operação e do âmbito, mas não trabalhamos com um único grande lançamento a meses de distância: avançamos por fases para que vejas progresso cedo e comeces a usar o sistema o quanto antes. O calendário definimos antes de começar.",
+    "q3": "E se eu já uso Monday, Asana ou ClickUp?",
+    "a3": "Não é preciso deitar nada fora por princípio. Analisamos o que vale a pena centralizar no Notion e o que convém manter e ligar através de automações. O objetivo é que a informação viaje sozinha entre as tuas ferramentas, não obrigar-te a migrar só por migrar.",
+    "q4": "Quanto custa?",
+    "a4": "Depende do âmbito: implementar o espaço base não é o mesmo que somar automações ou um acompanhamento mensal. Por isso não damos um preço de tabela: numa chamada gratuita percebemos o que precisas e enviamos-te uma proposta à medida, sem compromisso.",
+    "q5": "O que acontece com os meus dados?",
+    "a5": "Os teus dados são teus e vivem nas tuas próprias ferramentas e contas, não nas nossas. Configuramos permissões e acessos para que cada pessoa veja apenas o que lhe compete, e quando terminamos o controlo fica inteiramente com a tua equipa.",
+    "q6": "O que inclui o acompanhamento mensal?",
+    "a6": "É ter a Kairos como a tua equipa de Operações e IT: todos os meses construímos novos ativos, melhoramos os sistemas que já tens, formamos a tua equipa nas novidades e gerimos as incidências que surjam, com relatórios semanais. Sem permanência obrigatória."
+  },
   "Metadata": {
     "title": "Activos Kairos — Construímos os sistemas que fazem o seu negócio crescer",
     "description": "Desenhamos, automatizamos e operamos os sistemas internos da sua empresa. Do caos operacional a uma operação que funciona sozinha: consultoria e ativos digitais à medida.",

@@ -1,4 +1,20 @@
 {
+  "Faq": {
+    "eyebrow": "Preguntas frecuentes",
+    "title": "Lo que suelen preguntarnos antes de empezar",
+    "q1": "¿Es Notion para mi empresa?",
+    "a1": "Si tu empresa maneja información, procesos y equipo, sí. Trabajamos con negocios de sectores muy distintos —inversión, consultoría, sostenibilidad, servicios— porque lo que montamos se adapta a cómo trabajas tú. Si no encaja, te lo decimos en la primera llamada.",
+    "q2": "¿Cuánto tiempo toma implantarlo?",
+    "a2": "Depende del tamaño de tu operación y del alcance, pero no trabajamos con un único gran lanzamiento a meses vista: vamos por fases para que veas avances pronto y empieces a usar el sistema cuanto antes. El calendario lo concretamos antes de empezar.",
+    "q3": "¿Y si ya uso Monday, Asana o ClickUp?",
+    "a3": "No hace falta tirar nada por sistema. Analizamos qué merece la pena centralizar en Notion y qué conviene mantener y conectar mediante automatizaciones. El objetivo es que la información viaje sola entre tus herramientas, no obligarte a migrar por migrar.",
+    "q4": "¿Cuánto cuesta?",
+    "a4": "Depende del alcance: no es lo mismo implantar el espacio base que sumar automatizaciones o un acompañamiento mensual. Por eso no damos un precio de tarifa: en una llamada gratuita entendemos qué necesitas y te pasamos una propuesta a medida, sin compromiso.",
+    "q5": "¿Qué pasa con mis datos?",
+    "a5": "Tus datos son tuyos y viven en tus propias herramientas y cuentas, no en las nuestras. Configuramos permisos y accesos para que cada persona vea solo lo que le corresponde, y cuando terminamos el control queda íntegramente en tu equipo.",
+    "q6": "¿Qué incluye el acompañamiento mensual?",
+    "a6": "Es tener a Kairos como tu equipo de Operaciones e IT: cada mes construimos nuevos activos, mejoramos los sistemas que ya tienes, formamos a tu equipo en lo nuevo y gestionamos las incidencias que surjan, con reportes semanales. Sin permanencia obligatoria."
+  },
   "Metadata": {
     "title": "Activos Kairos — Construimos los sistemas que hacen crecer tu negocio",
     "description": "Diseñamos, automatizamos y operamos los sistemas internos de tu empresa. Del caos operativo a una operación que funciona sola: consultoría y activos digitales a medida.",

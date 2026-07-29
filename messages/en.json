@@ -1,4 +1,20 @@
 {
+  "Faq": {
+    "eyebrow": "FAQ",
+    "title": "What people usually ask us before starting",
+    "q1": "Is Notion right for my company?",
+    "a1": "If your company handles information, processes and a team, yes. We work with businesses across very different sectors —investment, consulting, sustainability, services— because what we build adapts to the way you work. If it's not a fit, we'll tell you on the first call.",
+    "q2": "How long does it take to implement?",
+    "a2": "It depends on the size of your operation and the scope, but we don't work with a single big launch months away: we go in phases so you see progress early and start using the system as soon as possible. We agree on the timeline before starting.",
+    "q3": "What if I already use Monday, Asana or ClickUp?",
+    "a3": "There's no need to throw anything away on principle. We assess what's worth centralizing in Notion and what's better kept and connected through automations. The goal is for information to travel on its own between your tools, not to make you migrate for the sake of it.",
+    "q4": "How much does it cost?",
+    "a4": "It depends on the scope: implementing the base workspace isn't the same as adding automations or a monthly retainer. That's why we don't quote a list price: on a free call we understand what you need and send you a tailored proposal, no strings attached.",
+    "q5": "What happens to my data?",
+    "a5": "Your data is yours and lives in your own tools and accounts, not ours. We set up permissions and access so each person sees only what they should, and when we're done control stays entirely with your team.",
+    "q6": "What's included in the monthly support?",
+    "a6": "It's having Kairos as your Operations and IT team: every month we build new assets, improve the systems you already have, train your team on what's new and handle any incidents, with weekly reports. No mandatory lock-in."
+  },
   "Metadata": {
     "title": "Activos Kairos — We build the systems that grow your business",
     "description": "We design, automate and run your company's internal systems. From operational chaos to an operation that runs itself: consulting and custom digital assets.",

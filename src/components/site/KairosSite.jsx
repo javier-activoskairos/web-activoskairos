@@ -6,6 +6,7 @@ import { Hero } from "./Hero";
 import { Problem, Methodology } from "./Methodology";
 import { Services } from "./Services";
 import { Cases } from "./Cases";
+import { Faq } from "./Faq";
 import { Contact, Footer } from "./Contact";
 
 export function KairosSite() {
@@ -18,6 +19,7 @@ export function KairosSite() {
         <Methodology />
         <Services />
         <Cases />
+        <Faq />
         <Contact />
       </main>
       <Footer />

@@ -249,6 +249,13 @@ export function Footer() {
       { label: t("linkAssets"), href: "#activos" },
       { label: t("linkCases"), href: "#casos" },
     ]],
+    // Enlace site-wide a las páginas pilar (SEO 14). Contenido en español, como
+    // las páginas legales; los nombres de servicio hacen de etiqueta neutra.
+    ["Servicios", [
+      { label: "Consultoría Notion", href: "/consultoria-notion" },
+      { label: "Implantación de Notion", href: "/implantacion-notion" },
+      { label: "Automatización con IA", href: "/automatizacion-ia" },
+    ]],
     [t("colResources"), [
       { label: t("linkTest"), href: "/test-caos-operativo" },
       { label: t("linkBookCall"), href: "/reserva" },
@@ -270,7 +277,7 @@ export function Footer() {
   return (
     <footer style={{ background: "#0D0D0D", color: "var(--text-on-dark-muted)", paddingBlock: "var(--space-9)" }}>
       <Container>
-        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", gap: "var(--space-7)", paddingBottom: "var(--space-8)" }} className="kairos-footer-grid">
+        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr 1fr", gap: "var(--space-7)", paddingBottom: "var(--space-8)" }} className="kairos-footer-grid">
           <div>
             <Logo variant="wordmark" theme="dark" height={26} />
             <p style={{ margin: "1rem 0 0", maxWidth: "34ch", fontSize: "var(--text-sm)", lineHeight: "var(--leading-normal)" }}>
