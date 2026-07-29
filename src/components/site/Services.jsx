@@ -112,7 +112,13 @@ function KairosThread({ items }) {
         : (
           <React.Fragment>
             <ThreadHorizontal items={items} active={active} setActive={setActive} inView={inView} reduce={reduce} />
-            <DetailPanel item={items[active]} reduce={reduce} activeKey={active} />
+            {/* SEO: los 5 paneles se renderizan siempre (el inactivo va con
+                display:none, no se desmonta), para que el contenido de Flux,
+                Sophos, Tempo y Stasis esté en el HTML servido y sea indexable.
+                Antes sólo se pintaba items[active] → sólo Initia salía en el SSR. */}
+            {items.map((it, i) => (
+              <DetailPanel key={it.key} item={it} reduce={reduce} activeKey={active} hidden={i !== active} />
+            ))}
           </React.Fragment>
         )}
     </div>
@@ -182,9 +188,10 @@ function ThreadHorizontal({ items, active, setActive, inView, reduce }) {
   );
 }
 
-function DetailPanel({ item, reduce, activeKey }) {
+function DetailPanel({ item, reduce, activeKey, hidden }) {
   return (
     <div style={{
+      display: hidden ? "none" : "block",
       marginTop: "clamp(2.5rem, 4vw, 3.5rem)", background: "var(--surface-card, #fff)",
       borderRadius: "var(--radius-2xl, 20px)", border: "1px solid var(--border-subtle, rgba(26,23,20,0.08))",
       boxShadow: "var(--shadow-md, 0 12px 32px -16px rgba(26,23,20,0.18))",
