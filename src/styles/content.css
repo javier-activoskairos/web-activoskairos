@@ -1,0 +1,89 @@
+/* Páginas de contenido/marketing · Activos Kairos
+   Reutiliza el chrome y los tokens dark de legal.css (.legal-page) y añade los
+   componentes propios de una landing: hero, CTA, métricas, tarjetas relacionadas
+   y acordeón FAQ. Todo scopeado bajo .content-page para no tocar el resto. */
+
+.content-page .crumbs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--muted);margin:0 0 22px}
+.content-page .crumbs a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent;transition:.15s}
+.content-page .crumbs a:hover{color:var(--orange);border-color:var(--orange)}
+.content-page .crumbs .sep{opacity:.5}
+.content-page .crumbs .cur{color:var(--pearl)}
+
+/* Hero */
+.content-page .hero{padding:6px 0 8px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.content-page .hero .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--orange);font-weight:700;margin:0 0 14px}
+.content-page .hero h1{font-size:clamp(32px,5vw,52px);line-height:1.03;letter-spacing:-.035em;font-weight:600;margin:0 0 18px;max-width:18ch}
+.content-page .hero .lead{color:var(--pearl);font-size:clamp(16px,2.2vw,19px);line-height:1.6;max-width:60ch;margin:0 0 26px}
+
+/* Meta chips (sector · ubicación) */
+.content-page .pillrow{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 26px}
+.content-page .pill{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);font-size:12.5px;color:var(--pearl)}
+.content-page .pill b{color:var(--muted);font-weight:600}
+
+/* CTA */
+.content-page .cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 6px}
+.content-page .cta-btn{display:inline-flex;align-items:center;gap:9px;padding:14px 22px;border-radius:12px;background:var(--orange);color:#0b0b0b;font-weight:700;font-size:15px;text-decoration:none;border:1px solid transparent;transition:.18s;box-shadow:0 8px 30px rgba(255,106,26,.28)}
+.content-page .cta-btn:hover{background:#ff7d38;transform:translateY(-1px)}
+.content-page .cta-btn.secondary{background:transparent;color:#fff;border-color:var(--line);box-shadow:none}
+.content-page .cta-btn.secondary:hover{border-color:var(--muted);background:rgba(255,255,255,.04);transform:none}
+
+/* Métricas de caso */
+.content-page .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:8px 0 4px}
+.content-page .metric{padding:20px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
+.content-page .metric .num{display:block;font-size:clamp(26px,4vw,36px);font-weight:700;letter-spacing:-.03em;color:#fff;line-height:1}
+.content-page .metric .lbl{display:block;margin-top:8px;font-size:13px;color:var(--muted);line-height:1.4}
+
+/* Lista de resultados con check */
+.content-page .checks{list-style:none;margin:2px 0 13px;padding:0;max-width:64ch}
+.content-page .checks li{position:relative;padding-left:30px;margin-bottom:12px;color:var(--pearl);font-size:15px;line-height:1.6}
+.content-page .checks li::before{content:"";position:absolute;left:0;top:2px;width:18px;height:18px;border-radius:50%;background:rgba(255,106,26,.14);border:1px solid rgba(255,106,26,.5)}
+.content-page .checks li::after{content:"";position:absolute;left:6px;top:7px;width:5px;height:9px;border-right:2px solid var(--orange);border-bottom:2px solid var(--orange);transform:rotate(42deg)}
+
+/* Cita / testimonio */
+.content-page .quote{margin:26px 0 0;padding:22px 24px;border-left:3px solid var(--orange);background:rgba(255,255,255,.03);border-radius:0 12px 12px 0}
+.content-page .quote p{margin:0 0 10px;color:#fff;font-size:18px;line-height:1.5;font-weight:500;max-width:60ch}
+.content-page .quote cite{color:var(--muted);font-size:13.5px;font-style:normal}
+
+/* Tarjetas relacionadas (enlazado interno) */
+.content-page .related{margin-top:14px}
+.content-page .rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:14px}
+.content-page .rcard{display:flex;flex-direction:column;gap:8px;padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);text-decoration:none;transition:.18s}
+.content-page .rcard:hover{border-color:rgba(255,106,26,.5);background:rgba(255,106,26,.05);transform:translateY(-2px)}
+.content-page .rcard .rk{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:700}
+.content-page .rcard .rt{color:#fff;font-weight:600;font-size:15.5px;line-height:1.3}
+.content-page .rcard .rd{color:var(--pearl);font-size:13.5px;line-height:1.5}
+.content-page .rcard .go{margin-top:auto;color:var(--orange);font-size:13px;font-weight:600}
+
+/* FAQ acordeón — texto SIEMPRE en el HTML (details nativo) */
+.content-page .faq{margin-top:14px;max-width:74ch}
+.content-page .faq details{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02);margin-bottom:12px;overflow:hidden}
+.content-page .faq summary{cursor:pointer;list-style:none;padding:18px 20px;font-weight:600;font-size:16px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.content-page .faq summary::-webkit-details-marker{display:none}
+.content-page .faq summary::after{content:"+";font-size:22px;font-weight:400;color:var(--orange);transition:.2s;line-height:1}
+.content-page .faq details[open] summary::after{transform:rotate(45deg)}
+.content-page .faq .qa-body{padding:0 20px 18px;color:var(--pearl);font-size:15px;line-height:1.7;max-width:64ch}
+.content-page .faq .qa-body p{margin:0 0 10px}
+.content-page .faq .qa-body p:last-child{margin-bottom:0}
+.content-page .faq .qa-body a{color:var(--orange);text-decoration:none;border-bottom:1px solid transparent;transition:.15s}
+.content-page .faq .qa-body a:hover{border-color:var(--orange)}
+
+/* CTA final de página (banner) */
+.content-page .endcta{margin:52px 0 0;padding:34px 30px;border:1px solid var(--line);border-radius:18px;background:radial-gradient(circle at 80% 0%,rgba(255,106,26,.14),transparent 60%),rgba(255,255,255,.02);text-align:left}
+.content-page .endcta h2{font-size:clamp(22px,3vw,30px);line-height:1.15;letter-spacing:-.02em;font-weight:600;margin:0 0 10px;color:#fff}
+.content-page .endcta p{color:var(--pearl);font-size:15.5px;line-height:1.6;margin:0 0 20px;max-width:56ch}
+
+/* Nav secundaria en el footer (enlazado interno) */
+.content-page .sf-nav{display:flex;flex-wrap:wrap;gap:26px;margin:0 0 4px}
+.content-page .sf-nav a{text-decoration:none;color:var(--muted);font-size:13px;border-bottom:1px solid transparent;transition:.15s}
+.content-page .sf-nav a:hover{color:var(--orange);border-color:var(--orange)}
+
+/* Pills como enlace (recorrido de un caso → activos) */
+.content-page a.pill{text-decoration:none;transition:.15s}
+.content-page a.pill:hover{border-color:rgba(255,106,26,.5);color:#fff;background:rgba(255,106,26,.06)}
+
+/* Proceso (páginas pilar): pasos numerados */
+.content-page .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:6px 0 4px}
+.content-page .step{padding:20px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02)}
+.content-page .step .sn{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:rgba(255,106,26,.14);border:1px solid rgba(255,106,26,.5);color:var(--orange);font-weight:700;font-size:14px}
+.content-page .step .st{display:block;margin:13px 0 6px;color:#fff;font-weight:600;font-size:16px}
+.content-page .step .sd{display:block;color:var(--pearl);font-size:14px;line-height:1.55}
