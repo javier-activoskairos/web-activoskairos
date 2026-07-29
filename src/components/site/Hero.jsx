@@ -35,7 +35,7 @@ export function Hero() {
 
       <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 980, marginInline: "auto", padding: "0 var(--space-6)", textAlign: "center" }}>
         <Reveal delay={80} as="h1" style={{
-          fontFamily: "Satoshi", fontWeight: 500, textTransform: "lowercase",
+          fontFamily: "Satoshi", fontWeight: 500, textTransform: "none",
           // Fluido: a 80px fijos el titular desbordaba en móviles estrechos.
           fontSize: "clamp(2.75rem, 9vw, 80px)", lineHeight: 0.98, letterSpacing: "0.005em",
           color: "rgb(255, 255, 255)", margin: 0, textWrap: "balance",
