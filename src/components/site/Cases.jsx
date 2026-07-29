@@ -210,18 +210,24 @@ function Marquee({ items, reduce, onOpen, posRef }) {
         transform: reduce ? "none" : `translateX(${tx}px)`,
       }}>
         {loopList.map((c, i) => (
-          <IdentityTile key={i} c={c} reduce={reduce} onClick={() => tileClick(i)} />
+          <IdentityTile key={i} c={c} reduce={reduce} clone={i >= items.length} onClick={() => tileClick(i)} />
         ))}
       </div>
     </div>
   );
 }
 
-function IdentityTile({ c, reduce, onClick }) {
+function IdentityTile({ c, reduce, onClick, clone }) {
   const t = useTranslations("Cases");
+  // El carrusel duplica la lista para el bucle infinito. El segundo juego
+  // (clones) es puramente visual: se marca aria-hidden y su nombre deja de ser
+  // <h3> (pasa a <div>) para no listar cada caso ni cada logo dos veces en SEO.
+  const NameTag = clone ? "div" : "h3";
   return (
     <button type="button" onClick={onClick} className="kairos-tile"
-      aria-label={t("openCase", { name: c.name })}
+      {...(clone
+        ? { "aria-hidden": "true", tabIndex: -1 }
+        : { "aria-label": t("openCase", { name: c.name }) })}
       style={{
         flex: "0 0 auto", width: 300, height: 226, boxSizing: "border-box",
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14,
@@ -239,11 +245,11 @@ function IdentityTile({ c, reduce, onClick }) {
         <ArrowUpRight size={17} />
       </span>
       <div style={{ height: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Image src={`/assets/clients/${c.logo}`} alt={c.name} width={150} height={44}
+        <Image src={`/assets/clients/${c.logo}`} alt={clone ? "" : c.name} width={150} height={44}
           style={{ maxHeight: 44, maxWidth: "70%", width: "auto", height: "auto", objectFit: "contain", display: "block" }} />
       </div>
       <div>
-        <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "var(--text-h4)", color: "var(--text-strong)", margin: 0, lineHeight: 1.15 }}>{c.name}</h3>
+        <NameTag style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "var(--text-h4)", color: "var(--text-strong)", margin: 0, lineHeight: 1.15 }}>{c.name}</NameTag>
         <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: KAIROS_ACCENT, fontWeight: 600, marginTop: 7 }}>{c.sector}</div>
       </div>
       <span style={{ display: "flex", gap: 8, alignItems: "center", justifyContent: "center" }}>
