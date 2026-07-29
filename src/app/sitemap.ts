@@ -9,6 +9,10 @@ const paths = [""];
 // sola vez, en el locale por defecto (sin prefijo), para evitar duplicados.
 const legalPaths = ["legal", "privacidad", "cookies", "tyc"];
 
+// Landings estáticas del funnel (public/), servidas con URL limpia vía rewrite.
+// Solo en español y sin variantes de idioma, así que van como URL única.
+const funnelPaths = ["test-caos-operativo"];
+
 const localeUrl = (locale: string, path: string) => {
   const prefix = locale === routing.defaultLocale ? "" : `/${locale}`;
   return `${siteUrl}${prefix}${path ? `/${path}` : ""}`;
@@ -34,5 +38,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified,
   }));
 
-  return [...localized, ...legal];
+  const funnel = funnelPaths.map((path) => ({
+    url: `${siteUrl}/${path}`,
+    lastModified,
+  }));
+
+  return [...localized, ...funnel, ...legal];
 }
