@@ -14,7 +14,7 @@ Cloudflare (DNS + CDN + WAF)   ← timeout de proxy 100 s (ojo con ops síncrona
   ▼
 VPS Hostinger KVM1 (72.60.89.215, Ubuntu 24.04, 1 vCPU / 3.8 GB RAM)
   │   EasyPanel (Docker Swarm + Traefik como reverse proxy)
-  ├─ servicio  activoskairos   → Next.js 16 SSR (next-intl es/en/fr/it/pt)   [proyecto: webs]
+  ├─ servicio  activoskairos   → Next.js 16 SSR (next-intl es/en/it)   [proyecto: webs]
   ├─ servicio  rumbo (portal)
   └─ otros servicios (n8n, etc.)
   │

@@ -34,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
   // Cada URL declara sus alternativas de idioma; así Google no tiene que
-  // deducir la relación entre `/`, `/en`, `/it` y `/pt`.
+  // deducir la relación entre `/`, `/en` y `/it`.
   const localized = paths.map((path) => ({
     url: localeUrl(routing.defaultLocale, path),
     lastModified,

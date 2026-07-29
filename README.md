@@ -7,7 +7,7 @@ nuevo parte de este repositorio (template) y se personaliza desde ahí.
 
 - **Next.js 16** (App Router) + **TypeScript**
 - **Tailwind CSS v4** + **shadcn/ui** (Radix / base-nova)
-- **next-intl** — multi-idioma en el mismo repo (`es`, `en`, `fr`, `it`, `pt`)
+- **next-intl** — multi-idioma en el mismo repo (`es`, `en`, `it`)
 - SEO base: `metadata`, `sitemap.xml`, `robots.txt`
 - Deploy en **Render** (`render.yaml`) con previews por PR
 - Sync de estado a **Notion** vía GitHub Action

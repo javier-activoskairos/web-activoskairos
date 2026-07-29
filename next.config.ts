@@ -91,15 +91,18 @@ const nextConfig: NextConfig = {
       ...LEGAL_REDIRECTS.flatMap(([oldSlug, newSlug]) => [
         { source: `/${oldSlug}`, destination: `/${newSlug}`, permanent: true },
         {
-          source: `/:locale(en|it|pt)/${oldSlug}`,
+          source: `/:locale(en|it)/${oldSlug}`,
           destination: `/:locale/${newSlug}`,
           permanent: true,
         },
       ]),
-      // El locale `fr` se retiró (nunca tuvo contenido traducido). Lo que
-      // quedase indexado cae al equivalente en español.
+      // Locales retirados: su tráfico indexado cae al equivalente en español.
+      // `fr` nunca tuvo contenido traducido; `pt` estaba traducido pero se
+      // dejó de ofrecer. Se cubren `/xx` y `/xx/loquesea`.
       { source: "/fr", destination: "/", permanent: true },
       { source: "/fr/:path*", destination: "/:path*", permanent: true },
+      { source: "/pt", destination: "/", permanent: true },
+      { source: "/pt/:path*", destination: "/:path*", permanent: true },
     ];
   },
 
