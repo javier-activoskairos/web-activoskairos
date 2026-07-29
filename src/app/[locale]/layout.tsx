@@ -5,7 +5,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
-import { siteUrl } from "@/lib/site";
+import { siteUrl, CONTACT_EMAIL, LINKEDIN_URL } from "@/lib/site";
 import "../globals.css";
 
 // ID de medición de GA4. Override por NEXT_PUBLIC_GA_ID; fallback al ID de
@@ -87,6 +87,37 @@ export default async function LocaleLayout({
   }
   setRequestLocale(locale);
 
+  const tMeta = await getTranslations({ locale, namespace: "Metadata" });
+  // JSON-LD: identidad canónica de la organización + el sitio. El nombre
+  // oficial es "Activos Kairos", con "Kairos" como alternateName, para
+  // consolidar la entidad ante Google (antes no había ningún dato estructurado
+  // y "Kairos" competía con "Activos Kairos").
+  const orgId = `${siteUrl}/#organization`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": orgId,
+        name: "Activos Kairos",
+        alternateName: "Kairos",
+        url: siteUrl,
+        logo: `${siteUrl}/assets/logo-mark.png`,
+        email: CONTACT_EMAIL,
+        description: tMeta("description"),
+        sameAs: [LINKEDIN_URL],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        url: siteUrl,
+        name: "Activos Kairos",
+        inLanguage: locale,
+        publisher: { "@id": orgId },
+      },
+    ],
+  };
+
   return (
     <html
       lang={locale}
@@ -102,6 +133,10 @@ export default async function LocaleLayout({
       />
       <meta name="theme-color" content="#0D0D0D" />
       <body className="flex min-h-full flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <GoogleAnalytics gaId={gaId} />
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
