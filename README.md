@@ -9,7 +9,7 @@ nuevo parte de este repositorio (template) y se personaliza desde ahí.
 - **Tailwind CSS v4** + **shadcn/ui** (Radix / base-nova)
 - **next-intl** — multi-idioma en el mismo repo (`es`, `en`, `it`)
 - SEO base: `metadata`, `sitemap.xml`, `robots.txt`
-- Deploy en **Render** (`render.yaml`) con previews por PR
+- Deploy en el **VPS Kairos** (EasyPanel + Docker Swarm) vía webhook de push
 - Sync de estado a **Notion** vía GitHub Action
 
 ## Empezar
@@ -44,13 +44,26 @@ npm run dev                  # http://localhost:3000
    (`--brand`, `--brand-foreground`, `--brand-accent`).
 2. **Idiomas**: ajustar la lista en `src/i18n/routing.ts` y los `messages/*.json`.
 3. **Contenido**: páginas en `src/app/[locale]/`.
-4. **Entorno**: definir `NEXT_PUBLIC_SITE_URL` en Render y en `.env.local`.
+4. **Entorno**: definir `NEXT_PUBLIC_SITE_URL` en EasyPanel y en `.env.local`.
 
-## Deploy (Render)
+## Deploy (VPS Kairos)
 
-El `render.yaml` define un Web Service Node con build `npm ci && npm run build`
-y previews automáticas por Pull Request. Definir `NEXT_PUBLIC_SITE_URL` por
-entorno en el dashboard.
+El sitio se despliega en el **VPS** con **EasyPanel** (proyecto `webs`, build con
+nixpacks). Un webhook de push del repo llama a
+`https://vps.activoskairos.com/api/deploy/<token>`: EasyPanel hace `git pull`,
+reconstruye la imagen y actualiza el servicio de Docker Swarm. Las variables de
+entorno (`NEXT_PUBLIC_SITE_URL`, etc.) se definen en EasyPanel.
+
+Comprobar un despliegue:
+
+```bash
+ssh kairos-vps
+cd /etc/easypanel/projects/webs/<servicio>/code && git log --oneline -1
+docker service ps webs_<servicio>
+```
+
+Render quedó **obsoleto** en 08/2026: servicios suspendidos y dominios
+desasociados. No se despliega nada ahí.
 
 ## Sync a Notion
 
