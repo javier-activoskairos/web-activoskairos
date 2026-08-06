@@ -1,7 +1,15 @@
 name: Uptime Monitor
 
 # Comprueba cada ~10 min que los sitios en producción responden 200.
-# Si un sitio no responde tras varios reintentos:
+#
+# El monitor solo avisa de CAÍDAS REALES. Un fallo de infraestructura de GitHub
+# (el runner no arranca y el paso "Set up job" muere) NO marca el run como
+# fallido y por tanto no genera email: la sonda vive en un job tolerante
+# (continue-on-error) y el veredicto lo emite un job aparte que solo mira los
+# códigos HTTP recogidos. Si una sonda no llegó a ejecutarse, se registra como
+# aviso y se reintenta en la siguiente pasada del cron.
+#
+# Cuando un sitio está caído de verdad:
 #   1. Abre una incidencia en [AKS] - Incidencias (idempotente, sin duplicar).
 #   2. Falla el job → GitHub envía email al responsable del repo.
 # Ejecutable también a mano desde la pestaña Actions (workflow_dispatch).
@@ -10,29 +18,30 @@ on:
     - cron: "*/10 * * * *"
   workflow_dispatch:
 
+# Sin cancel-in-progress: cancelar una sonda en vuelo produce runs "cancelled"
+# que no dicen nada. El timeout de cada job evita que se acumulen.
 concurrency:
   group: uptime
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Un fallo de runner aquí no debe teñir el run: el veredicto lo da "report".
+    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: "Web Activos Kairos"
+          - slug: web
+            name: "Web Activos Kairos"
             url: "https://activoskairos.com"
-          - name: "Portal Rumbo"
+          - slug: rumbo
+            name: "Portal Rumbo"
             url: "https://rumbo.activoskairos.com"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
       - name: Comprobar ${{ matrix.name }}
-        id: probe
         env:
           SITE_URL: ${{ matrix.url }}
         run: |
@@ -44,26 +53,80 @@ jobs:
             case "$code" in 2*|3*) break;; esac
             sleep 15
           done
-          echo "code=$code" >> "$GITHUB_OUTPUT"
+          mkdir -p resultados
+          printf '%s\n' "$code" > "resultados/${{ matrix.slug }}.code"
+
+      - name: Guardar resultado
+        uses: actions/upload-artifact@v4
+        with:
+          name: uptime-${{ matrix.slug }}
+          path: resultados/
+          retention-days: 1
+
+  report:
+    needs: check
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Recoger resultados
+        uses: actions/download-artifact@v4
+        # Si ninguna sonda llegó a subir su resultado, no hay artefactos: no es
+        # motivo para romper el run, el propio informe lo registra como aviso.
+        continue-on-error: true
+        with:
+          pattern: uptime-*
+          path: resultados
+          merge-multiple: true
 
       - name: Setup Node
-        if: ${{ !startsWith(steps.probe.outputs.code, '2') && !startsWith(steps.probe.outputs.code, '3') }}
         uses: actions/setup-node@v4
         with:
           node-version: "22"
 
-      - name: Abrir incidencia en Notion
-        if: ${{ !startsWith(steps.probe.outputs.code, '2') && !startsWith(steps.probe.outputs.code, '3') }}
+      - name: Evaluar y avisar
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_INCIDENCIAS_DB: ${{ secrets.NOTION_INCIDENCIAS_DB }}
-          SITE_NAME: ${{ matrix.name }}
-          SITE_URL: ${{ matrix.url }}
-          HTTP_CODE: ${{ steps.probe.outputs.code }}
-        run: node scripts/notion-incident.mjs
-
-      - name: Fallar si el sitio no responde
-        if: ${{ !startsWith(steps.probe.outputs.code, '2') && !startsWith(steps.probe.outputs.code, '3') }}
         run: |
-          echo "::error::${{ matrix.name }} no responde (HTTP ${{ steps.probe.outputs.code }})"
-          exit 1
+          set -euo pipefail
+          caidos=0
+          # slug|nombre legible|url — mismo listado que la matriz de "check".
+          sitios=(
+            "web|Web Activos Kairos|https://activoskairos.com"
+            "rumbo|Portal Rumbo|https://rumbo.activoskairos.com"
+          )
+
+          for sitio in "${sitios[@]}"; do
+            IFS='|' read -r slug nombre url <<< "$sitio"
+            fichero="resultados/${slug}.code"
+            if [ ! -f "$fichero" ]; then
+              # La sonda no llegó a ejecutarse (runner de GitHub). No es una caída.
+              echo "::warning::$nombre sin comprobar — la sonda no se ejecutó (infraestructura de GitHub). Se reintenta en la siguiente pasada."
+              continue
+            fi
+            code=$(cat "$fichero")
+            case "$code" in
+              2*|3*)
+                echo "✅ $nombre → HTTP $code"
+                ;;
+              *)
+                echo "::error::$nombre no responde (HTTP $code)"
+                caidos=$((caidos + 1))
+                # Si Notion falla, no cortamos: el resto de sitios se evalúa igual
+                # y el run acaba en error de todos modos.
+                SITE_NAME="$nombre" SITE_URL="$url" HTTP_CODE="$code" node scripts/notion-incident.mjs \
+                  || echo "::warning::No se pudo abrir la incidencia en Notion para $nombre"
+                ;;
+            esac
+          done
+
+          if [ "$caidos" -gt 0 ]; then
+            echo "$caidos sitio(s) caído(s)."
+            exit 1
+          fi
