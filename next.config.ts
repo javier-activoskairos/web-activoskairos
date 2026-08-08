@@ -19,12 +19,15 @@ const LEGAL_REDIRECTS = [
 // Orígenes de terceros permitidos explícitamente:
 //   · Google Tag Manager / Analytics (GA4 vía gtag) — script + beacons.
 //   · Fontshare (fuente de marca Satoshi): CSS por <link> en api., woff2 en cdn.
+//   · Google Fonts (JetBrains Mono, la mono de la marca): el @import de
+//     `globals.css` sobrevive al build, así que el CSS sale de fonts.googleapis
+//     y los woff2 de fonts.gstatic. Sin ambos orígenes la mono no se aplica.
 //   · n8n (connect-src): el funnel estático hace fetch() del alta de lead al webhook.
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
-  "style-src 'self' 'unsafe-inline' https://api.fontshare.com",
-  "font-src 'self' data: https://api.fontshare.com https://cdn.fontshare.com",
+  "style-src 'self' 'unsafe-inline' https://api.fontshare.com https://fonts.googleapis.com",
+  "font-src 'self' data: https://api.fontshare.com https://cdn.fontshare.com https://fonts.gstatic.com",
   "img-src 'self' data: blob: https://www.googletagmanager.com https://www.google-analytics.com",
   "connect-src 'self' https://n8n.activoskairos.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://region1.google-analytics.com",
   "frame-ancestors 'none'",

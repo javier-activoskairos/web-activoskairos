@@ -96,7 +96,11 @@
   --text-h3:        clamp(1.45rem, calc(1.2rem + 0.9vw), 1.875rem);
   --text-h4:        1.375rem;
   --text-lead:      1.25rem;
-  --text-body:      1.0625rem;
+  /* `--text-base`, no `--text-body`: ese nombre ya lo ocupa el color del cuerpo
+     de texto unas líneas más arriba. Al declararse dos veces en el mismo bloque
+     ganaba este, y todo `color: var(--text-body)` del sitio resolvía a un
+     tamaño de fuente, es decir, a un color inválido. */
+  --text-base:      1.0625rem;
   --text-sm:        0.9375rem;
   --text-xs:        0.8125rem;
   --text-eyebrow:   0.78125rem;

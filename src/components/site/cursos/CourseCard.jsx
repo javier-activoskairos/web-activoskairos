@@ -118,7 +118,7 @@ export function CourseCard({ curso }) {
           marginTop: "var(--space-6)",
           fontFamily: "var(--font-display)",
           fontWeight: "var(--weight-semibold)",
-          fontSize: "var(--text-body)",
+          fontSize: "var(--text-base)",
           color: "var(--accent)",
         }}
       >
