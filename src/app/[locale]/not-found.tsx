@@ -54,7 +54,7 @@ export default async function NotFound() {
         style={{
           margin: 0,
           maxWidth: "46ch",
-          fontSize: "var(--text-body)",
+          fontSize: "var(--text-base)",
           lineHeight: "var(--leading-normal)",
         }}
       >

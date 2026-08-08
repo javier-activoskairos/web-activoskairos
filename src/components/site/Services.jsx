@@ -202,7 +202,7 @@ function DetailPanel({ item, reduce, activeKey, hidden }) {
           <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-eyebrow)", letterSpacing: "var(--tracking-eyebrow)", textTransform: "uppercase", color: "var(--text-faint)", fontWeight: 600 }}>{item.step}</span>
         </div>
         <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "var(--text-h3)", letterSpacing: "var(--tracking-tight)", color: "var(--text-strong)", margin: "8px 0 2px" }}>{item.name}</h3>
-        <div style={{ fontSize: "var(--text-body)", fontWeight: "var(--weight-semibold)", color: "#F96302", marginBottom: 16 }}>{item.title}</div>
+        <div style={{ fontSize: "var(--text-base)", fontWeight: "var(--weight-semibold)", color: "#F96302", marginBottom: 16 }}>{item.title}</div>
         <p style={{ margin: 0, maxWidth: "62ch", fontSize: "var(--text-lead)", lineHeight: "var(--leading-normal)", color: "var(--text-muted)" }}>{item.d}</p>
         <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginTop: "var(--space-5)", paddingTop: "var(--space-5)", borderTop: "1px solid var(--border-subtle, rgba(26,23,20,0.08))" }}>
           <span aria-hidden="true" style={{ color: "#F96302", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 18, lineHeight: 1.3 }}>→</span>
@@ -289,7 +289,7 @@ function DiscoveryBanner() {
         <h3 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-h3)", fontWeight: 700, letterSpacing: "var(--tracking-tight)", color: "var(--text-on-dark-strong)", margin: "0 0 8px", textWrap: "balance" }}>
           {t("bannerTitle")}
         </h3>
-        <p style={{ margin: 0, fontSize: "var(--text-body)", lineHeight: "var(--leading-normal)", color: "var(--text-on-dark-muted)" }}>
+        <p style={{ margin: 0, fontSize: "var(--text-base)", lineHeight: "var(--leading-normal)", color: "var(--text-on-dark-muted)" }}>
           {t("bannerBody")}
         </p>
       </div>

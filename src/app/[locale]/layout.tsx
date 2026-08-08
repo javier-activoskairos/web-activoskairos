@@ -127,6 +127,10 @@ export default async function LocaleLayout({
         href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap"
         precedence="high"
       />
+      {/* JetBrains Mono llega por @import desde `globals.css`; el preconnect
+          adelanta el handshake con los dos orígenes que intervienen. */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <meta name="theme-color" content="#0D0D0D" />
       <body className="flex min-h-full flex-col">
         <script

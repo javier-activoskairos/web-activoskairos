@@ -351,7 +351,7 @@ export function NotionAiLanding() {
                   style={{
                     display: "flex",
                     gap: 12,
-                    fontSize: "var(--text-body)",
+                    fontSize: "var(--text-base)",
                     lineHeight: 1.55,
                     color: "var(--text-muted)",
                   }}
