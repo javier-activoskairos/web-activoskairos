@@ -14,6 +14,9 @@ export function Button({
   disabled = false,
   onClick,
   type = "button",
+  // Con `href` el componente renderiza un <a> con la misma piel. Un <button>
+  // dentro de un <a> es HTML inválido y confunde a los lectores de pantalla.
+  href = null,
   style = {},
   ...rest
 }) {
@@ -64,22 +67,26 @@ export function Button({
     inverse: { background: "#fff" },
   }[variant] : {};
 
+  const Tag = href ? "a" : "button";
+  const tagProps = href
+    ? { href }
+    : { type, disabled };
+
   return (
-    <button
-      type={type}
-      disabled={disabled}
+    <Tag
+      {...tagProps}
       onClick={onClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => { setHover(false); setActive(false); }}
       onMouseDown={() => setActive(true)}
       onMouseUp={() => setActive(false)}
-      style={{ ...base, ...variants, ...hoverStyle, transform: active && !disabled ? "translateY(1px) scale(0.99)" : "none" }}
+      style={{ ...base, ...variants, ...hoverStyle, ...style, transform: active && !disabled ? "translateY(1px) scale(0.99)" : "none" }}
       {...rest}
     >
       {iconLeft && <span style={{ display: "inline-flex", marginLeft: "-0.1em" }}>{iconLeft}</span>}
       {children}
       {iconRight && <span style={{ display: "inline-flex", marginRight: "-0.1em" }}>{iconRight}</span>}
-    </button>
+    </Tag>
   );
 }
 

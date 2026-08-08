@@ -2,12 +2,14 @@
 // Navegación superior fija del sitio Kairos.
 import React from "react";
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { Button, Logo } from "./ds";
 import { Container } from "./primitives";
 import { LocaleSwitcher } from "../locale-switcher";
 
 export function Nav() {
   const t = useTranslations("Nav");
+  const pathname = usePathname();
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -15,10 +17,16 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Los anclajes viven en la home. Desde otra página (p. ej. /cursos) hay que
+  // prefijarlos con "/" o el navegador los busca en la página actual.
+  const isHome = pathname === "/";
+  const anchor = (hash) => (isHome ? hash : `/${hash}`);
+
   const links = [
-    [t("methodology"), "#metodologia"],
-    [t("assets"), "#activos"],
-    [t("cases"), "#casos"],
+    [t("methodology"), anchor("#metodologia")],
+    [t("assets"), anchor("#activos")],
+    [t("cases"), anchor("#casos")],
+    [t("courses"), "/cursos"],
   ];
 
   const onDark = !scrolled;
@@ -33,7 +41,7 @@ export function Nav() {
       transition: "background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out)",
     }}>
       <Container style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 76, gap: "var(--space-6)" }}>
-        <a href="#top" aria-label={t("home")} style={{ display: "inline-flex", alignItems: "center" }}>
+        <a href={isHome ? "#top" : "/"} aria-label={t("home")} style={{ display: "inline-flex", alignItems: "center" }}>
           <Logo variant="wordmark" theme={onDark ? "dark" : "light"} height={26} priority />
         </a>
         <nav style={{ display: "flex", alignItems: "center", gap: "var(--space-6)" }} className="kairos-navlinks">
@@ -51,7 +59,7 @@ export function Nav() {
         </nav>
         <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
           <LocaleSwitcher onDark={onDark} />
-          <a href="#contacto" style={{ textDecoration: "none" }}>
+          <a href={anchor("#contacto")} style={{ textDecoration: "none" }}>
             <Button variant="primary" size="sm">{t("cta")}</Button>
           </a>
         </div>

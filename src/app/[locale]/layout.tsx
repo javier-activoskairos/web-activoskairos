@@ -37,19 +37,15 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
-  // Cada idioma declara su canonical y sus alternativas. Antes no se emitía
-  // ningún canonical, así que www/apex y los 4 locales competían entre sí.
-  const languages = Object.fromEntries(
-    routing.locales.map((loc) => [loc, pathFor(loc)]),
-  );
-
+  // Canonical explícito. Antes no se emitía ninguno, así que www/apex y los
+  // locales competían entre sí. Con un solo idioma no se declara `languages`:
+  // un hreflang de una sola entrada no aporta nada a Google.
   return {
     metadataBase: new URL(siteUrl),
     title: t("title"),
     description: t("description"),
     alternates: {
       canonical: pathFor(locale),
-      languages: { ...languages, "x-default": pathFor(routing.defaultLocale) },
     },
     openGraph: {
       type: "website",

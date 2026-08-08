@@ -236,6 +236,10 @@
   .kairos-services-grid,
   .kairos-cases-grid,
   .kairos-contact-grid,
+  .kairos-demo-grid,
+  .kairos-modulos-grid,
+  .kairos-oferta-grid,
+  .kairos-caso-grid,
   .kairos-footer-grid { grid-template-columns: 1fr !important; }
   .kairos-footer-grid { gap: var(--space-6) !important; }
   .kairos-navlinks { display: none !important; }

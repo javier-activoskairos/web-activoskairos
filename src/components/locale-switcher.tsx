@@ -7,14 +7,15 @@ import { routing } from "@/i18n/routing";
 
 const SHORT: Record<string, string> = {
   es: "ES",
-  en: "EN",
-  it: "IT",
 };
 
 /**
  * Selector de idioma. Estilado con `style` en vez de clases de Tailwind para
  * encajar con el resto del sitio (que va todo con estilos en línea) y para
  * poder invertir el color sobre el hero oscuro.
+ *
+ * Con un solo idioma no se pinta nada: un desplegable con una única opción es
+ * ruido. El componente se mantiene para cuando vuelva a haber más de un locale.
  */
 export function LocaleSwitcher({ onDark = false }: { onDark?: boolean }) {
   const t = useTranslations("Nav");
@@ -29,6 +30,9 @@ export function LocaleSwitcher({ onDark = false }: { onDark?: boolean }) {
       router.replace(pathname, { locale: next });
     });
   }
+
+  // Después de los hooks: React exige que se llamen siempre en el mismo orden.
+  if (routing.locales.length < 2) return null;
 
   return (
     <select

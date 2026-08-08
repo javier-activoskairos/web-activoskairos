@@ -25,6 +25,7 @@
     "methodology": "Metodología",
     "assets": "Activos",
     "cases": "Casos de Éxito",
+    "courses": "Cursos",
     "cta": "Vive el proceso",
     "language": "Idioma"
   },
@@ -234,6 +235,7 @@
     "linkMethodology": "Metodología",
     "linkAssets": "Activos",
     "linkCases": "Casos de éxito",
+    "linkCourses": "Cursos",
     "linkTest": "Test del Caos Operativo",
     "linkBookCall": "Agenda una llamada",
     "linkLinkedin": "LinkedIn",

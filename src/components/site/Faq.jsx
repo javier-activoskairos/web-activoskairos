@@ -7,7 +7,9 @@ import { useTranslations } from "next-intl";
 import { Eyebrow } from "./ds";
 import { Container, Section, Reveal } from "./primitives";
 
-const CSS = `
+// Exportado para que la FAQ de los cursos herede exactamente el mismo acordeón
+// sin duplicar CSS.
+export const FAQ_CSS = `
 .kfaq details{border:1px solid rgba(0,0,0,.09);border-radius:16px;background:#fff;margin-bottom:12px;overflow:hidden;transition:border-color .18s}
 .kfaq details[open]{border-color:rgba(249,99,2,.4)}
 .kfaq summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;font-family:var(--font-display);font-weight:var(--weight-semibold);font-size:var(--text-h4);line-height:var(--leading-snug);color:var(--text-strong)}
@@ -24,7 +26,7 @@ export function Faq() {
 
   return (
     <Section tone="raised" id="faq">
-      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: FAQ_CSS }} />
       <Container>
         <Reveal>
           <Eyebrow>{t("eyebrow")}</Eyebrow>

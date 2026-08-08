@@ -88,21 +88,22 @@ const nextConfig: NextConfig = {
         destination: "https://activoskairos.com/:path*",
         permanent: true,
       },
-      ...LEGAL_REDIRECTS.flatMap(([oldSlug, newSlug]) => [
-        { source: `/${oldSlug}`, destination: `/${newSlug}`, permanent: true },
-        {
-          source: `/:locale(en|it)/${oldSlug}`,
-          destination: `/:locale/${newSlug}`,
-          permanent: true,
-        },
-      ]),
+      // Slugs legales antiguos. Ya no hay variante con prefijo de idioma: al no
+      // quedar más locales, `/en/aviso-legal` cae primero a `/aviso-legal` por
+      // la regla de locales retirados y de ahí a `/legal`.
+      ...LEGAL_REDIRECTS.map(([oldSlug, newSlug]) => ({
+        source: `/${oldSlug}`,
+        destination: `/${newSlug}`,
+        permanent: true,
+      })),
       // Locales retirados: su tráfico indexado cae al equivalente en español.
-      // `fr` nunca tuvo contenido traducido; `pt` estaba traducido pero se
-      // dejó de ofrecer. Se cubren `/xx` y `/xx/loquesea`.
-      { source: "/fr", destination: "/", permanent: true },
-      { source: "/fr/:path*", destination: "/:path*", permanent: true },
-      { source: "/pt", destination: "/", permanent: true },
-      { source: "/pt/:path*", destination: "/:path*", permanent: true },
+      // `fr` nunca tuvo contenido traducido; `pt`, `en` e `it` estaban
+      // traducidos pero se dejaron de ofrecer (la web pasa a ser solo español).
+      // Se cubren `/xx` y `/xx/loquesea`.
+      ...["fr", "pt", "en", "it"].flatMap((loc) => [
+        { source: `/${loc}`, destination: "/", permanent: true },
+        { source: `/${loc}/:path*`, destination: "/:path*", permanent: true },
+      ]),
     ];
   },
 

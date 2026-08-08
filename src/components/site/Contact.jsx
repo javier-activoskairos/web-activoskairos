@@ -2,6 +2,7 @@
 // Contact CTA + form + footer.
 import React from "react";
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { Eyebrow, Logo } from "./ds";
 import { Container, Section, Reveal } from "./primitives";
 import { ArrowRight, Mail, Check, Shield, Clock } from "./icons";
@@ -237,17 +238,23 @@ function ContactShards({ inView, reduce }) {
 
 export function Footer() {
   const t = useTranslations("Footer");
+  const pathname = usePathname();
   // String, no number: como número ICU lo formatearía con separador de miles
   // ("2.026" en es).
   const year = String(new Date().getFullYear());
+
+  // Los anclajes viven en la home: desde /cursos o una página pilar hay que
+  // prefijarlos con "/".
+  const isHome = pathname === "/";
+  const anchor = (hash) => (isHome ? hash : `/${hash}`);
 
   // Todos los enlaces apuntan a algo real. Antes las tres columnas eran
   // `href="#"` y la de contacto mostraba un correo inexistente.
   const cols = [
     [t("colCompany"), [
-      { label: t("linkMethodology"), href: "#metodologia" },
-      { label: t("linkAssets"), href: "#activos" },
-      { label: t("linkCases"), href: "#casos" },
+      { label: t("linkMethodology"), href: anchor("#metodologia") },
+      { label: t("linkAssets"), href: anchor("#activos") },
+      { label: t("linkCases"), href: anchor("#casos") },
     ]],
     // Enlace site-wide a las páginas pilar (SEO 14). Contenido en español, como
     // las páginas legales; los nombres de servicio hacen de etiqueta neutra.
@@ -257,13 +264,14 @@ export function Footer() {
       { label: "Automatización con IA", href: "/automatizacion-ia" },
     ]],
     [t("colResources"), [
+      { label: t("linkCourses"), href: "/cursos" },
       { label: t("linkTest"), href: "/test-caos-operativo" },
       { label: t("linkBookCall"), href: "/reserva" },
     ]],
     [t("colContact"), [
       { label: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
       { label: t("linkLinkedin"), href: LINKEDIN_URL, external: true },
-      { label: t("linkBookCall"), href: "#contacto" },
+      { label: t("linkBookCall"), href: anchor("#contacto") },
     ]],
   ];
 
