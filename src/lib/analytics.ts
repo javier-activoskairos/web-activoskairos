@@ -50,4 +50,10 @@ export const EVENTS = {
   courseCardClick: "notion_ai_course_card_click",
   skoolClick: "notion_ai_skool_click",
   faqOpen: "notion_ai_faq_open",
+  // Página de incorporación. `page_view` y `form_start` son nombres reservados o
+  // demasiado genéricos en GA4, así que van con prefijo propio: en los informes
+  // se filtran por `incorporacion_` sin mezclarse con el resto del sitio.
+  incorporacionView: "incorporacion_page_view",
+  incorporacionFormStart: "incorporacion_form_start",
+  incorporacionSubmitSuccess: "incorporacion_form_submit_success",
 } as const;
