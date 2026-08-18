@@ -203,6 +203,16 @@ export function IncorporacionForm(props) {
             Son los datos estables con los que trabajamos: quién es el contacto de referencia y
             cómo es la empresa. Se rellena una vez y se actualiza cuando cambie algo.
           </Reveal>
+          {prefill && !prefillFallo && (
+            <Reveal delay={160} as="p" style={{
+              margin: "1.25rem 0 0", fontSize: "var(--text-sm)", color: "var(--text-on-dark-body)",
+              background: "rgba(255,255,255,0.04)", border: "1px solid var(--border-on-dark)",
+              borderRadius: "var(--radius-md)", padding: "12px 14px", maxWidth: "56ch",
+              lineHeight: "var(--leading-normal)",
+            }}>
+              Hemos rellenado lo que ya sabemos de ti. Revísalo y corrige lo que haya cambiado.
+            </Reveal>
+          )}
           {prefillFallo && (
             <Reveal delay={160} as="p" role="status" style={{
               margin: "1.25rem 0 0", fontSize: "var(--text-sm)", color: "var(--text-on-dark-body)",
@@ -220,6 +230,7 @@ export function IncorporacionForm(props) {
         <Container style={{ maxWidth: 860 }}>
           <form onSubmit={onSubmit} noValidate style={{ display: "grid", gap: "var(--space-6)" }}>
             <Grupo
+              paso="01"
               titulo="Tu contacto"
               nota="La persona con la que hablamos en el día a día."
             >
@@ -248,11 +259,13 @@ export function IncorporacionForm(props) {
                   onChange={set("influencia")} options={INFLUENCIAS}
                   ayuda={INFLUENCIA_AYUDA[values.influencia] || "Nos ayuda a no marear a quien no toca."} />
               </Fila>
-              <Casilla label="Recibo las facturas" checked={values.facturacion} onChange={set("facturacion")} />
-              <Casilla label="Quiero copia de la facturación" checked={values.copia} onChange={set("copia")} />
+              <Fila>
+                <Casilla label="Recibo las facturas" checked={values.facturacion} onChange={set("facturacion")} />
+                <Casilla label="Quiero copia de la facturación" checked={values.copia} onChange={set("copia")} />
+              </Fila>
             </Grupo>
 
-            <Grupo titulo="Tu empresa" nota="Lo que usamos en documentos, facturas y comunicaciones.">
+            <Grupo paso="02" titulo="Tu empresa" nota="Lo que usamos en documentos, facturas y comunicaciones.">
               <Campo label="Nombre comercial" required autoComplete="organization" value={values.empresa}
                 onChange={set("empresa")} valid={validEmpresa} maxLength={LIMITS.empresa} />
               <Fila>
@@ -276,7 +289,7 @@ export function IncorporacionForm(props) {
                 ayuda="La que debe aparecer en las facturas." />
             </Grupo>
 
-            <Grupo titulo="Cómo sois" nota="Contexto para adaptar lo que construimos.">
+            <Grupo paso="03" titulo="Cómo sois" nota="Contexto para adaptar lo que construimos.">
               <Fila>
                 <Selector label="Sector" value={values.sector} onChange={set("sector")} options={SECTORES} />
                 <Selector label="Tamaño" value={values.tamano} onChange={set("tamano")} options={TAMANOS}
@@ -316,7 +329,12 @@ export function IncorporacionForm(props) {
               </p>
             )}
 
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--space-4)" }}>
+            {/* El envío también en tarjeta: cierra la columna en lugar de quedar
+                suelto sobre el fondo. */}
+            <div style={{
+              ...cardStyle, display: "flex", flexWrap: "wrap", alignItems: "center",
+              gap: "var(--space-4)", padding: "clamp(1.25rem, 2.4vw, var(--space-6))",
+            }}>
               <button type="submit" disabled={!ready} style={{
                 height: 56, padding: "0 var(--space-6)", borderRadius: "var(--radius-md)", border: "none",
                 cursor: ready ? "pointer" : "not-allowed",
@@ -355,22 +373,43 @@ const cardStyle = {
   boxShadow: "var(--shadow-sm)",
 };
 
-function Grupo({ titulo, nota, children }) {
+/**
+ * Bloque del formulario. Se usa `section` + `aria-labelledby` y no
+ * `fieldset`/`legend`: el navegador coloca el legend *encima* del borde del
+ * fieldset, así que el título se salía de la tarjeta y la nota quedaba pisando
+ * el borde superior. Aquí el encabezado vive dentro, con su propio hilo de
+ * separación, y la numeración da sensación de recorrido.
+ */
+function Grupo({ paso, titulo, nota, children }) {
+  const id = React.useId();
   return (
-    <fieldset style={{ ...cardStyle, display: "grid", gap: "var(--space-4)", margin: 0 }}>
-      <legend style={{ padding: 0, marginBottom: 4 }}>
-        <span style={{
-          display: "block", fontFamily: "var(--font-display)", fontWeight: "var(--weight-bold)",
-          fontSize: "var(--text-h4)", color: "var(--text-strong)", letterSpacing: "var(--tracking-tight)",
-        }}>{titulo}</span>
-        {nota && (
-          <span style={{ display: "block", marginTop: 4, fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
-            {nota}
-          </span>
-        )}
-      </legend>
-      {children}
-    </fieldset>
+    <section aria-labelledby={id} style={{ ...cardStyle, display: "grid", gap: "var(--space-5)" }}>
+      <header style={{
+        display: "flex", alignItems: "flex-start", gap: "var(--space-4)",
+        paddingBottom: "var(--space-4)", borderBottom: "1px solid var(--border-subtle)",
+      }}>
+        <span aria-hidden="true" style={{
+          flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center",
+          width: 36, height: 36, borderRadius: 12,
+          background: "rgba(249,99,2,0.10)", color: "#F96302",
+          fontFamily: "var(--font-display)", fontWeight: "var(--weight-bold)", fontSize: "0.9375rem",
+        }}>{paso}</span>
+        <span style={{ display: "block", minWidth: 0 }}>
+          <h2 id={id} style={{
+            margin: 0, fontFamily: "var(--font-display)", fontWeight: "var(--weight-bold)",
+            fontSize: "var(--text-h4)", lineHeight: "var(--leading-heading)",
+            color: "var(--text-strong)", letterSpacing: "var(--tracking-tight)",
+          }}>{titulo}</h2>
+          {nota && (
+            <p style={{
+              margin: "5px 0 0", fontSize: "var(--text-sm)", color: "var(--text-muted)",
+              lineHeight: "var(--leading-normal)",
+            }}>{nota}</p>
+          )}
+        </span>
+      </header>
+      <div style={{ display: "grid", gap: "var(--space-5)" }}>{children}</div>
+    </section>
   );
 }
 
@@ -498,10 +537,21 @@ function Selector({ label, value, onChange, options, ayuda }) {
   );
 }
 
+/** Casilla con cuerpo de tarjeta: se ve marcada de un vistazo, sin tener que
+ *  fijarse en un cuadradito de 18 px. */
 function Casilla({ label, checked, onChange }) {
   return (
-    <label style={{ display: "inline-flex", alignItems: "center", gap: 10, cursor: "pointer", fontSize: "var(--text-sm)", color: "var(--text-body)" }}>
-      <input type="checkbox" checked={checked} onChange={onChange} style={{ width: 18, height: 18, accentColor: "#F96302", cursor: "pointer" }} />
+    <label style={{
+      display: "flex", alignItems: "center", gap: 12, cursor: "pointer",
+      padding: "13px 14px", borderRadius: "var(--radius-md)",
+      border: `1px solid ${checked ? "rgba(249,99,2,0.55)" : "var(--border-default)"}`,
+      background: checked ? "rgba(249,99,2,0.06)" : "var(--cream-050)",
+      fontSize: "var(--text-sm)", fontWeight: 600,
+      color: checked ? "var(--text-strong)" : "var(--text-body)",
+      transition: "border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out)",
+    }}>
+      <input type="checkbox" checked={checked} onChange={onChange}
+        style={{ width: 18, height: 18, accentColor: "#F96302", cursor: "pointer", flexShrink: 0 }} />
       {label}
     </label>
   );

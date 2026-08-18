@@ -112,10 +112,12 @@ export const LOGO_TIPOS = ["image/png", "image/jpeg", "image/svg+xml", "image/we
 export const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 /**
- * Normaliza el identificador que viaja en `?id=`: es el Notion ID de la empresa
- * ([AKC] - Empresas → propiedad `Notion ID`), no el Código Empresa. Se acepta
- * con o sin guiones y se devuelve en minúsculas sin guiones; cualquier otra
- * cosa devuelve "" y la página cae al formulario en blanco.
+ * Normaliza los identificadores que viajan en el enlace: `?id=` es el Notion ID
+ * de la empresa ([AKC] - Empresas → propiedad `Notion ID`), no el Código
+ * Empresa, y `&c=` el del contacto que lo recibe ([AK] - Contactos), con el que
+ * se prellenan sus datos personales. Se aceptan con o sin guiones y se
+ * devuelven en minúsculas sin guiones; cualquier otra cosa devuelve "" y ese
+ * bloque del formulario queda en blanco.
  */
 export function normalizeNotionId(raw: unknown): string {
   if (typeof raw !== "string") return "";
