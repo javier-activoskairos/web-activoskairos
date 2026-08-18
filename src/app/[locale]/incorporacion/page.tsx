@@ -21,20 +21,26 @@ const WEBHOOK_KEY = process.env.N8N_INCORPORACION_KEY;
 type Prefill = Record<string, string | boolean>;
 
 /**
- * Pide a n8n los datos ya guardados de la empresa. Se hace en el servidor: la
- * clave del webhook no puede viajar al navegador, y el `?id=` es el Notion ID
- * de la empresa, así que tampoco se expone ningún dato a quien no tenga el
- * enlace.
+ * Pide a n8n los datos ya guardados. Se hace en el servidor: la clave del
+ * webhook no puede viajar al navegador, y los identificadores del enlace son
+ * Notion IDs (`?id=` la empresa, `&c=` el contacto), así que tampoco se expone
+ * ningún dato a quien no tenga el enlace.
  *
  * Si n8n no responde, la página NO falla: se pinta el formulario en blanco con
  * un aviso. Perder el prellenado es molesto; perder el formulario, caro.
  */
 async function cargarPrefill(
   id: string,
+  contactoId: string,
 ): Promise<{ prefill: Prefill | null; fallo: boolean }> {
-  if (!id || !PREFILL_URL || !WEBHOOK_KEY) return { prefill: null, fallo: false };
+  if ((!id && !contactoId) || !PREFILL_URL || !WEBHOOK_KEY) {
+    return { prefill: null, fallo: false };
+  }
+  const query = new URLSearchParams();
+  if (id) query.set("id", id);
+  if (contactoId) query.set("c", contactoId);
   try {
-    const res = await fetch(`${PREFILL_URL}?id=${encodeURIComponent(id)}`, {
+    const res = await fetch(`${PREFILL_URL}?${query.toString()}`, {
       headers: { "x-ak-web-key": WEBHOOK_KEY },
       cache: "no-store",
       signal: AbortSignal.timeout(8_000),
@@ -44,8 +50,8 @@ async function cargarPrefill(
       return { prefill: null, fallo: true };
     }
     const data = (await res.json()) as { found?: boolean } & Prefill;
-    // `found: false` = el id no corresponde a ninguna empresa. No es un fallo:
-    // simplemente se rellena desde cero.
+    // `found: false` = ninguno de los ids corresponde a una ficha. No es un
+    // fallo: simplemente se rellena desde cero.
     if (!data || data.found === false) return { prefill: null, fallo: false };
     return { prefill: data, fallo: false };
   } catch (err) {
@@ -64,9 +70,12 @@ export default async function IncorporacionPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const { id: rawId } = await searchParams;
+  const { id: rawId, c: rawContacto } = await searchParams;
   const empresaId = normalizeNotionId(Array.isArray(rawId) ? rawId[0] : rawId);
-  const { prefill, fallo } = await cargarPrefill(empresaId);
+  const contactoId = normalizeNotionId(
+    Array.isArray(rawContacto) ? rawContacto[0] : rawContacto,
+  );
+  const { prefill, fallo } = await cargarPrefill(empresaId, contactoId);
 
   return (
     <div className="kairos-site">
