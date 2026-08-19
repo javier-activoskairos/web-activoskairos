@@ -103,6 +103,7 @@ export const LIMITS = {
   direccion: 200,
   cp: 20,
   mision: 1200,
+  facturaNombre: 120,
 } as const;
 
 /** Logo: solo formatos web razonables y un tamaño que quepa en el payload JSON. */
@@ -110,6 +111,12 @@ export const LOGO_MAX_BYTES = 2 * 1024 * 1024;
 export const LOGO_TIPOS = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"];
 
 export const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+/** A donde van las facturas: al correo del propio contacto o a otro distinto
+ *  (administracion, gestoria...). El formulario y la route handler comparten
+ *  estos dos valores; n8n decide con ellos a quien marca como contacto de
+ *  facturacion en [AK] - Contactos. */
+export const FACTURA_DESTINOS = ["mio", "otro"] as const;
 
 /**
  * Normaliza los identificadores que viajan en el enlace: `?id=` es el Notion ID
