@@ -27,7 +27,7 @@ export function ContentLayout({ children }) {
             <a href="/casos/mintech-management">Casos de éxito</a>
           </nav>
           <div className="sf-bottom">
-            <span className="sf-copy">© 2026 Activos Kairos · Todos los derechos reservados</span>
+            <span className="sf-copy">Activos Kairos · Todos los derechos reservados</span>
             <nav className="sf-legal">
               <a href="/legal">Aviso legal</a>
               <a href="/privacidad">Política de privacidad</a>
