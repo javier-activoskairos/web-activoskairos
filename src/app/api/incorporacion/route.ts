@@ -149,6 +149,11 @@ export async function POST(request: NextRequest) {
       madurez: opcion(body.madurez, MADUREZ),
       mision: clean(body.mision, LIMITS.mision),
     },
+    // Quien recomendó a la empresa, tal cual lo escribe el cliente. n8n intenta
+    // casarlo con una empresa de [AK] - Empresas para rellenar la relación
+    // `Referente`; si no encuentra ninguna, queda en la nota del seguimiento
+    // para tenerlo en cuenta al crear la membresía a mano.
+    referido: clean(body.referido, LIMITS.referido),
     logo: logoValido(body.logo),
   };
 

@@ -55,6 +55,7 @@ const VACIO = {
   idioma: "",
   madurez: "",
   mision: "",
+  referido: "",
 };
 
 /** Solo se aceptan claves conocidas del prefill: lo que llega de n8n no dicta
@@ -319,6 +320,9 @@ export function IncorporacionForm(props) {
               <Campo label="Dirección" autoComplete="street-address" value={values.direccion}
                 onChange={set("direccion")} maxLength={LIMITS.direccion}
                 ayuda="La que debe aparecer en las facturas." />
+              <Campo label="¿Quién te ha recomendado?" value={values.referido} onChange={set("referido")}
+                maxLength={LIMITS.referido} placeholder="Nombre de la empresa o persona"
+                ayuda="Solo si llegas por recomendación de otro cliente. Nos sirve para reconocerle la referencia." />
             </Grupo>
 
             <Grupo paso="03" titulo="Cómo sois" nota="Contexto para adaptar lo que construimos.">

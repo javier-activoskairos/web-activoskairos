@@ -104,6 +104,7 @@ export const LIMITS = {
   cp: 20,
   mision: 1200,
   facturaNombre: 120,
+  referido: 120,
 } as const;
 
 /** Logo: solo formatos web razonables y un tamaño que quepa en el payload JSON. */
