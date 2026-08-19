@@ -22,6 +22,7 @@ const DOC = `
       <h2><span class="n">2 &ndash;</span> Tipos de cookies que utilizamos</h2>
       <p>En función de su titular, las cookies pueden ser <strong>propias</strong> o <strong>de terceros</strong>; y según su finalidad, <strong>técnicas</strong> (necesarias), <strong>analíticas</strong> o <strong>publicitarias / de comportamiento</strong>.</p>
       <p>Actualmente este Sitio Web únicamente utiliza <strong>cookies técnicas necesarias</strong> para su correcto funcionamiento, que no requieren consentimiento:</p>
+      <div class="tabla">
       <table>
         <thead><tr><th>Cookie</th><th>Titular</th><th>Finalidad</th><th>Duración</th></tr></thead>
         <tbody>
@@ -29,6 +30,7 @@ const DOC = `
           <tr><td>Preferencia de cookies</td><td>Propia</td><td>Recordar tu elección sobre el uso de cookies</td><td>Hasta 12 meses</td></tr>
         </tbody>
       </table>
+      </div>
     </section>
     <section class="sec">
       <h2><span class="n">3 &ndash;</span> Cookies previstas a futuro</h2>

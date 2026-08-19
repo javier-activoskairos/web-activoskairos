@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import {
   CANALES,
   EMAIL_RE,
+  FACTURA_DESTINOS,
   IDIOMAS,
   INFLUENCIAS,
   LIMITS,
@@ -98,6 +99,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "invalid" }, { status: 400 });
   }
 
+  // Un correo de facturacion invalido no invalida el envio: se ignora y las
+  // facturas se quedan en el contacto, que es el comportamiento de siempre.
+  const facturaEmailBruto = clean(body.facturaCorreo, LIMITS.email);
+  const facturaEmailOk = EMAIL_RE.test(facturaEmailBruto) ? facturaEmailBruto : "";
+  const facturaDestino =
+    opcion(body.facturaDestino, FACTURA_DESTINOS) === "otro" && facturaEmailOk ? "otro" : "mio";
+  const facturaEmail = facturaDestino === "otro" ? facturaEmailOk : email;
+
   const payload = {
     // Identificación de la empresa. Si viene vacío, n8n busca por email de
     // contacto y, si tampoco existe, crea la empresa con Origen = Web.
@@ -113,8 +122,17 @@ export async function POST(request: NextRequest) {
       linkedin: clean(body.linkedin, LIMITS.linkedin),
       canal: opcion(body.canal, CANALES),
       influencia: opcion(body.influencia, INFLUENCIAS),
-      facturacion: bool(body.facturacion),
+      // `facturacion` se mantiene por compatibilidad con el workflow: es
+      // cierto cuando las facturas van al correo del propio contacto.
+      facturacion: facturaDestino === "mio",
       copia: bool(body.copia),
+    },
+    // A quien se le facturan. Si `destino` es "otro", n8n busca ese correo en
+    // [AK] - Contactos y, si no existe, crea el contacto en la misma empresa.
+    facturacion: {
+      destino: facturaDestino,
+      nombre: facturaDestino === "otro" ? clean(body.facturaNombre, LIMITS.facturaNombre) : "",
+      email: facturaEmail,
     },
     empresa: {
       nombre: empresa,

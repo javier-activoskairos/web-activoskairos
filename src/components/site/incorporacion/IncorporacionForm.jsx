@@ -15,6 +15,7 @@ import { CONTACT_EMAIL } from "@/lib/site";
 import {
   CANALES,
   EMAIL_RE,
+  FACTURA_DESTINOS,
   IDIOMAS,
   INFLUENCIAS,
   INFLUENCIA_AYUDA,
@@ -37,7 +38,9 @@ const VACIO = {
   linkedin: "",
   canal: "",
   influencia: "",
-  facturacion: false,
+  facturaDestino: "mio",
+  facturaNombre: "",
+  facturaCorreo: "",
   copia: false,
   empresa: "",
   razonSocial: "",
@@ -64,6 +67,8 @@ function conPrefill(prefill) {
     if (typeof v === "string") base[k] = v;
     else if (typeof v === "boolean") base[k] = v;
   }
+  if (base.facturaCorreo && base.facturaCorreo !== base.email) base.facturaDestino = "otro";
+  if (!FACTURA_DESTINOS.includes(base.facturaDestino)) base.facturaDestino = "mio";
   return base;
 }
 
@@ -91,7 +96,9 @@ export function IncorporacionForm(props) {
   const validEmail = EMAIL_RE.test(values.email.trim());
   const validNombre = values.nombre.trim().length >= 2;
   const validEmpresa = values.empresa.trim().length >= 2;
-  const ready = validEmail && validNombre && validEmpresa && status !== "sending";
+  const facturaOtro = values.facturaDestino === "otro";
+  const validFactura = !facturaOtro || EMAIL_RE.test(values.facturaCorreo.trim());
+  const ready = validEmail && validNombre && validEmpresa && validFactura && status !== "sending";
 
   // Un único camino de entrada para el logo: da igual si viene del explorador,
   // del portapapeles o de un arrastre, siempre acaba aquí.
@@ -265,10 +272,29 @@ export function IncorporacionForm(props) {
                   onChange={set("influencia")} options={INFLUENCIAS}
                   ayuda={INFLUENCIA_AYUDA[values.influencia] || "Nos ayuda a no marear a quien no toca."} />
               </Fila>
-              <Fila>
-                <Casilla label="Recibo las facturas" checked={values.facturacion} onChange={set("facturacion")} />
-                <Casilla label="Quiero copia de la facturación" checked={values.copia} onChange={set("copia")} />
-              </Fila>
+              <Opciones
+                label="¿A qué correo enviamos las facturas?"
+                value={values.facturaDestino}
+                onChange={(v) => setValues((f) => ({ ...f, facturaDestino: v }))}
+                options={[
+                  { value: "mio", label: "Al mío", nota: "El correo de arriba." },
+                  { value: "otro", label: "A otro", nota: "Administración, gestoría…" },
+                ]}
+              />
+              {facturaOtro && (
+                <Fila>
+                  <Campo label="Nombre de quien recibe las facturas" value={values.facturaNombre}
+                    onChange={set("facturaNombre")} maxLength={LIMITS.facturaNombre}
+                    placeholder="Administración" />
+                  <Campo label="Correo de facturación" required type="email" icon={<Mail size={16} />}
+                    value={values.facturaCorreo} onChange={set("facturaCorreo")}
+                    valid={EMAIL_RE.test(values.facturaCorreo.trim())} maxLength={LIMITS.email}
+                    placeholder="facturacion@empresa.com" />
+                </Fila>
+              )}
+              <Casilla
+                label={facturaOtro ? "Quiero copia de las facturas" : "Quiero copia de la facturación"}
+                checked={values.copia} onChange={set("copia")} />
             </Grupo>
 
             <Grupo paso="02" titulo="Tu empresa" nota="Lo que usamos en documentos, facturas y comunicaciones.">
@@ -560,6 +586,50 @@ function Casilla({ label, checked, onChange }) {
         style={{ width: 18, height: 18, accentColor: "#F96302", cursor: "pointer", flexShrink: 0 }} />
       {label}
     </label>
+  );
+}
+
+/** Elección entre pocas opciones excluyentes: se ven las dos a la vez, sin
+ *  desplegar nada. Radios de verdad para que el teclado y los lectores de
+ *  pantalla se muevan por el grupo como esperan. */
+function Opciones({ label, value, onChange, options }) {
+  const name = React.useId();
+  return (
+    <fieldset style={{ border: "none", margin: 0, padding: 0, minWidth: 0 }}>
+      <legend style={{
+        padding: 0, fontSize: "var(--text-sm)", fontWeight: 600,
+        color: "var(--text-body)", marginBottom: 7,
+      }}>{label}</legend>
+      <div style={{ display: "grid", gap: "var(--space-4)", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
+        {options.map((o) => {
+          const activa = value === o.value;
+          return (
+            <label key={o.value} style={{
+              display: "flex", alignItems: "center", gap: 12, cursor: "pointer",
+              padding: "13px 14px", borderRadius: "var(--radius-md)", minWidth: 0,
+              border: `1px solid ${activa ? "rgba(249,99,2,0.55)" : "var(--border-default)"}`,
+              background: activa ? "rgba(249,99,2,0.06)" : "var(--cream-050)",
+              transition: "border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out)",
+            }}>
+              <input type="radio" name={name} value={o.value} checked={activa}
+                onChange={() => onChange(o.value)}
+                style={{ width: 18, height: 18, accentColor: "#F96302", cursor: "pointer", flexShrink: 0 }} />
+              <span style={{ minWidth: 0 }}>
+                <span style={{
+                  display: "block", fontSize: "var(--text-sm)", fontWeight: 600,
+                  color: activa ? "var(--text-strong)" : "var(--text-body)",
+                }}>{o.label}</span>
+                {o.nota && (
+                  <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-faint)" }}>
+                    {o.nota}
+                  </span>
+                )}
+              </span>
+            </label>
+          );
+        })}
+      </div>
+    </fieldset>
   );
 }
 

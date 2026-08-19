@@ -32,7 +32,11 @@
 .legal-page .sec a:hover{border-color:var(--orange)}
 .legal-page .sec ul{margin:2px 0 13px;padding-left:20px;color:var(--pearl);font-size:15px;line-height:1.7;max-width:64ch}
 .legal-page .sec li{margin-bottom:6px}
-.legal-page .sec table{width:100%;border-collapse:collapse;margin:4px 0 13px;font-size:14px}
+/* La tabla no encoge por debajo de su ancho legible: en movil se desplaza
+   dentro de su caja en vez de estirar la pagina entera. */
+.legal-page .sec .tabla{margin:4px 0 13px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.legal-page .sec .tabla table{margin:0}
+.legal-page .sec table{width:100%;min-width:390px;border-collapse:collapse;margin:4px 0 13px;font-size:14px}
 .legal-page .sec caption{caption-side:top;text-align:left}
 .legal-page .sec th,.legal-page .sec td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);color:var(--pearl);vertical-align:top}
 .legal-page .sec thead th{color:#fff;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
