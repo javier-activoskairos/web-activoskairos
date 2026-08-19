@@ -19,7 +19,7 @@ export function LegalLayout({ children }) {
             <img className="sf-logo" src="/assets/logo-wordmark-light.png" alt="Activos Kairos" height="24" />
           </div>
           <div className="sf-bottom">
-            <span className="sf-copy">© 2026 Activos Kairos · Todos los derechos reservados</span>
+            <span className="sf-copy">Activos Kairos · Todos los derechos reservados</span>
             <nav className="sf-legal">
               <a href="/legal">Aviso legal</a>
               <a href="/privacidad">Política de privacidad</a>
