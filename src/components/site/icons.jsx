@@ -36,3 +36,7 @@ export const Calendar = (p) => <Icon {...p}><rect x="3" y="4.5" width="18" heigh
 export const TrendingUp = (p) => <Icon {...p}><path d="M3 17 9 11l4 4 8-8" /><path d="M17 4h4v4" /></Icon>;
 export const ChevronRight = (p) => <Icon {...p}><path d="m9 18 6-6-6-6" /></Icon>;
 export const Table = (p) => <Icon {...p}><rect x="3" y="4.5" width="18" height="15" rx="2" /><path d="M3 10h18M3 14.5h18M9 4.5v15M15 4.5v15" /></Icon>;
+export const Imagen = (p) => <Icon {...p}><rect x="3" y="4.5" width="18" height="15" rx="2.5" /><circle cx="8.5" cy="10" r="1.5" /><path d="m3.5 17.5 5-4.5 4 3.5 3-2.5 5 4" /></Icon>;
+export const Clipboard = (p) => <Icon {...p}><rect x="5" y="4.5" width="14" height="16" rx="2.5" /><path d="M9 4.5V3.5h6v1" /><path d="M9 11h6M9 15h4" /></Icon>;
+export const Upload = (p) => <Icon {...p}><path d="M12 16V4" /><path d="m7 9 5-5 5 5" /><path d="M4 16v2.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V16" /></Icon>;
+export const X = (p) => <Icon {...p}><path d="M6 6l12 12M18 6 6 18" /></Icon>;
