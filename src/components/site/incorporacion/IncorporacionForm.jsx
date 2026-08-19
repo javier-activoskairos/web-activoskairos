@@ -9,7 +9,7 @@ import React from "react";
 import Link from "next/link";
 import { Container, Section, Reveal } from "../primitives";
 import { Eyebrow, Logo } from "../ds";
-import { ArrowRight, Check, Mail } from "../icons";
+import { ArrowRight, Check, Clipboard, Imagen, Mail, Upload, X } from "../icons";
 import { trackEvent, EVENTS } from "@/lib/analytics";
 import { CONTACT_EMAIL } from "@/lib/site";
 import {
@@ -93,24 +93,23 @@ export function IncorporacionForm(props) {
   const validEmpresa = values.empresa.trim().length >= 2;
   const ready = validEmail && validNombre && validEmpresa && status !== "sending";
 
-  async function onLogo(e) {
-    const file = e.target.files?.[0];
+  // Un único camino de entrada para el logo: da igual si viene del explorador,
+  // del portapapeles o de un arrastre, siempre acaba aquí.
+  async function aceptarLogo(file) {
     setLogoError("");
     if (!file) {
       setLogo(null);
-      return;
+      return false;
     }
     if (!LOGO_TIPOS.includes(file.type)) {
       setLogo(null);
       setLogoError("Formato no admitido. Usa PNG, JPG, SVG o WebP.");
-      e.target.value = "";
-      return;
+      return false;
     }
     if (file.size > LOGO_MAX_BYTES) {
       setLogo(null);
       setLogoError("El archivo pesa más de 2 MB.");
-      e.target.value = "";
-      return;
+      return false;
     }
     const dataUrl = await new Promise((resolve, reject) => {
       const fr = new FileReader();
@@ -119,10 +118,17 @@ export function IncorporacionForm(props) {
       fr.readAsDataURL(file);
     }).catch(() => "");
     if (!dataUrl) {
-      setLogoError("No se ha podido leer el archivo.");
-      return;
+      setLogoError("No se ha podido leer la imagen.");
+      return false;
     }
-    setLogo({ name: file.name.slice(0, 80), type: file.type, data: dataUrl.split(",")[1] ?? "" });
+    const nombre = (file.name || "logo").slice(0, 80);
+    setLogo({ name: nombre, type: file.type, data: dataUrl.split(",")[1] ?? "" });
+    return true;
+  }
+
+  function quitarLogo() {
+    setLogo(null);
+    setLogoError("");
   }
 
   async function onSubmit(e) {
@@ -306,7 +312,7 @@ export function IncorporacionForm(props) {
                 maxLength={LIMITS.mision} rows={4}
                 placeholder="Qué hacéis, para quién y por qué importa."
                 ayuda="En dos o tres frases. Nos sirve para escribir en vuestro tono." />
-              <ArchivoLogo logo={logo} error={logoError} onChange={onLogo} />
+              <ArchivoLogo logo={logo} error={logoError} onArchivo={aceptarLogo} onQuitar={quitarLogo} />
             </Grupo>
 
             {/* Honeypot: invisible para personas, tentador para bots. */}
@@ -422,9 +428,9 @@ function Fila({ children }) {
   );
 }
 
-function Etiqueta({ label, required, ayuda, children }) {
+function Etiqueta({ label, required, ayuda, children, as: Tag = "label" }) {
   return (
-    <label style={{ display: "block" }}>
+    <Tag style={{ display: "block" }}>
       <span style={{
         display: "block", fontSize: "var(--text-sm)", fontWeight: 600,
         color: "var(--text-body)", marginBottom: 7,
@@ -437,7 +443,7 @@ function Etiqueta({ label, required, ayuda, children }) {
           {ayuda}
         </span>
       )}
-    </label>
+    </Tag>
   );
 }
 
@@ -557,31 +563,272 @@ function Casilla({ label, checked, onChange }) {
   );
 }
 
-function ArchivoLogo({ logo, error, onChange }) {
+const EXT_POR_TIPO = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/svg+xml": "svg",
+  "image/webp": "webp",
+};
+
+/** Selector de logo al estilo Notion: el clic no abre el explorador de golpe,
+ *  abre un menú donde se elige entre pegar la imagen que ya tienes copiada o
+ *  buscarla en el ordenador. */
+function ArchivoLogo({ logo, error, onArchivo, onQuitar }) {
+  const [abierto, setAbierto] = React.useState(false);
+  const [pestana, setPestana] = React.useState("pegar");
+  const [arrastrando, setArrastrando] = React.useState(false);
+  const [avisoPegar, setAvisoPegar] = React.useState("");
+  const inputRef = React.useRef(null);
+  const cajaRef = React.useRef(null);
+  const zonaPegarRef = React.useRef(null);
+
+  const cerrar = React.useCallback(() => {
+    setAbierto(false);
+    setArrastrando(false);
+    setAvisoPegar("");
+  }, []);
+
+  // Cerrar al pulsar fuera o con Escape, como cualquier menú.
+  React.useEffect(() => {
+    if (!abierto) return undefined;
+    const fuera = (ev) => {
+      if (cajaRef.current && !cajaRef.current.contains(ev.target)) cerrar();
+    };
+    const tecla = (ev) => { if (ev.key === "Escape") cerrar(); };
+    document.addEventListener("mousedown", fuera);
+    document.addEventListener("keydown", tecla);
+    return () => {
+      document.removeEventListener("mousedown", fuera);
+      document.removeEventListener("keydown", tecla);
+    };
+  }, [abierto, cerrar]);
+
+  // Al abrir la pestaña de pegar, el foco va a la zona: así el Ctrl+V del
+  // usuario aterriza donde toca sin tener que hacer clic antes.
+  React.useEffect(() => {
+    if (abierto && pestana === "pegar") zonaPegarRef.current?.focus();
+  }, [abierto, pestana]);
+
+  async function entregar(file) {
+    const ok = await onArchivo(file);
+    if (ok) cerrar();
+    return ok;
+  }
+
+  function conNombre(file, base) {
+    const ext = EXT_POR_TIPO[file.type] || "png";
+    return new File([file], base + "." + ext, { type: file.type });
+  }
+
+  async function onPegar(ev) {
+    const file = Array.from(ev.clipboardData?.files || [])[0];
+    if (!file) {
+      setAvisoPegar("En el portapapeles no hay ninguna imagen.");
+      return;
+    }
+    ev.preventDefault();
+    setAvisoPegar("");
+    await entregar(file.name ? file : conNombre(file, "logo-pegado"));
+  }
+
+  async function leerPortapapeles() {
+    setAvisoPegar("");
+    try {
+      if (!navigator.clipboard?.read) throw new Error("sin permiso");
+      const items = await navigator.clipboard.read();
+      for (const item of items) {
+        const tipo = item.types.find((t) => LOGO_TIPOS.includes(t));
+        if (!tipo) continue;
+        const blob = await item.getType(tipo);
+        await entregar(new File([blob], "logo-pegado." + (EXT_POR_TIPO[tipo] || "png"), { type: tipo }));
+        return;
+      }
+      setAvisoPegar("En el portapapeles no hay ninguna imagen.");
+    } catch {
+      setAvisoPegar("El navegador no nos deja leer el portapapeles. Pulsa en el recuadro y haz Ctrl+V.");
+    }
+  }
+
+  async function onSoltar(ev) {
+    ev.preventDefault();
+    setArrastrando(false);
+    const file = Array.from(ev.dataTransfer?.files || [])[0];
+    if (file) await entregar(file);
+  }
+
+  const previa = logo ? "data:" + logo.type + ";base64," + logo.data : "";
+
   return (
-    <Etiqueta
-      label="Logo"
-      ayuda={error ? undefined : "PNG, JPG, SVG o WebP. Máximo 2 MB. Opcional."}
-    >
-      <input
-        type="file" accept={LOGO_TIPOS.join(",")} onChange={onChange}
-        style={{
-          display: "block", width: "100%", fontFamily: "var(--font-sans)",
-          fontSize: "var(--text-sm)", color: "var(--text-body)",
-          background: "var(--cream-050)", border: "1px solid var(--border-default)",
-          borderRadius: "var(--radius-md)", padding: "12px 14px", cursor: "pointer",
-        }}
-      />
-      {logo && (
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 8, fontSize: "var(--text-xs)", color: "var(--success)" }}>
-          <Check size={12} /> {logo.name}
-        </span>
-      )}
+    <Etiqueta as="div" label="Logo" ayuda={error ? undefined : "PNG, JPG, SVG o WebP. Máximo 2 MB. Opcional."}>
+      <div ref={cajaRef} style={{ position: "relative" }}>
+        {logo ? (
+          <div style={{
+            display: "flex", alignItems: "center", gap: 12,
+            padding: "10px 12px", background: "var(--cream-050)",
+            border: "1px solid var(--border-default)", borderRadius: "var(--radius-md)",
+          }}>
+            <span aria-hidden="true" style={{
+              width: 40, height: 40, borderRadius: 8, flexShrink: 0,
+              background: "#fff", border: "1px solid var(--border-subtle)",
+              backgroundImage: 'url("' + previa + '")', backgroundSize: "contain",
+              backgroundPosition: "center", backgroundRepeat: "no-repeat",
+            }} />
+            <span style={{ minWidth: 0, flex: 1, display: "grid", gap: 2 }}>
+              <span style={{
+                fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--text-strong)",
+                overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+              }}>{logo.name}</span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: "var(--text-xs)", color: "var(--success)" }}>
+                <Check size={12} /> Listo para enviar
+              </span>
+            </span>
+            <button type="button" onClick={onQuitar} aria-label="Quitar el logo"
+              style={{ ...botonSecundario, padding: "8px 10px", flexShrink: 0 }}>
+              <X size={14} />
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setAbierto((v) => !v)}
+            aria-expanded={abierto}
+            aria-haspopup="true"
+            style={{
+              display: "flex", alignItems: "center", gap: 10, width: "100%",
+              padding: "12px 14px", cursor: "pointer", textAlign: "left",
+              fontFamily: "var(--font-sans)", fontSize: "var(--text-sm)", fontWeight: 600,
+              color: "var(--text-body)", background: "var(--cream-050)",
+              border: "1px solid " + (abierto ? "rgba(249,99,2,0.7)" : "var(--border-default)"),
+              boxShadow: abierto ? "0 0 0 3px rgba(249,99,2,0.16)" : "none",
+              borderRadius: "var(--radius-md)",
+              transition: "border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out)",
+            }}
+          >
+            <Imagen size={16} />
+            Añadir logo
+            <span aria-hidden="true" style={{ marginLeft: "auto", color: "var(--text-faint)", fontSize: 12 }}>&#9662;</span>
+          </button>
+        )}
+
+        {abierto && !logo && (
+          <div role="menu" style={{
+            position: "absolute", zIndex: 20, top: "calc(100% + 6px)", left: 0, right: 0,
+            padding: 12, display: "grid", gap: 12,
+            background: "var(--cream-000, #fff)", border: "1px solid var(--border-default)",
+            borderRadius: "var(--radius-md)", boxShadow: "0 18px 40px rgba(15, 15, 15, 0.16)",
+          }}>
+            <div role="tablist" style={{ display: "flex", gap: 4 }}>
+              <Pestana activa={pestana === "pegar"} onClick={() => setPestana("pegar")} icono={<Clipboard size={14} />}>
+                Pegar imagen
+              </Pestana>
+              <Pestana activa={pestana === "subir"} onClick={() => setPestana("subir")} icono={<Upload size={14} />}>
+                Subir archivo
+              </Pestana>
+            </div>
+
+            {pestana === "pegar" ? (
+              <div style={{ display: "grid", gap: 8 }}>
+                <div ref={zonaPegarRef} tabIndex={0} onPaste={onPegar}
+                  style={{ ...zonaBase, borderStyle: "dashed" }}>
+                  <Clipboard size={18} />
+                  <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--text-body)" }}>
+                    Haz Ctrl+V aquí
+                  </span>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-faint)" }}>
+                    Si ya tienes el logo copiado, pégalo sin buscar el archivo.
+                  </span>
+                </div>
+                <button type="button" onClick={leerPortapapeles} style={botonSecundario}>
+                  Pegar del portapapeles
+                </button>
+                {avisoPegar && (
+                  <span role="status" style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                    {avisoPegar}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div style={{ display: "grid", gap: 8 }}>
+                <div
+                  onDragOver={(ev) => { ev.preventDefault(); setArrastrando(true); }}
+                  onDragLeave={() => setArrastrando(false)}
+                  onDrop={onSoltar}
+                  style={{
+                    ...zonaBase,
+                    borderStyle: "dashed",
+                    borderColor: arrastrando ? "rgba(249,99,2,0.7)" : "var(--border-default)",
+                    background: arrastrando ? "rgba(249,99,2,0.06)" : "var(--cream-050)",
+                  }}
+                >
+                  <Upload size={18} />
+                  <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--text-body)" }}>
+                    Arrastra el archivo aquí
+                  </span>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-faint)" }}>
+                    O elígelo en el ordenador.
+                  </span>
+                </div>
+                <button type="button" onClick={() => inputRef.current?.click()} style={botonSecundario}>
+                  Elegir archivo
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        <input
+          ref={inputRef} type="file" accept={LOGO_TIPOS.join(",")}
+          onChange={async (ev) => {
+            const file = ev.target.files?.[0];
+            if (file) await entregar(file);
+            ev.target.value = "";
+          }}
+          style={{ display: "none" }}
+        />
+      </div>
+
       {error && (
         <span role="alert" style={{ display: "block", marginTop: 8, fontSize: "var(--text-xs)", color: "var(--danger)" }}>
           {error}
         </span>
       )}
     </Etiqueta>
+  );
+}
+
+const zonaBase = {
+  display: "grid", justifyItems: "center", gap: 4, textAlign: "center",
+  padding: "18px 14px", borderRadius: "var(--radius-md)",
+  border: "1px solid var(--border-default)", background: "var(--cream-050)",
+  color: "var(--text-muted)", outlineOffset: 2, cursor: "default",
+};
+
+const botonSecundario = {
+  display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
+  padding: "10px 14px", cursor: "pointer",
+  fontFamily: "var(--font-sans)", fontSize: "var(--text-sm)", fontWeight: 600,
+  color: "var(--text-strong)", background: "var(--cream-050)",
+  border: "1px solid var(--border-default)", borderRadius: "var(--radius-md)",
+  transition: "border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out)",
+};
+
+function Pestana({ activa, onClick, icono, children }) {
+  return (
+    <button
+      type="button" role="tab" aria-selected={activa} onClick={onClick}
+      style={{
+        display: "inline-flex", alignItems: "center", gap: 7, flex: 1,
+        justifyContent: "center", padding: "9px 10px", cursor: "pointer",
+        fontFamily: "var(--font-sans)", fontSize: "var(--text-sm)", fontWeight: 600,
+        color: activa ? "var(--text-strong)" : "var(--text-muted)",
+        background: activa ? "rgba(249,99,2,0.08)" : "transparent",
+        border: "1px solid " + (activa ? "rgba(249,99,2,0.45)" : "transparent"),
+        borderRadius: "var(--radius-sm, 8px)",
+        transition: "background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out)",
+      }}
+    >
+      {icono}
+      {children}
+    </button>
   );
 }
