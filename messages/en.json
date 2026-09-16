@@ -225,6 +225,27 @@
     "errorTitle": "We couldn't send it",
     "errorBody": "Try again in a moment or write to us at {email}."
   },
+  "Newsletter": {
+    "eyebrow": "Newsletter",
+    "title": "The Activos Kairos newsletter",
+    "lead": "Once a month: a real system we've built, how we automated it and what it taught us. No filler, no spam.",
+    "labelEmail": "Email",
+    "phEmail": "name@company.com",
+    "labelName": "Name",
+    "phName": "Your name",
+    "optional": "optional",
+    "consent": "I agree to receive the monthly Activos Kairos newsletter at this address and I have read the <privacidad>privacy policy</privacidad>. I can unsubscribe at any time from any email.",
+    "consentPlain": "I agree to receive the monthly Activos Kairos newsletter at this address and I have read the privacy policy. I can unsubscribe at any time from any email.",
+    "submit": "Subscribe",
+    "sending": "Sending…",
+    "sentTitle": "Almost there",
+    "sentBody": "Check your inbox and confirm your subscription.",
+    "invalidEmail": "Enter a valid email, for example name@company.com.",
+    "errorTitle": "We couldn't sign you up",
+    "errorBody": "Try again in a moment.",
+    "errorRateLimited": "Too many attempts in a row. Try again in a few minutes.",
+    "errorTooFast": "Hold on a second and try again."
+  },
   "Footer": {
     "tagline": "AI consulting that turns business chaos into digital assets built on Notion.",
     "claim": "Live the process.",
