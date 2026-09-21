@@ -40,7 +40,7 @@ npm run dev                  # http://localhost:3000
 
 ## Formularios
 
-Los tres formularios del sitio mandan a **n8n** desde el servidor (route
+Los formularios del sitio mandan a **n8n** desde el servidor (route
 handlers en `src/app/api/`), nunca desde el navegador: así ni las URLs ni las
 claves de los webhooks llegan al cliente. Las variables van en `.env.example`.
 
@@ -49,8 +49,10 @@ claves de los webhooks llegan al cliente. Las variables van en `.env.example`.
 | Contacto / lead     | Sección `#contacto` de la home | `/api/lead`         | `N8N_LEAD_WEBHOOK_URL`, `N8N_LEAD_KEY`        |
 | Incorporación       | `/incorporacion`               | `/api/incorporacion`| `N8N_INCORPORACION_*`                          |
 | Alta en newsletter  | Pie de página (todo el sitio)  | `/api/newsletter`   | `N8N_KAISEND_ALTA_URL`, `N8N_KAISEND_ALTA_KEY` |
+| Alta desde landing B2B | `/sistema-operativo-ia`     | `/api/newsletter`   | Las mismas que el alta en newsletter           |
 
 Flujo completo del alta en la newsletter: [`docs/flujo-newsletter.md`](docs/flujo-newsletter.md).
+Landing B2B de captación con el mismo alta: [`docs/flujo-landing-b2b.md`](docs/flujo-landing-b2b.md).
 
 ## Personalizar para un cliente
 
