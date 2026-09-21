@@ -226,6 +226,27 @@
     "errorTitle": "No hemos podido enviarlo",
     "errorBody": "Inténtalo de nuevo en un momento o escríbenos a {email}."
   },
+  "Newsletter": {
+    "eyebrow": "Newsletter",
+    "title": "El boletín de Activos Kairos",
+    "lead": "Una vez al mes: un sistema real que hemos montado, cómo lo automatizamos y qué nos ha enseñado. Sin relleno y sin spam.",
+    "labelEmail": "Correo electrónico",
+    "phEmail": "nombre@empresa.com",
+    "labelName": "Nombre",
+    "phName": "Tu nombre",
+    "optional": "opcional",
+    "consent": "Acepto recibir el boletín mensual de Activos Kairos en este correo y he leído la <privacidad>política de privacidad</privacidad>. Puedo darme de baja cuando quiera desde cualquier envío.",
+    "consentPlain": "Acepto recibir el boletín mensual de Activos Kairos en este correo y he leído la política de privacidad. Puedo darme de baja cuando quiera desde cualquier envío.",
+    "submit": "Suscribirme",
+    "sending": "Enviando…",
+    "sentTitle": "Ya casi está",
+    "sentBody": "Revisa tu correo y confirma la suscripción.",
+    "invalidEmail": "Escribe un correo válido, por ejemplo nombre@empresa.com.",
+    "errorTitle": "No hemos podido darte de alta",
+    "errorBody": "Inténtalo de nuevo en un momento.",
+    "errorRateLimited": "Demasiados intentos seguidos. Prueba otra vez dentro de unos minutos.",
+    "errorTooFast": "Espera un momento antes de enviar y vuelve a intentarlo."
+  },
   "Footer": {
     "tagline": "Consultoría de IA que centraliza el caos empresarial en activos digitales sobre Notion.",
     "claim": "Vive el proceso.",

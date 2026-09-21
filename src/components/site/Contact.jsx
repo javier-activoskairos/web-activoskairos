@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { Eyebrow, Logo } from "./ds";
 import { Container, Section, Reveal } from "./primitives";
+import { Newsletter } from "./Newsletter";
 import { ArrowRight, Mail, Check, Shield, Clock } from "./icons";
 import { CONTACT_EMAIL, LINKEDIN_URL } from "@/lib/site";
 
@@ -283,8 +284,13 @@ export function Footer() {
   ];
 
   return (
-    <footer style={{ background: "#0D0D0D", color: "var(--text-on-dark-muted)", paddingBlock: "var(--space-9)" }}>
-      <Container>
+    // El padding superior lo pone ya la franja de newsletter, de ahí que aquí
+    // sólo quede el de abajo.
+    <footer style={{ background: "#0D0D0D", color: "var(--text-on-dark-muted)", paddingBottom: "var(--space-9)" }}>
+      {/* Alta en la newsletter (KaiSend). Va en el pie, así que aparece en todas
+          las páginas del sitio y no sólo en la home. */}
+      <Newsletter />
+      <Container style={{ paddingTop: "var(--space-8)" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr 1fr", gap: "var(--space-7)", paddingBottom: "var(--space-8)" }} className="kairos-footer-grid">
           <div>
             <Logo variant="wordmark" theme="dark" height={26} />

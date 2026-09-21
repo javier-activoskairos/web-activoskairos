@@ -225,6 +225,27 @@
     "errorTitle": "Non siamo riusciti a inviarlo",
     "errorBody": "Riprova tra un momento o scrivici a {email}."
   },
+  "Newsletter": {
+    "eyebrow": "Newsletter",
+    "title": "La newsletter di Activos Kairos",
+    "lead": "Una volta al mese: un sistema reale che abbiamo costruito, come lo abbiamo automatizzato e cosa ci ha insegnato. Senza riempitivi e senza spam.",
+    "labelEmail": "Email",
+    "phEmail": "nome@azienda.com",
+    "labelName": "Nome",
+    "phName": "Il tuo nome",
+    "optional": "facoltativo",
+    "consent": "Accetto di ricevere la newsletter mensile di Activos Kairos a questo indirizzo e ho letto l'<privacidad>informativa sulla privacy</privacidad>. Posso annullare l'iscrizione quando voglio da qualsiasi email.",
+    "consentPlain": "Accetto di ricevere la newsletter mensile di Activos Kairos a questo indirizzo e ho letto l'informativa sulla privacy. Posso annullare l'iscrizione quando voglio da qualsiasi email.",
+    "submit": "Iscrivimi",
+    "sending": "Invio in corso…",
+    "sentTitle": "Ci siamo quasi",
+    "sentBody": "Controlla la tua email e conferma l'iscrizione.",
+    "invalidEmail": "Inserisci un'email valida, ad esempio nome@azienda.com.",
+    "errorTitle": "Non siamo riusciti a iscriverti",
+    "errorBody": "Riprova tra un momento.",
+    "errorRateLimited": "Troppi tentativi di fila. Riprova tra qualche minuto.",
+    "errorTooFast": "Aspetta un attimo e riprova."
+  },
   "Footer": {
     "tagline": "Consulenza di IA che centralizza il caos aziendale in asset digitali su Notion.",
     "claim": "Vivi il processo.",
