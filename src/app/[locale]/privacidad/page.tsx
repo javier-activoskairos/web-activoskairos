@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const DOC = `
     <p class="eyebrow">Legal</p>
     <h1>Política de privacidad</h1>
-    <p class="doc-date">Última actualización: 25 de julio de 2026</p>
+    <p class="doc-date">Última actualización: 21 de septiembre de 2026</p>
     <p class="sec-intro" style="color:var(--pearl);font-size:15px;line-height:1.7;max-width:64ch;margin:0 0 4px">En Activos Kairos nos comprometemos a proteger la privacidad y la seguridad de los datos personales de los usuarios de nuestro sitio web activoskairos.com. Esta Política explica qué datos recopilamos, con qué finalidad y qué derechos te asisten, conforme al Reglamento (UE) 2016/679 (RGPD) y a la Ley Orgánica 3/2018 (LOPDGDD).</p>
     <section class="sec">
       <h2><span class="n">1 &ndash;</span> Responsable del tratamiento</h2>
@@ -29,7 +29,7 @@ const DOC = `
       <p>Dependiendo de tu interacción con el Sitio Web, podemos tratar:</p>
       <ul>
         <li><strong>Formulario de contacto:</strong> nombre, correo electrónico y cualquier dato que incluyas en el mensaje.</li>
-        <li><strong>Newsletter / comunicaciones comerciales:</strong> nombre y correo electrónico.</li>
+        <li><strong>Newsletter / comunicaciones comerciales:</strong> nombre, correo electrónico y, si lo indicas, el nombre de tu empresa.</li>
         <li><strong>Registro de usuarios:</strong> nombre, correo electrónico, credenciales de acceso y datos asociados a tu cuenta.</li>
         <li><strong>Datos de navegación:</strong> dirección IP y datos recogidos mediante cookies (ver la <a href="/cookies">Política de Cookies</a> del Sitio Web).</li>
       </ul>
@@ -61,13 +61,14 @@ const DOC = `
       <ul>
         <li><strong>Alojamiento web:</strong> Hostinger International Ltd. (Chipre, Unión Europea).</li>
         <li><strong>Envío de comunicaciones y automatización:</strong> Google (Gmail) para el envío de correos y Make (Celonis SE) para la automatización de dichos envíos.</li>
+        <li><strong>Newsletter:</strong> Resend, Inc. (Estados Unidos) para el envío de los correos transaccionales y de confirmación de la suscripción, y Listmonk, herramienta de código abierto que alojamos en nuestro propio servidor, para la gestión de la lista de suscriptores y el envío de la newsletter.</li>
         <li><strong>Gestión de contactos (CRM):</strong> Notion Labs, Inc.</li>
       </ul>
       <p>Estos proveedores tratan los datos únicamente conforme a nuestras instrucciones y en virtud de los correspondientes contratos de encargo de tratamiento.</p>
     </section>
     <section class="sec">
       <h2><span class="n">7 &ndash;</span> Transferencias internacionales</h2>
-      <p>El alojamiento web se presta desde la Unión Europea. No obstante, algunos de nuestros proveedores (como Google o Notion) están ubicados en Estados Unidos, por lo que el tratamiento de tus datos puede implicar una transferencia internacional fuera del Espacio Económico Europeo. En estos casos, dichas transferencias se amparan en las garantías previstas en el RGPD, principalmente las Cláusulas Contractuales Tipo aprobadas por la Comisión Europea y, cuando el proveedor esté adherido, el marco EU-US Data Privacy Framework.</p>
+      <p>El alojamiento web se presta desde la Unión Europea. No obstante, algunos de nuestros proveedores (como Google, Notion o Resend) están ubicados en Estados Unidos, por lo que el tratamiento de tus datos puede implicar una transferencia internacional fuera del Espacio Económico Europeo. En estos casos, dichas transferencias se amparan en las garantías previstas en el RGPD, principalmente las Cláusulas Contractuales Tipo aprobadas por la Comisión Europea y, cuando el proveedor esté adherido, el marco EU-US Data Privacy Framework.</p>
     </section>
     <section class="sec">
       <h2><span class="n">8 &ndash;</span> Tus derechos</h2>
