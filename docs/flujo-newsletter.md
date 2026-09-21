@@ -60,6 +60,10 @@ Sin terceros ni captcha:
 
 ## Payload que recibe n8n
 
+Si el envío trae `empresa` (solo la landing B2B, ver
+[`flujo-landing-b2b.md`](flujo-landing-b2b.md)), viaja también; si no, el
+campo no aparece.
+
 ```json
 {
   "origen": "Web — Newsletter",

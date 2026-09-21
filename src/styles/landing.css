@@ -1,0 +1,48 @@
+/* Landing B2B de alta en el boletín (/kairos-os).
+   Se monta sobre ContentLayout (.legal-page.content-page) y reutiliza sus
+   tokens: --orange, --pearl, --muted, --line. Nada de colores nuevos. */
+
+.content-page .lp-proof{margin-top:30px}
+.content-page .lp-optin{
+  margin-top:52px;padding:34px 30px;border:1px solid var(--line);border-radius:18px;
+  background:radial-gradient(circle at 80% 0%,rgba(255,106,26,.14),transparent 60%),rgba(255,255,255,.02);
+  scroll-margin-top:24px;
+}
+.content-page .lp-optin h2{font-size:clamp(22px,3vw,30px);line-height:1.15;letter-spacing:-.02em}
+
+.content-page .optin-form{display:flex;flex-direction:column;gap:16px;margin-top:22px}
+.content-page .optin-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.content-page .optin-field-wide{grid-column:1 / -1}
+.content-page .optin-field label{display:block;font-size:13.5px;font-weight:600;color:#fff;margin-bottom:7px}
+.content-page .optin-opt{color:var(--muted);font-weight:400}
+.content-page .optin-field input{
+  width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);
+  background:rgba(255,255,255,.03);color:#fff;font:inherit;font-size:16px;transition:.15s;
+}
+.content-page .optin-field input::placeholder{color:var(--muted)}
+.content-page .optin-field input:focus{outline:none;border-color:rgba(255,106,26,.7);box-shadow:0 0 0 3px rgba(255,106,26,.16)}
+.content-page .optin-field input[aria-invalid="true"]{border-color:#ffb4a2}
+
+.content-page .optin-consent{display:flex;align-items:flex-start;gap:10px;cursor:pointer;color:var(--pearl);font-size:14px;line-height:1.6;max-width:62ch}
+.content-page .optin-consent input{width:18px;height:18px;margin-top:3px;flex-shrink:0;accent-color:var(--orange-2);cursor:pointer}
+.content-page .optin-consent a,.content-page .optin-legal a{color:var(--orange);text-decoration:underline}
+
+.content-page .optin-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.content-page .optin-err{margin:0;color:#ffb4a2;font-size:14px;line-height:1.6}
+.content-page .optin-err strong{color:#fff}
+
+.content-page .optin-submit{align-self:flex-start;cursor:pointer;font-family:inherit}
+.content-page .optin-submit:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
+.content-page .optin-legal{margin:0;color:var(--muted) !important;font-size:12.5px !important;line-height:1.6 !important}
+
+.content-page .optin-ok{display:flex;gap:14px;align-items:flex-start;margin-top:22px;padding:22px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03);outline:none}
+.content-page .optin-ok-icon{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--orange);color:#0b0b0b;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+.content-page .optin-ok strong{display:block;color:#fff;font-size:17px;margin-bottom:4px}
+.content-page .optin-ok p{margin:0}
+
+@media (max-width:640px){
+  .content-page .optin-fields{grid-template-columns:1fr}
+  .content-page .optin-submit{align-self:stretch;justify-content:center}
+  .content-page .lp-optin{padding:26px 18px}
+}
