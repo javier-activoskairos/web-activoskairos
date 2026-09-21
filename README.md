@@ -65,10 +65,23 @@ Landing B2B de captación con el mismo alta: [`docs/flujo-landing-b2b.md`](docs/
 ## Deploy (VPS Kairos)
 
 El sitio se despliega en el **VPS** con **EasyPanel** (proyecto `webs`, build con
-nixpacks). Un webhook de push del repo llama a
-`https://vps.activoskairos.com/api/deploy/<token>`: EasyPanel hace `git pull`,
-reconstruye la imagen y actualiza el servicio de Docker Swarm. Las variables de
-entorno (`NEXT_PUBLIC_SITE_URL`, etc.) se definen en EasyPanel.
+nixpacks). En cada push a `main`, el workflow
+[`.github/workflows/notion-sync.yml`](.github/workflows/notion-sync.yml) llama al
+webhook de deploy de EasyPanel (secret `EASYPANEL_DEPLOY_URL`): EasyPanel hace
+`git pull`, reconstruye la imagen y actualiza el servicio de Docker Swarm. Las
+variables de entorno (`NEXT_PUBLIC_SITE_URL`, etc.) se definen en EasyPanel.
+
+Cómo sabe el workflow que el deploy ha llegado:
+
+- `GET /api/version` devuelve `{ "build": "<instante del next build>" }`. Se
+  genera en el build (ruta `force-static`), así que cambia con cada imagen.
+- El workflow lee ese valor **antes** de disparar el deploy y espera a que
+  cambie (hasta 16 min). Si a los 8 min no ha cambiado, vuelve a disparar el
+  deploy **una** vez. Si no llega, el run falla y el Despliegue de Notion queda
+  como `FALLO`.
+- Los deploys van **en fila** (`concurrency` sin `cancel-in-progress`): EasyPanel
+  mata el build en curso si le llega otro deploy del mismo servicio, y con dos
+  merges seguidos a `main` podía no quedar ninguno desplegado.
 
 Comprobar un despliegue:
 
