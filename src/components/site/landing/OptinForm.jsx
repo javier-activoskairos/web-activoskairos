@@ -1,5 +1,5 @@
 "use client";
-// Formulario de alta de la landing B2B (/sistema-operativo-ia).
+// Formulario de alta de la landing B2B (/kairos-os).
 //
 // Mismo circuito que el formulario del pie (Newsletter.jsx): el navegador llama
 // a /api/newsletter y es el servidor quien reenvía al webhook de alta de KaiSend

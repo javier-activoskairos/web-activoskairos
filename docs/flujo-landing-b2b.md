@@ -1,6 +1,7 @@
 # Flujo — Landing B2B de alta en el boletín
 
-Landing de captación en `/sistema-operativo-ia`. Presenta la oferta del
+Landing de captación en `/kairos-os` (la URL antigua `/sistema-operativo-ia`
+redirige aquí con 301 desde `next.config.ts`). Presenta la oferta del
 sistema operativo empresarial con IA y recoge altas en el boletín de
 Activos Kairos (KaiSend) con doble opt-in. Usa el mismo circuito que el
 formulario del pie, descrito en [`flujo-newsletter.md`](flujo-newsletter.md).
@@ -9,7 +10,7 @@ formulario del pie, descrito en [`flujo-newsletter.md`](flujo-newsletter.md).
 
 | Pieza | Qué hace |
 | --- | --- |
-| `src/app/[locale]/sistema-operativo-ia/page.tsx` | La página. Es un componente de servidor, montado sobre `ContentLayout`. Los textos van dentro. |
+| `src/app/[locale]/kairos-os/page.tsx` | La página. Es un componente de servidor, montado sobre `ContentLayout`. Los textos van dentro. |
 | `src/components/site/landing/OptinForm.jsx` | El formulario. Es de cliente. Pide nombre, correo, empresa (opcional) y consentimiento. |
 | `src/styles/landing.css` | Estilos de la landing. Reutiliza los tokens de `legal.css` y `content.css`. |
 | `src/app/api/newsletter/route.ts` | La misma ruta que usa el pie. Ahora reenvía también `empresa` cuando llega. |
@@ -26,8 +27,9 @@ principal — Kairos OS». En Notion está en la página
 - el cliente ideal y las definiciones de «para quién»;
 - la prueba social: más de 135 sistemas entregados y más de 1.100 horas ahorradas en 2025.
 
-El nombre «Kairos OS» y el precio siguen siendo provisionales. Por eso la
-página no los usa y se publica en `noindex`. Tampoco está en el sitemap.
+Desde el 21/09/2026 la página es indexable y está en el sitemap (entre las
+landings del funnel de `src/app/sitemap.ts`). El precio sigue sin cerrarse,
+por eso la página no lo muestra.
 
 ## Recorrido
 
@@ -35,8 +37,8 @@ página no los usa y se publica en `noindex`. Tampoco está en el sitemap.
 2. Marca la casilla de consentimiento. Viene **sin marcar** y el botón sigue
    deshabilitado hasta que se marca.
 3. El navegador hace `POST /api/newsletter` con:
-   - `origen: "Web — Landing sistema operativo IA"`;
-   - `pagina: "/sistema-operativo-ia"`;
+   - `origen: "Web — Landing Kairos OS"`;
+   - `pagina: "/kairos-os"`;
    - el texto literal del consentimiento;
    - el honeypot y el tiempo transcurrido.
 4. La ruta aplica las mismas comprobaciones que para el pie:
@@ -93,7 +95,7 @@ En Chrome headless, a 1280×900 y a 390×844, se comprobó:
 - el envío muestra la confirmación;
 - el payload llega completo al webhook de mentira;
 - no hay scroll horizontal ni errores en la consola;
-- la cabecera `robots` es `noindex, follow`.
+- la cabecera `robots` era `noindex, follow` (retirada al publicarla en `/kairos-os`).
 
 **Sin probar:** el alta de punta a punta contra n8n. Depende de que se mergee
 el PR #9 y de que las variables estén en EasyPanel.

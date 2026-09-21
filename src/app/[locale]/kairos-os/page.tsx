@@ -10,15 +10,16 @@ import "@/styles/landing.css";
 // Los textos salen literalmente del Activo Kairos «Consultoría Richi»
 // (Notion 295fae893e4a475c9d49f43b8df03906, toggle «Oferta principal — Kairos
 // OS»). No se inventan: si cambia la oferta, se cambia allí y luego aquí.
-// El nombre «Kairos OS» y el precio siguen siendo provisionales, por eso la
-// landing no los usa y va en noindex hasta que la oferta quede validada.
+// Publicada e indexable en /kairos-os (antes /sistema-operativo-ia, que
+// redirige aquí con 301 desde next.config.ts). El precio sigue sin cerrarse,
+// por eso la landing no lo muestra.
 // Flujo completo: docs/flujo-landing-b2b.md.
 
-const PATH = "/sistema-operativo-ia";
+const PATH = "/kairos-os";
 
 // Valor de `origen` que viaja a n8n. El workflow de alta lo normaliza a «Web»;
 // la página concreta queda en `pagina`.
-const ORIGEN = "Web — Landing sistema operativo IA";
+const ORIGEN = "Web — Landing Kairos OS";
 
 const BENEFICIOS = [
   {
@@ -50,9 +51,6 @@ export async function generateMetadata(): Promise<Metadata> {
         "Sistema operativo empresarial con IA, instalado en 30 días, para empresas de servicios de más de cinco personas. Apúntate al boletín mensual de Activos Kairos.",
       path: PATH,
     }),
-    // Oferta con nombre y precio aún provisionales: fuera del índice hasta
-    // validarla. Quitar esta línea (y añadirla al sitemap) al publicarla.
-    robots: { index: false, follow: true },
   };
 }
 

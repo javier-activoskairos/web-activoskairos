@@ -15,7 +15,7 @@ const legalPaths = ["legal", "privacidad", "cookies", "tyc"];
 
 // Landings estáticas del funnel (public/), servidas con URL limpia vía rewrite.
 // Solo en español y sin variantes de idioma, así que van como URL única.
-const funnelPaths = ["test-caos-operativo"];
+const funnelPaths = ["test-caos-operativo", "kairos-os"];
 
 // Páginas de contenido SEO (activos, casos, pilares, cursos). Solo español,
 // canonical a la URL sin prefijo — se indexan una vez. Los slugs salen de los
