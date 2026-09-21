@@ -26,7 +26,7 @@ el webhook de n8n. Parte del Activo Kairos **KaiSend**.
    honeypot relleno, tiempo mínimo (2,5 s), correo válido y consentimiento.
    Un bot recibe `200 {"ok":true}` y no se reenvía nada; un dato inválido, `400`.
 4. Si todo cuadra, el servidor hace `POST` al webhook de n8n con la cabecera
-   `x-ak-web-key` (si hay clave) y un `aceptadoEn` en ISO como prueba del
+   `x-kaisend-key` (si hay clave; es la cabecera que exige el webhook de n8n) y un `aceptadoEn` en ISO como prueba del
    consentimiento. n8n es quien manda el correo de confirmación y da de alta.
 5. La web enseña **«Revisa tu correo y confirma la suscripción»** (doble opt-in:
    el alta no está cerrada hasta que la persona confirma desde su correo).
@@ -36,7 +36,7 @@ el webhook de n8n. Parte del Activo Kairos **KaiSend**.
 ```bash
 # .env.local / EasyPanel — sólo servidor, sin NEXT_PUBLIC_
 N8N_KAISEND_ALTA_URL=https://n8n.activoskairos.com/webhook/kaisend-alta
-N8N_KAISEND_ALTA_KEY=            # opcional; si está, viaja en x-ak-web-key
+N8N_KAISEND_ALTA_KEY=            # opcional; si está, viaja en x-kaisend-key
 ```
 
 La URL y la clave **no** llevan `NEXT_PUBLIC_` a propósito: el `fetch` al

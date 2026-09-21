@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(WEBHOOK_KEY ? { "x-ak-web-key": WEBHOOK_KEY } : {}),
+        ...(WEBHOOK_KEY ? { "x-kaisend-key": WEBHOOK_KEY } : {}),
       },
       body: JSON.stringify(payload),
       signal: AbortSignal.timeout(10_000),
