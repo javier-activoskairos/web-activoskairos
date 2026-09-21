@@ -244,8 +244,10 @@
   .kairos-modulos-grid,
   .kairos-oferta-grid,
   .kairos-caso-grid,
+  .kairos-newsletter-grid,
   .kairos-footer-grid { grid-template-columns: 1fr !important; }
   .kairos-footer-grid { gap: var(--space-6) !important; }
+  .kairos-newsletter-grid { gap: var(--space-6) !important; }
   .kairos-navlinks { display: none !important; }
   .kairos-case { grid-template-columns: 1fr !important; height: auto !important; }
   .kairos-case-acc { overflow: visible !important; }
@@ -260,6 +262,10 @@
 @media (max-width: 720px) {
   .kairos-hero-dashbody { grid-template-columns: 1fr !important; }
   .kairos-trustbar { flex-direction: column !important; gap: 8px !important; }
+  /* Correo y nombre pasan a una columna: dos campos lado a lado en un móvil
+     dejan cajas demasiado estrechas para escribir un correo. */
+  .kairos-newsletter-fields { grid-template-columns: 1fr !important; }
+  .kairos-newsletter form button[type="submit"] { align-self: stretch !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -38,6 +38,20 @@ npm run dev                  # http://localhost:3000
 - `localePrefix: "as-needed"` → el idioma por defecto (`es`) va sin prefijo; el
   resto bajo `/{locale}`.
 
+## Formularios
+
+Los tres formularios del sitio mandan a **n8n** desde el servidor (route
+handlers en `src/app/api/`), nunca desde el navegador: así ni las URLs ni las
+claves de los webhooks llegan al cliente. Las variables van en `.env.example`.
+
+| Formulario          | Dónde                          | Ruta                | Variables                                     |
+| ------------------- | ------------------------------ | ------------------- | --------------------------------------------- |
+| Contacto / lead     | Sección `#contacto` de la home | `/api/lead`         | `N8N_LEAD_WEBHOOK_URL`, `N8N_LEAD_KEY`        |
+| Incorporación       | `/incorporacion`               | `/api/incorporacion`| `N8N_INCORPORACION_*`                          |
+| Alta en newsletter  | Pie de página (todo el sitio)  | `/api/newsletter`   | `N8N_KAISEND_ALTA_URL`, `N8N_KAISEND_ALTA_KEY` |
+
+Flujo completo del alta en la newsletter: [`docs/flujo-newsletter.md`](docs/flujo-newsletter.md).
+
 ## Personalizar para un cliente
 
 1. **Marca**: editar el bloque `MARCA` en [`src/app/globals.css`](src/app/globals.css)
