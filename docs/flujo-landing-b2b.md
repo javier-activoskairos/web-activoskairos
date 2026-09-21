@@ -54,11 +54,15 @@ por eso la página no lo muestra.
 
 ### Qué hace n8n con el envío
 
-Esto describe el workflow «KaiSend — Alta con doble confirmación» tal como
-está al escribir este documento. Se leyó, no se tocó.
+Esto describe el workflow «KaiSend — Alta con doble confirmación»
+(`kaisendAlta0001`) tal como quedó el 21/09/2026.
 
 - Normaliza `origen` a `Web`. La página concreta solo queda en `pagina`.
-- **Ignora `empresa`.** La web lo envía, pero el Alta todavía no lo guarda.
+- **Guarda `empresa` en la propiedad `Notas` del Contacto**, como la línea
+  `Empresa (alta web): <empresa>`. Si el contacto ya existe, la línea se añade
+  al final de sus Notas y el resto se conserva. Si esa misma línea ya está, no
+  se repite. No se rellena la relación `Empresa`: para eso habría que buscar o
+  crear fichas en [AK] - Empresas a partir de texto libre y anónimo.
 - Crea o actualiza el contacto en Notion, con la suscripción en espera de confirmación.
 - Envía el correo de confirmación.
 - Cuando la persona confirma, marca el alta con la base legal
