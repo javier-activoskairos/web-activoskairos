@@ -99,6 +99,8 @@ const nextConfig: NextConfig = {
         destination: `/${newSlug}`,
         permanent: true,
       })),
+      // Landing B2B: nació como /sistema-operativo-ia y se publicó en /kairos-os.
+      { source: "/sistema-operativo-ia", destination: "/kairos-os", permanent: true },
       // Locales retirados: su tráfico indexado cae al equivalente en español.
       // `fr` nunca tuvo contenido traducido; `pt`, `en` e `it` estaban
       // traducidos pero se dejaron de ofrecer (la web pasa a ser solo español).

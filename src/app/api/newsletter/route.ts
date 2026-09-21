@@ -66,6 +66,8 @@ export async function POST(request: NextRequest) {
 
   const email = clean(body.email, 160);
   const nombre = clean(body.nombre, 120);
+  // Opcional: solo lo manda la landing B2B (/kairos-os). El pie no.
+  const empresa = clean(body.empresa, 160);
 
   // El consentimiento es obligatorio: sin él no hay base legal para escribirle.
   if (!EMAIL_RE.test(email) || body.consentimiento !== true) {
@@ -76,6 +78,7 @@ export async function POST(request: NextRequest) {
     origen: clean(body.origen, 80) || "Web — Newsletter",
     email,
     nombre,
+    ...(empresa ? { empresa } : {}),
     idioma: clean(body.idioma, 8),
     // Prueba del consentimiento: qué se aceptó, cuándo y desde dónde.
     consentimiento: true,
